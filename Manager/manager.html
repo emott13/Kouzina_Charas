@@ -12,12 +12,18 @@
     </header>
 
     <section class="login">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
-        <label for="password">Password</label>
-        <input type="text" id="password" name="password">
-        <p id="message"></p>
-        <button onclick="login()">Login</button>
+        <div class="username">
+            <label for="username">Username: </label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div class="password">
+            <label for="password">Password: </label>
+            <input type="text" id="password" name="password">
+        </div>
+        <div class="message-button">
+            <p id="message"></p>
+            <button onclick="login()">Login</button>
+        </div>
     </section>
 
     <footer>
