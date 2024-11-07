@@ -15,6 +15,10 @@
     color/font/text
 */
 
+h2{
+    font-size: 34px;
+    text-align: center;
+}
 /* header */
 .header{
     margin: 0 auto;
@@ -126,11 +130,16 @@
 .menu-item{
     display: flex;
     flex-direction: column;
-    margin-top:2%;
-    margin-bottom: 2%;
-    width: 250px;
-    height: 200px;
-    background-color: rgb(252, 223, 185);
+    margin: 0 auto;
+    margin-top: 3.5%;
+    width: 340px;
+    height: 320px;
+    border-radius: 10px;
+    background-color: white;
+}
+.menu-item p{
+    text-align: center;
+    padding: 2px 5px;
 }
 .img{
     margin: 0 auto;

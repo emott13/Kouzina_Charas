@@ -3,12 +3,10 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-.lunch{
-    background-color: #f1e7e7;
-    height: 1000px;
+.holder{
+    margin: 0 auto;
 }
-.lunch-grid{
+.beverage-grid{
     display: grid;
     grid-template-columns: auto auto auto;
     width: 1110px;height: 600px;
