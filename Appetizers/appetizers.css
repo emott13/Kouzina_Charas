@@ -25,9 +25,3 @@ h2{
     grid-template-columns: auto auto;
     width: 710px;height: 600px;
 }
-
-.shadow{
-    -webkit-filter: drop-shadow(3px 3px 2px #000000c5);
-    filter: drop-shadow(3px 3px 2px #000000c5);
-    /* color: #258e1c; */
-}

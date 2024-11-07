@@ -104,3 +104,8 @@
     height: 80px;
     width: 80px;
 }
+
+.shadow{
+    -webkit-filter: drop-shadow(3px 3px 2px #000000c5);
+    filter: drop-shadow(3px 3px 2px #000000c5);
+}
