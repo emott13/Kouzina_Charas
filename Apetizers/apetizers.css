@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h2{
+    font-size: 34px;
+    text-align: center;
+}
+
+.appetizer{
+    background-color: #f1e7e7;
+    height: 700px;
+}
+.holder{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 710px;height: 600px;
+}
+.appetizer-item{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 3.5%;
+    width: 340px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: white;
+}
+.appetizer-item p{
+    text-align: center;
+}
+.img-select{
+    margin: 0 auto;
+    margin-top: 3%;
+    background-repeat: no-repeat;
+    background-size: auto;
+    object-fit: cover;
+    border-radius: 5px;
+    width: 270px;
+    height: 200px;
+}
