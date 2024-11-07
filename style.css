@@ -96,7 +96,16 @@
 }
 
 
-
+/* item vairables */
+.name{
+    font-size: 20px;
+}
+.price{
+    font-size: 20px;
+}
+.description{
+    font-size: 15px;
+}
 
 
 
