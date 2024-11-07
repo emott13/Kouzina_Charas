@@ -47,6 +47,10 @@ h2{
     height: 90px;
 }
 
+.iconImg{
+    height: 30px;
+}
+
 /* select screen */
 .food-cata{
     display: flex;

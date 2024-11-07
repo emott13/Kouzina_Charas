@@ -4,64 +4,24 @@
     box-sizing: border-box;
 }
 
+/* -------------------- */
+/* ---- APPETIZERS ---- */
+/* -------------------- */
 
 
 .appetizer{
     background-color: #f1e7e7;
     height: 720px;
 }
-.holder {
-    margin: 0 auto;
+
+h2{
+    font-size: 34px;
+    text-align: center;
 }
-.apetizers{
+
+.holder{
+    margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto;
     width: 710px;height: 600px;
 }
-
-.img-select{
-    margin: 0 auto;
-    background-repeat: no-repeat;
-    background-size: auto;
-    object-fit: cover;
-    border-radius: 5px;
-    width: 340px;
-    height: 210px;
-    overflow: hidden;
-}
-
-/* come back once eli pushes  */
-/* .item-image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    margin-top: 3%;
-    background-image: url(/Images/Appetizers/Delmades.jpeg);
-    background-size: cover;
-    border-radius: 5px;
-    width: 270px;
-    height: 200px;
-}
-
-.item-image > button{
-    border-radius: 5px;
-    border: transparent;
-    background-color: #0cb00c00;
-    height: 30px;
-    width: 40px;
-    transition: 0.1s;
-}
-
-.item-image > button:hover{
-    display: block;
-    border-radius: 5px;
-    border: transparent;
-    background-image: url(/Ion_Icons/add-outline.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #0cb00c;
-    height: 30px;
-    width: 40px;
-} */

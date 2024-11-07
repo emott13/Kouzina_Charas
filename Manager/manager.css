@@ -1,0 +1,55 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --color-1: #fff;
+    --color-2: #dbd0be;
+    --color-3: #bba074;
+    --color-4: #e69e2a;
+    --color-5: #d59124;
+}
+
+header{
+    background-color: var(--color-2);
+    height: 40px;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px auto 0;
+    background-color: var(--color-2);
+    padding: 20px 0 25px;
+    max-width: 1140px;
+}
+
+.username,
+.password,
+.message{
+    margin: 10px 0;
+}
+
+input{
+    border: 1px solid var(--color-3);
+    border-radius: 15px;
+    height: 25px;
+    width: 200px;
+}
+
+.message-button button{
+    margin-top: 20px;
+    border: 1px solid var(--color-4);
+    border-radius: 15px;
+    background-color: var(--color-4);
+    height: 30px;
+    width: 100px;
+    color: var(--color-1);
+}
+
+.message-button button:hover{
+    background-color: var(--color-5);
+}
