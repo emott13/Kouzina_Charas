@@ -15,10 +15,7 @@
     color/font/text
 */
 
-h2{
-    font-size: 34px;
-    text-align: center;
-}
+
 /* header */
 .header{
     margin: 0 auto;
@@ -74,6 +71,7 @@ h2{
 .menu-selector{
     margin: 0 auto;
     display: flex;
+    margin-bottom: 3%;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
@@ -118,15 +116,7 @@ h2{
 
 
 /* Menu */
-.menu{
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    max-width: 1140px;
-    min-height: 600px;
-    border-radius: 10px;
-    background-color: #EBE9E1;
-}
+
 .menu-item{
     display: flex;
     flex-direction: column;
