@@ -38,12 +38,3 @@ h2{
     height: 200px;
 }
 
-.addItem{
-    margin: 0 auto;
-    border: none;
-    background-color: transparent;
-}
-
-.addItem > img{
-    height: 35px;
-}
