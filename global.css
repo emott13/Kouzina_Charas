@@ -65,7 +65,7 @@ h2{
     text-align: center;
 }
 
-/* ---- appetizer image styles ---- */
+/* ---- menu button styles ---- */
 
 .item-image{
     display: flex;
@@ -174,13 +174,12 @@ h2{
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    /* -webkit-filter: drop-shadow(-3px -3px -3px #000);
-    filter: drop-shadow(-3px -3px -3px #000); */
     height: 80px;
-    width: 80px;  
+    width: 80px;
+    cursor: pointer;
 }
 
 .shadow{
     -webkit-filter: drop-shadow(3px 3px 2px #000000c5);
     filter: drop-shadow(3px 3px 2px #000000c5);
-}
+} 
