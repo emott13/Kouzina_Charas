@@ -1,3 +1,13 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+:root{
+    --font-family: 'Athiti';
+}
+
 /* header */
 .header{
     margin: 0 auto;
@@ -29,3 +39,122 @@
 .iconImg{
     height: 30px;
 }
+
+/* ------------- */
+/* ---- BAG ---- */
+/* ------------- */
+
+
+
+/*
+.cartItemsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    /* margin: 1rem auto; 
+    padding: 0 1.5rem;
+    font-family: var(--font-family);
+    max-width: 900px;
+}
+
+.cartItemsContainer > h2{
+    font-size: 40px;
+    text-transform: uppercase;
+}
+
+.bag-info{
+    display: flex;
+    align-items: center;
+    margin: 12px;
+    border-bottom: 2px solid #000;
+    padding-right: 1rem;
+    font-size: 30px;
+    /* text-decoration: underline; 
+    text-transform: uppercase;
+}
+
+/* #item{
+    margin-left: 1rem;
+    margin-right: 8rem;
+}
+
+#quantity{
+    margin-right: 8rem;
+} 
+
+.bag-items{
+    display: flex;
+    flex-direction: column;
+    justify-content: first baseline;
+    margin: 10px auto;
+    background-color: bisque;
+    min-height: 100px;
+    width: 1240px;
+}
+
+.cart-item{
+    display: flex;
+    /* align-items: center;
+    border-bottom: 1px solid black;
+    margin-right: 1.5em;
+    padding-bottom: 10px;
+    margin-top: 10px; 
+}
+
+.item > img{
+    width: 75px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* .item-details{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 5px;
+    padding: 5px; */
+    /* height: 20px; */
+    /* width: 100px; 
+    }*/
+
+
+/* .item-details > p{
+    margin: auto;
+    padding: 1rem;
+    font-size: 20px;
+    font-weight: 500;
+} 
+
+.name{
+    width: 45%;
+}
+
+.price{
+    width: 20%;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.quantity{
+    width: 35%;
+}
+
+.item-details > input{
+    /* margin: auto;
+    height: 40px;
+    width: 40px;
+
+    font-size: 20px;
+    text-align: center; 
+    font-family: var(--font-family);
+    height: 34px;
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid #56CCF2;
+    background-color: #eee;
+    color: #333;
+    padding: 0;
+    text-align: center;
+    font-size: 1.2em;
+    margin-right: 25px;
+}*/

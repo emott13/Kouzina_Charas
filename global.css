@@ -50,40 +50,9 @@
     text-align: center;
 }
 
-/* ---- appetizer image styles ---- */
+/* ---- menu button styles ---- */
 
-.item-image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    width: 100%;
-    height: 200px;
-}
-
-.img1{
-    background-image: url(/Images/Appetizers/Delmades.jpeg);
-    background-size: cover;
-}
-
-.img2{
-    background-image: url(/Images/Appetizers/Przepis-na-Choriatiki.jpg);
-    background-size: cover;
-    background-position: center;
-}
-
-.img3{
-    background-image: url(/Images/Appetizers/saganaki.avif);
-    background-size: cover;
-}
-
-.img4{
-    background-image: url(/Images/Appetizers/Tzatziki-fit.jpg);
-    background-size: cover;
-    background-position: center;
-}
-
-.item-image > button{
+/* .item-image > button{
     border-radius: 5px;
     border: transparent;
     background-color: #0cb00c00;
@@ -99,13 +68,12 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    /* -webkit-filter: drop-shadow(-3px -3px -3px #000);
-    filter: drop-shadow(-3px -3px -3px #000); */
     height: 80px;
     width: 80px;
+    cursor: pointer;
 }
 
 .shadow{
     -webkit-filter: drop-shadow(3px 3px 2px #000000c5);
     filter: drop-shadow(3px 3px 2px #000000c5);
-}
+} */
