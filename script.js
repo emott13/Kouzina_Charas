@@ -76,7 +76,7 @@ function setUpCart(){
 }
 
 function displayCartItems(cart){
-    let container = document.querySelector('.bag-items');
+    let container = document.querySelector('.bag-item');
     container.innerHTML = '';
 
     cart.forEach(item => {

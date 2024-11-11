@@ -45,7 +45,13 @@
 /* ------------- */
 
 
+.cartItemsContainer{
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    max-width: 900px;
+}
 
+/* .bag-item{} */
 /*
 .cartItemsContainer{
     display: flex;
@@ -157,4 +163,4 @@
     text-align: center;
     font-size: 1.2em;
     margin-right: 25px;
-}*/
+} */
