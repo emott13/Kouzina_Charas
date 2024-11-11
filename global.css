@@ -34,6 +34,21 @@
     height: 30px;
 }
 
+h2{
+    font-size: 34px;
+    text-align: center;
+}
+
+.menu{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 1140px;
+    min-height: 600px;
+    border-radius: 10px;
+    background-color: #EBE9E1;
+}
+
 .menu-item{
     display: flex;
     flex-direction: column;
@@ -52,7 +67,98 @@
 
 /* ---- menu button styles ---- */
 
-/* .item-image > button{
+.item-image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    height: 200px;
+}
+
+/*--------------------appetizers---------------- */
+.img1{
+    background-image: url(/Images/Appetizers/Delmades.jpeg);
+    background-size: cover;
+}
+
+.img2{
+    background-image: url(/Images/Appetizers/Przepis-na-Choriatiki.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.img3{
+    background-image: url(/Images/Appetizers/saganaki.avif);
+    background-size: cover;
+}
+
+.img4{
+    background-image: url(/Images/Appetizers/Tzatziki-fit.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+/*--------------------------Lunch----------------- */
+.img5{
+    background-image: url(/Images/Lunch/spanakopita.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img6{
+    background-image: url(/Images/Lunch/Souvlaki.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img7{
+    background-image: url(/Images/Lunch/Pastitsio.webp);
+    background-size: cover;
+    background-position: center;
+}
+.img8{
+    background-image: url(/Images/Lunch/moussaka.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img9{
+    background-image: url(/Images/Lunch/gemista.webp);
+    background-size: cover;
+    background-position: center;
+}
+.img10{
+    background-image: url(/Images/Lunch/Fava.jpg);
+    background-size: cover;
+    background-position: center;
+}
+/* -----------------------desserts-------------------- */
+.img11{
+    background-image: url(/Images//Dessert/loukoumades.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img12{
+    background-image: url(/Images/Dessert/baklava.jpg);
+    background-size: cover;
+    background-position: center;
+}
+/*--------------------beverage-------------------- */
+.img13{
+    background-image: url(/Images/Beverages/espa-pink.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img14{
+    background-image: url(/Images/Beverages/cherry.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.img15{
+    background-image: url(/Images/Beverages/orangeJuice.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+.item-image > button{
     border-radius: 5px;
     border: transparent;
     background-color: #0cb00c00;
@@ -76,4 +182,4 @@
 .shadow{
     -webkit-filter: drop-shadow(3px 3px 2px #000000c5);
     filter: drop-shadow(3px 3px 2px #000000c5);
-} */
+} 
