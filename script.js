@@ -37,6 +37,7 @@ function handleAddItem(event){
 
 function getImage(title){
     switch(title){
+        // appetizers
         case 'Dolmades':
             return '/Images/Appetizers/Delmades.jpeg'
         case 'Choriatiki':
@@ -45,6 +46,9 @@ function getImage(title){
             return '/Images/Appetizers/saganaki.avif';
         case 'Tzatziki':
             return '/Images/Appetizers/Tzatziki-fit.jpg';
+        // lunch
+        case '':
+            return '';
     }
 };
     
