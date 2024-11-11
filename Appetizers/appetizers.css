@@ -38,28 +38,6 @@ h2{
     height: 200px;
 }
 
-.img1{
-    background-image: url(/Images/Appetizers/Delmades.jpeg);
-    background-size: cover;
-}
-
-.img2{
-    background-image: url(/Images/Appetizers/Przepis-na-Choriatiki.jpg);
-    background-size: cover;
-    background-position: center;
-}
-
-.img3{
-    background-image: url(/Images/Appetizers/saganaki.avif);
-    background-size: cover;
-}
-
-.img4{
-    background-image: url(/Images/Appetizers/Tzatziki-fit.jpg);
-    background-size: cover;
-    background-position: center;
-}
-
 .addItem{
     margin: 0 auto;
     border: none;
