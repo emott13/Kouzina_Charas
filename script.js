@@ -37,6 +37,7 @@ function handleAddItem(event){
 
 function getImage(title){
     switch(title){
+        // appetizers
         case 'Dolmades':
             return '/Images/Appetizers/Delmades.jpeg'
         case 'Choriatiki':
@@ -45,6 +46,9 @@ function getImage(title){
             return '/Images/Appetizers/saganaki.avif';
         case 'Tzatziki':
             return '/Images/Appetizers/Tzatziki-fit.jpg';
+        // lunch
+        case '':
+            return '';
     }
 };
     
@@ -53,6 +57,7 @@ function addToCartInLS(item){
     const existingItem = cart.find(cartItem => cartItem.name === item.name)
     if(existingItem){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
+        return;
     }
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
@@ -81,16 +86,16 @@ function displayCartItems(cart){
 
     cart.forEach(item => {
         let cartItem = document.createElement('div');
-        cartItem.classList.add('cart-item');
+        cartItem.classList.add('bag-item');
         cartItem.innerHTML = 
             `
                 <div class="item column">
-                    <img src="${item.image}" alt="${item.name}">
+                    <img src="${item.image}" alt="${item.name}" class="bag-image">
                     <span class="name">${item.name}</span>
                 </div>
-                <span class="price column">${item.price}</p>
+                <span class="price column">${item.price}</span>
                 <div class="quantity column"> 
-                    <input type="number" name="quantity" class="quantity" value="1">
+                    <input type="number" name="quantity" class="quantityInput" value="1">
                     <button class="btn-remove">Remove</button>
                 </div>
                 
