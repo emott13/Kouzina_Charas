@@ -40,12 +40,3 @@ h2{
     transform: scale(60%)
 }
 
-.addItem{
-    margin: 0 auto;
-    border: none;
-    background-color: transparent;
-}
-
-.addItem > img{
-    height: 35px;
-}

@@ -1,0 +1,111 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.payment{
+    margin: 0 auto;
+    border-radius: 10px;
+    width: 700px;
+    min-height: 540px; 
+    background-color: antiquewhite; 
+}
+
+.credit-debit{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 2%;
+    border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    padding: 10px 15px;
+    background-color: white;
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid black;
+    /* background-color: aquamarine; */
+}
+.card-img-holder{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 170px;
+    height: 40px;
+    /* background-color: aquamarine; */
+}
+.card-img{
+    width: 50px;
+    height: 30px;
+    border-radius: 3px;
+    /* background-color: antiquewhite; */
+}
+.card-1{
+    background-image: url("CardImages/363_Visa_Credit_Card_logo-1024.webp");
+    background-size: cover;
+    background-position: center;
+    border-radius: 6px;
+}
+.card-2{
+    background-image: url("CardImages/mastercard.png");
+    background-size: cover;
+    background-position: center;
+}
+.card-3{
+    background-image: url("CardImages/Amex-512.webp");
+    background-size: cover;
+    transform: scale(1.14);
+    background-position: center;
+}
+
+
+.card-number{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 60px;
+    /* background-color: aquamarine; */
+}
+.credit-debit label{
+    font-size: 15px;
+    padding: 5px;
+}
+.credit-debit input{
+    width: 100%;
+    padding: 0px 10px;
+    font-size: 15px;
+    height: 30px;
+}
+
+.card-sect{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 50px;
+}
+.card-exp{
+    width: 180px;
+    height: 50px;
+    /* background-color: aquamarine; */
+}
+.card-cvc{
+    width: 180px;
+    height: 50px;
+    /* background-color: aquamarine; */
+}
+.card-holder-name{
+    width: 100%;
+    height: 50px;
+    /* background-color: aquamarine; */
+}
+.pay-button{
+    height: 30px;
+}
