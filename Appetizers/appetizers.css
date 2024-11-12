@@ -29,14 +29,31 @@ h2{
 
 /* ---- appetizer image styles ---- */
 
+.img1{
+    zoom: 40%;
+}
+
+.img2{
+    zoom: 40%;
+}
+
+.img3{
+    zoom: 60%;
+}
+
+.img4{
+    zoom: 14%;
+}
+
+
 .item-image{
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 0;
+    border: none;
     border-radius: 5px;
     width: 100%;
-    height: auto;
+    height: 200px;
     overflow: hidden;
-    transform: scale(60%)
 }
-
