@@ -9,9 +9,11 @@
     height: 730px;
     margin-bottom: 3%;
 }
+
 .lunch-grid{
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto auto;
-    width: 1110px;height: 600px;
+    width: 1110px;
+    height: 600px;
 }
