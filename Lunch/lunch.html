@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="menu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lunch</title>
-    <link rel="stylesheet" href="../global.css">
     <link rel="stylesheet" href="lunch.css">
-    <link rel="stylesheet" href="../Apetizers/apetizers.css">
+    <link rel="stylesheet" href="../global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
+<body class="menu">
 
     <header class="header">
         <nav>
@@ -18,70 +20,100 @@
                 <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
                 <li><a href="">About Us</a></li>
                 <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt=""  class="iconImg"></a></li>
+                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt="" class="iconImg"></a><img src="/Ion_Icons/add-outline.svg" alt="add" id="add"></li>
             </ul>
         </nav>
     </header>
     <section class="menu lunch">
         <h2>Lunch</h2>
         <div class="holder lunch-grid">
+
             <div class="menu-item">
-                <div class="item-image img5">
-                    <!-- <button class="addItem shadow"></button> -->
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/spanakopita.jpg" alt="Spanakopita" class="img5">
                 </div>
-                <p class="name">Spanakopita</p>
-                <p class="price">€ 14.00</p>
+                <div class="item-info">
+                    <p class="name">Spanakopita</p>
+                    <div class="add-info">
+                        <p class="price">€ 14.00</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Flaky, golden pastry filled with a savory blend of spinach and feta cheese—Greek comfort food at its finest.</p>
             </div>
+
             <div class="menu-item">
-                <div class="item-image img6">
-                    <!-- <button class="addItem shadow"></button> -->
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/Souvlaki.jpg" alt="Souvlaki" class="img6">
                 </div>
-                <p class="name">Souvlaki</p>
-                <p class="price">€ 14.50</p>
+                <div class="item-info">
+                    <p class="name">Souvlaki</p>
+                    <div class="add-info">
+                        <p class="price">€ 14.50</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Tender, marinated meat skewers grilled to perfection, served with warm pita, tangy tzatziki, and fresh veggies.</p>
             </div>
+
             <div class="menu-item">
-                <div class="item-image img7">
-                   <!-- <button class="addItem shadow"></button> -->
-                   <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/Pastitsio.jpg" alt="Pastitsio" class="img7">
                 </div>
-                <p class="name">Pastitsio</p>
-                <p class="price">€ 13.50</p>
+                <div class="item-info">
+                    <p class="name">Pastitsio</p>
+                    <div class="add-info">
+                        <p class="price">€ 13.50</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Layers of pasta, seasoned ground meat, and creamy béchamel, baked to bubbly perfection—Greek lasagna with a twist.</p>
             </div>
+
             <div class="menu-item">
-                <div class="item-image img8">
-                   <!-- <button class="addItem shadow"></button> -->
-                   <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/moussaka.jpg" alt="Moussaka" class="img8">
                 </div>
-                <p class="name">Moussaka</p>
-                <p class="price">€ 13.50</p>
+                <div class="item-info">
+                    <p class="name">Moussaka</p>
+                    <div class="add-info">
+                        <p class="price">€ 13.50</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Rich layers of eggplant, seasoned meat, and béchamel sauce, baked until golden—a true taste of Greece.</p>
             </div>
+
             <div class="menu-item">
-                <div class="item-image img9">
-                    <!-- <button class="addItem shadow"></button> -->
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/gemista.jpg" alt="Gemista" class="img9">
                 </div>
-                <p class="name">gemista</p>
-                <p class="price">€ 13.70</p>
+                <div class="item-info">
+                    <p class="name">Gemista</p>
+                    <div class="add-info">
+                        <p class="price">€ 13.70</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description"> Juicy tomatoes and bell peppers stuffed with herbed rice and vegetables, baked for a deliciously hearty bite.</p>
             </div>
+
             <div class="menu-item">
-                <div class="item-image img10">
-                    <!-- <button class="addItem shadow"></button> -->
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                <div class="item-image">
+                    <img src="/Images/Lunch/fava.jpg" alt="Fava" class="img10">
                 </div>
-                <p class="name">Fava</p>
-                <p class="price">€ 12.50</p>
+                <div class="item-info">
+                    <p class="name">Fava</p>
+                    <div class="add-info">
+                        <p class="price">€ 12.50</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Creamy yellow split pea dip, drizzled with olive oil and topped with onions and capers—a smooth, savory classic.</p>
             </div>
             
         </div>
     </section>
-    
+    <script src="/script.js"></script>
 </body>
 </html>

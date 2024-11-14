@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if(document.body.classList.contains('appetizers')){
+    if(document.body.classList.contains('menu')){
         setUpAppetizers();
     }
     if(document.body.classList.contains('cart')){
@@ -24,7 +24,7 @@ function handleAddItem(event){
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
     let price = menuItem.querySelector('.price').innerText;
-    let image = getImage(name);
+    let image = menuItem.querySelector('img').src;
 
     let item = {
         name: name,
@@ -35,22 +35,6 @@ function handleAddItem(event){
     addToCartInLS(item);
 };
 
-function getImage(title){
-    switch(title){
-        // appetizers
-        case 'Dolmades':
-            return '/Images/Appetizers/Delmades.jpeg'
-        case 'Choriatiki':
-            return '/Images/Appetizers/Przepis-na-Choriatiki.jpg';
-        case 'Saganaki':
-            return '/Images/Appetizers/saganaki.avif';
-        case 'Tzatziki':
-            return '/Images/Appetizers/Tzatziki-fit.jpg';
-        // lunch
-        case '':
-            return '';
-    }
-};
     
 function addToCartInLS(item){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      //JSON.parse -----------
@@ -59,8 +43,15 @@ function addToCartInLS(item){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
         return;
     }
+    let add = document.querySelector('#add')
+    add.style.opacity = 1;
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
+    setTimeout(fadeOut, 3000)
+}
+
+function fadeOut(){
+    add.style.opacity = 0;
 }
 
 
@@ -73,10 +64,13 @@ function setUpCart(){
 
     if(cart.length == 0){
         document.querySelector('.bag-items').innerHTML = 
-        `<p>Your car is empty</p>`
+        `<p id="empty">Your bag is empty...</p>`
     }
     else{
         displayCartItems(cart);
+        quantityChange();
+        getTotal();
+        removeButtons();
     }
 }
 
@@ -104,79 +98,82 @@ function displayCartItems(cart){
     });
 }
 
+function removeButtons(){
+    let removeButtons = document.querySelectorAll('.btn-remove');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const itemName = event.target.closest('.bag-item').querySelector('.name').innerText;
+            removeItemFromLS(itemName, event);
+        });
+    });
+    // setUpCart();
+}
+
+function removeItemFromLS(itemName, event){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(cartItem => cartItem.name !== itemName);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    event.target.closest('.cart-items').remove();
+    let load = document.querySelector('.loader');
+    setTimeout(() => {
+        load.style.opacity = 1;
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }, 200);
+    load.style.opacity = 0;
+}
 
 
 
-// if(document.readyState == 'loading'){
-//     document.addEventListener('DOMContentLoaded', ready)
+function quantityChange(){
+    let quantities = document.querySelectorAll('.quantityInput');
+    quantities = Array.from(quantities);
+    quantities.forEach(input => {
+        input.addEventListener('change', (event) => {
+            let change = event.target;
+            if(change.value <= 0 || isNaN(change.value)){
+                change.value = 1;
+            }
+            else{
+                change.value = parseInt(change.value);
+            }
+            getTotal();
+        })
+    });
+}
+
+function getTotal(){
+    let bagItems = document.getElementsByClassName('bag-item');
+    let total = 0;
+    for(let i = 0; i < bagItems.length; i++){
+        let count = bagItems[i];
+        let bagPrice = count.getElementsByClassName('price')[0];
+        let price = Number(bagPrice.innerText.replace('€', ''));
+
+        let quantities = count.getElementsByClassName('quantityInput')[0];
+        let quantity = quantities.value
+
+        total = total + (price * quantity);
+    };
+    total = Math.round(total * 100) / 100;
+    document.querySelector('.bag-total-price').innerText = '€' + total;
+}
+
+
+
+
+// function removeItemFromLS(event) {
+//     const removeButtons = document.querySelectorAll('.remove-btn');
+//         removeButtons.forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             const itemName = event.target.closest('.cart-item').querySelector('.name').innerText;
+//             let cart = JSON.parse(localStorage.getItem('cart')) || [];
+//             cart = cart.filter(cartItem => cartItem.name !== itemName);
+//             localStorage.setItem('cart', JSON.stringify(cart));
+//             event.target.closest('.cart-item').remove();
+//             alert(`${itemName} removed from cart.`);
+
+//         })})
 // }
-// else{
-//     ready();
-// }
-
-// function ready(){
-//     let buttons = document.getElementsByClassName('addItem');
-//     for(let i = 0; i < buttons.length; i++){
-//         buttons[i].addEventListener('click', handleAddItem);
-//     }
-//     // buttons.forEach(button => {
-//     //     button.addEventListener('click', handleAddItem);
-//     // });
-// }
-
-// function handleAddItem(event){
-//     let button = event.target
-//     let menuItem = button.closest('.menu-item');
-//     let title = menuItem.getElementsByClassName('name')[0].innerText;
-//     let price = menuItem.getElementsByClassName('price')[0].innerText;
-//     let image = getImage(title);
-//     image = image.replace("'", "")
-//     addToCart(title, price, image);
-// }
-
-// function getImage(title){
-//     switch(title){
-//         case 'Dolmades':
-//             return '/Images/Appetizers/Delmades.jpeg'
-//         case 'Choriatiki':
-//             return '/Images/Appetizers/Przepis-na-Choriatiki.jpg';
-//         case 'Saganaki':
-//             return '/Images/Appetizers/saganaki.avif';
-//         case 'Tzatziki':
-//             return '/Images/Appetizers/Tzatziki-fit.jpg';
-//     }
-// }
-
-// function addToCart(title, price, image){
-//     let newItem = document.createElement('div');
-//     newItem.classList.add('bag-item');
-//     let bagItemsContainer = document.querySelector('.bag-items');
-//     console.log('Bag Items Container:', bagItemsContainer);
-//     let bagItemsNames = document.getElementsByClassName('bag-item');
-//     for(let i = 0; i < bagItemsNames.length; i++){
-//         if(title == bagItemsNames[i]){
-//             alert('This item is already in your bag. Please increase the quantity in the bag.');
-//             return;
-//         }
-//     }
-//     // bagItemsNames.forEach(name => {
-//     //     alert('This item is already in your bag. Please increase the quantity in the bag.')
-//     // });
-//     let contents = 
-//         `
-//             <div class="menu-item">
-//                 <div class="img"><img src="${image}" alt=""></div>
-//                 <p class="name">${title}</p>
-//                 <p class="price">${price}</p>
-//             </div>
-//         `
-//     newItem.innerHTML = contents;
-//     bagItemsContainer.append(newItem)
-// }
-
-// // const fs = require('fs');
-// // function fileSearch(dir, fileName){
-// //     fs.readdir(dir, (err, files)) => {
-
-// //     }
-// // }

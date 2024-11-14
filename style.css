@@ -15,6 +15,9 @@
     color/font/text
 */
 
+body{
+    font-family: 'Athiti';
+}
 
 /* header */
 .header{

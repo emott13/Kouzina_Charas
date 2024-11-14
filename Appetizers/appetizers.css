@@ -24,19 +24,7 @@ h2{
     margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto;
-    width: 710px;height: 600px;
-}
-
-/* ---- appetizer image styles ---- */
-
-.item-image{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    transform: scale(60%)
+    width: 710px;
+    height: 600px;
 }
 
