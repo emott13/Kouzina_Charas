@@ -149,6 +149,11 @@ body{
     text-transform: uppercase;
 }
 
+#empty{
+    margin-top: 2rem;
+    font-style: italic;
+}
+
 
 /* -------------------------- */
 /* ---- PURCHASE SECTION ---- */

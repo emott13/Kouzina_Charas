@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if(document.body.classList.contains('appetizers')){
+    if(document.body.classList.contains('menu')){
         setUpAppetizers();
     }
     if(document.body.classList.contains('cart')){
@@ -65,11 +65,12 @@ function setUpCart(){
 
     if(cart.length == 0){
         document.querySelector('.bag-items').innerHTML = 
-        `<p>Your car is empty</p>`
+        `<p id="empty">Your bag is empty...</p>`
     }
     else{
         displayCartItems(cart);
         quantityChange();
+        getTotal();
     }
 }
 
@@ -109,12 +110,12 @@ function quantityChange(){
             else{
                 change.value = parseInt(change.value);
             }
-            changeTotal();
+            getTotal();
         })
     });
 }
 
-function changeTotal(){
+function getTotal(){
     let bagItems = document.getElementsByClassName('bag-item');
     let total = 0;
     for(let i = 0; i < bagItems.length; i++){

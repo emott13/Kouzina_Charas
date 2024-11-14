@@ -1,3 +1,7 @@
+body{
+    font-family: 'Athiti';
+}
+
 /* header */
 .header{
     margin: 0 auto;
@@ -55,7 +59,7 @@ h2{
     margin: 0 auto;
     margin-top: 3.5%;
     width: 340px;
-    height: 320px;
+    min-height: 420px;
     border-radius: 10px;
     background-color: white;
 }
@@ -65,96 +69,40 @@ h2{
     text-align: center;
 }
 
-/* ---- menu button styles ---- */
+/* ---- menu item styles ---- */
 
-/* .item-image{
+.item-image{
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 0;
+    border: none;
     border-radius: 5px;
     width: 100%;
-    height: 200px;
-} */
-
-/*--------------------------Lunch----------------- */
-.img5{
-    background-image: url(/Images/Lunch/spanakopita.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img6{
-    background-image: url(/Images/Lunch/Souvlaki.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img7{
-    background-image: url(/Images/Lunch/Pastitsio.webp);
-    background-size: cover;
-    background-position: center;
-}
-.img8{
-    background-image: url(/Images/Lunch/moussaka.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img9{
-    background-image: url(/Images/Lunch/gemista.webp);
-    background-size: cover;
-    background-position: center;
-}
-.img10{
-    background-image: url(/Images/Lunch/Fava.jpg);
-    background-size: cover;
-    background-position: center;
-}
-/* -----------------------desserts-------------------- */
-.img11{
-    background-image: url(/Images//Dessert/loukoumades.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img12{
-    background-image: url(/Images/Dessert/baklava.jpg);
-    background-size: cover;
-    background-position: center;
-}
-/*--------------------beverage-------------------- */
-.img13{
-    background-image: url(/Images/Beverages/espa-pink.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img14{
-    background-image: url(/Images/Beverages/cherry.jpg);
-    background-size: cover;
-    background-position: center;
-}
-.img15{
-    background-image: url(/Images/Beverages/orangeJuice.jpg);
-    background-size: cover;
-    background-position: center;
+    height: 300px;
+    overflow: hidden;
 }
 
-/* .item-image > button{ //if we have extra time we'll do this
-    border-radius: 5px;
-    border: transparent;
-    background-color: #0cb00c00;
-    height: 80px;
-    width: 80px;
+.item-image > img{
+    /* width: 100%; */
+    height: 300px;
 }
 
-.item-image > button:hover{
-    display: block;
-    border-radius: 5px;
-    border: transparent;
-    background-image: url(/Ion_Icons/bag-add.svg);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 80px;
-    width: 80px;
-    cursor: pointer;
-} */
+.item-info{
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.add-info{
+    display: flex;
+    align-items: center;
+}
+
+.description{
+    font-size: 16px;
+}
 
 /* ---- Add Icon styles ---- */
 
@@ -167,16 +115,13 @@ h2{
 }
 
 .addItem{
-    position: relative;
-    top: -280px;
-    left: 300px;
     background-color: transparent;
     border: none;
-    height: 40px;
-    width: 40px;
+    height: 20px;
+    width: 20px;
 }
 
 .shadow{
-    -webkit-filter: drop-shadow(2px 2px 1px #000000c5);
-    filter: drop-shadow(2px 2px 1px #000000c5);
+    -webkit-filter: drop-shadow(1px 1px 1px #000000c5);
+    filter: drop-shadow(1px 1px 1px #000000c5);
 } 

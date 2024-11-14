@@ -6,6 +6,7 @@
 .holder{
     margin: 0 auto;
 }
+
 .desserts{  /* come back to this later */
     background-color: #f1e7e7;
     height: 730px;
@@ -14,5 +15,6 @@
 .dessert{
     display: grid;
     grid-template-columns: auto auto;
-    width: 710px;height: 600px;
+    width: 710px;
+    height: 600px;
 }
