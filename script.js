@@ -26,7 +26,6 @@ function handleAddItem(event){
     let price = menuItem.querySelector('.price').innerText;
     let image = menuItem.querySelector('img').src;
 
-    console.log(image)
     let item = {
         name: name,
         price: price,
@@ -71,6 +70,7 @@ function setUpCart(){
         displayCartItems(cart);
         quantityChange();
         getTotal();
+        removeButtons();
     }
 }
 
@@ -97,6 +97,35 @@ function displayCartItems(cart){
     container.append(cartItem);
     });
 }
+
+function removeButtons(){
+    let removeButtons = document.querySelectorAll('.btn-remove');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const itemName = event.target.closest('.bag-item').querySelector('.name').innerText;
+            removeItemFromLS(itemName, event);
+        });
+    });
+    // setUpCart();
+}
+
+function removeItemFromLS(itemName, event){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(cartItem => cartItem.name !== itemName);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    event.target.closest('.cart-items').remove();
+    let load = document.querySelector('.loader');
+    setTimeout(() => {
+        load.style.opacity = 1;
+        setTimeout(() => {
+            location.reload();
+        }, 1000);
+    }, 200);
+    load.style.opacity = 0;
+}
+
+
 
 function quantityChange(){
     let quantities = document.querySelectorAll('.quantityInput');
@@ -127,7 +156,24 @@ function getTotal(){
         let quantity = quantities.value
 
         total = total + (price * quantity);
-    }
+    };
     total = Math.round(total * 100) / 100;
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
+
+
+
+
+// function removeItemFromLS(event) {
+//     const removeButtons = document.querySelectorAll('.remove-btn');
+//         removeButtons.forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             const itemName = event.target.closest('.cart-item').querySelector('.name').innerText;
+//             let cart = JSON.parse(localStorage.getItem('cart')) || [];
+//             cart = cart.filter(cartItem => cartItem.name !== itemName);
+//             localStorage.setItem('cart', JSON.stringify(cart));
+//             event.target.closest('.cart-item').remove();
+//             alert(`${itemName} removed from cart.`);
+
+//         })})
+// }
