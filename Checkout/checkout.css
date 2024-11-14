@@ -45,6 +45,18 @@
     height: 60px;
 }
 
+.back-arrow{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    margin-top: -50%;
+    width: 10%;
+    height: 10%;
+}
+.back-arrow ion-icon{
+    
+}
+
 
 .button-holder{
     display: flex;
