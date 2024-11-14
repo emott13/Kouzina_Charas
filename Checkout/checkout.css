@@ -5,21 +5,137 @@
 }
 
 .payment{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     margin: 0 auto;
+    padding: 3%;
     border-radius: 10px;
     width: 700px;
     min-height: 540px; 
     background-color: antiquewhite; 
 }
+.payment label{
+    font-size: 15px;
+    padding: 5px;
+}
+.payment input{
+    width: 100%;
+    padding: 0px 10px;
+    font-size: 15px;
+    height: 30px;
+}
 
-.credit-debit{
+.person-info{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-left: 2%;
+    margin: 0 auto;
     border-radius: 5px;
     width: 400px;
-    height: 300px;
+    /* min-height: 280px; */
+    margin-bottom: 3%;
+    padding: 10px 15px;
+    background-color: white;
+}
+.user{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 60px;
+}
+
+
+.button-holder{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+   
+    height: 30vh;
+    
+}
+.button-holder button{
+    background-color: rgb(97, 244, 149);
+    font-size: 3rem;
+    border: 0px solid rgb(48, 216, 107);
+    transition: 300ms;
+}
+
+.button-holder button:hover{
+    background-color: rgb(48, 216, 107);
+    color: white;
+}
+
+.pick-up{
+    width: 70%;
+    height: 30%;
+    margin: 0 auto;
+}
+.Delivery{
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+}
+
+.credit-debit{
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+}
+.cash{
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+}
+
+
+
+.city-state{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+}
+.city{
+    width: 48%;
+    height: 50px;
+}
+.state{
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    width: 48%;
+}
+.state label{
+    font-size: 15px;
+    padding: 0px;
+}
+.state select{
+    padding: 0px 10px;
+    height: 30px;
+}
+
+.zip{
+    width: 100%;
+    height: 50px;
+}
+.phone-number{
+    width: 100%;
+    height: 50px;
+}
+
+
+
+.credit-debit-display{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 2%;
+    border-radius: 5px;
+    width: 400px;
+    height: 350px;
     padding: 10px 15px;
     background-color: white;
 }
@@ -74,16 +190,6 @@
     height: 60px;
     /* background-color: aquamarine; */
 }
-.credit-debit label{
-    font-size: 15px;
-    padding: 5px;
-}
-.credit-debit input{
-    width: 100%;
-    padding: 0px 10px;
-    font-size: 15px;
-    height: 30px;
-}
 
 .card-sect{
     display: flex;
@@ -108,4 +214,28 @@
 }
 .pay-button{
     height: 30px;
+}
+
+.place-order-button-holder{
+    display: flex;
+    margin: 0 auto;
+    margin-top: 2%;
+    width: 400px;
+    height: 50px;
+    
+}
+.place-order{
+    width: 100%;
+    height: 90%;
+    border: 0px;
+    font-size: 26px;
+    color: black;
+    background-color: rgb(97, 244, 149);
+    margin: 0 auto;
+    cursor: pointer;
+    transition: 300ms;
+}
+.place-order:hover{
+    color: white;
+    background-color: rgb(48, 216, 107);
 }
