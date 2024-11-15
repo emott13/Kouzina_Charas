@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="menu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +12,14 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
+<body class="menu">
     <header class="header">
         <nav>
             <ul>
                 <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
                 <li><a href="">About Us</a></li>
                 <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt=""  class="iconImg"></a></li>
+                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt="" class="iconImg"></a><img src="/Ion_Icons/add-outline.svg" alt="add" id="add"></li>
             </ul>
         </nav>
     </header>
@@ -27,26 +27,38 @@
     <section class="menu desserts">
         <h2>Dessert</h2>
             <div class="holder dessert">
+                
                 <div class="menu-item">
                     <div class="item-image">
-                        <!-- <img src="/Images/Dessert/loukoumades.jpg" alt="Loukoumades" style="height: 300px;" class="img11"> -->
+                        <img src="/Images/Dessert/loukoumades.jpg" alt="Loukoumades" class="img11">
                     </div>
-                    <p class="name">Loukoumades</p>
-                    <p class="price">€ 7.50</p>
+                    <div class="item-info">
+                        <p class="name">Loukoumades</p>
+                        <div class="add-info">
+                            <p class="price">€ 8.00</p>
+                            <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                        </div>
+                    </div>
                     <p class="description">Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat that melts in your mouth.</p>
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
                 </div>
+
                 <div class="menu-item">
                     <div class="item-image">
-                        <!-- <img src="/Images/Dessert/baklava.jpg" alt="Baklava" style="width: 340px;" class="img12"> -->
+                        <img src="/Images/Dessert/baklava.jpg" alt="Baklava" class="img12">
                     </div>
-                    <p class="name">Baklava</p>
-                    <p class="price">€ 9.00</p>
+                    <div class="item-info">
+                        <p class="name">Baklava</p>
+                        <div class="add-info">
+                            <p class="price">€ 9.00</p>
+                            <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                        </div>
+                    </div>
                     <p class="description">Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.</p>
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
                 </div>
+
             </div>
     </section>
     
+    <script src="/script.js"></script>
 </body>
 </html>
