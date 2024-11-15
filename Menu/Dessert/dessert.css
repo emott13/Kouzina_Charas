@@ -12,9 +12,10 @@
     height: 730px;
     margin-bottom: 3%;
 }
+
 .dessert{
     display: grid;
     grid-template-columns: auto auto;
     width: 710px;
-    height: 600px;
+    min-height: 450px;
 }
