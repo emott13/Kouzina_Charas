@@ -1,3 +1,5 @@
+import { handleAddItem } from "../script";
+
 document.addEventListener("DOMContentLoaded", function () {
     // Select initial elements
     let initialButtonHolderDisplay = document.querySelector(".button-holder");
@@ -6,9 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let undoButton = document.querySelector(".undo");
     const paymentSection = document.querySelector(".payment");
     let isDelivery = false;
-    let inCheckout = false; // checks if we are in the checkout flow
+    let inCheckout = false;                                                         //<-------------------------checks if we are in the checkout flow
 
-    const initialState = {//inital state is making variable that will hold the intial starting point for any of these buttons
+    const initialState = {                                                          //inital state is making variable that will hold the intial starting point for any of these buttons
         buttonHolderHTML: initialButtonHolderDisplay.cloneNode(true).innerHTML,
         paymentSectionHTML: paymentSection.cloneNode(true).innerHTML,
         pickUpDisplay: pickUpButton.style.display,
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to show payment options (for both pick-up and delivery)
     function showPaymentOptions(isDeliverySelected) {
         isDelivery = isDeliverySelected;
-        inCheckout = true; // entering checkout flow
+        inCheckout = true;                                                          //<-------------------------entering checkout flow
         pickUpButton.style.display = "none";
         deliveryButton.style.display = "none";
         initialButtonHolderDisplay.style.display = "none";
@@ -42,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
         paymentSection.appendChild(buttonHolderDisplay);
 
         // Add event listeners for the new buttons 
-        
         creditDebitButton.addEventListener("click", function () {
             CreditDebitPayment(buttonHolderDisplay,creditDebitButton, cashButton);
         });
@@ -60,8 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
     PaymentButtonListener();
     function UndoAction(){
 
-        if(!inCheckout) return;//exit if not in checkout flow
-        inCheckout = false; // exit checkout flow
+        if(!inCheckout) return;                                              //<-------------------------exit if not in checkout flow
+        inCheckout = false;                                                  //<-------------------------exit checkout flow
 
         pickUpButton.style.display = initialState.pickUpDisplay;
         deliveryButton.style.display = initialState.deliveryDisplay;
