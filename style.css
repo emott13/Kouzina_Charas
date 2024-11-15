@@ -85,8 +85,8 @@ body{
 }
 .selector-grid{
     display: grid;
-    grid-template-columns: auto auto;
-    width: 710px;
+    grid-template-columns: auto auto auto;
+    width:  1050px;
 }
 .img-selector{
     margin: 0 auto;

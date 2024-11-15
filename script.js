@@ -19,7 +19,7 @@ function setUpAppetizers(){
     };
 };
 
-function handleAddItem(event){
+export function handleAddItem(event){
     let button = event.target;
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
@@ -59,7 +59,7 @@ function fadeOut(){
 // ---- CART ---- //
 // -------------- //
 
-function setUpCart(){
+export function setUpCart(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     if(cart.length == 0){
