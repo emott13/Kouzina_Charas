@@ -12,14 +12,14 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
+<body class="menu">
     <header class="header">
         <nav>
             <ul>
                 <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
                 <li><a href="">About Us</a></li>
                 <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt=""  class="iconImg"></a></li>
+                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt="" class="iconImg"></a><img src="/Ion_Icons/add-outline.svg" alt="add" id="add"></li>
             </ul>
         </nav>
     </header>
@@ -28,33 +28,49 @@
         <div class="holder beverage-grid">
             <div class="menu-item">
                 <div class="item-image">
-                    <!-- <img src="/Images/Beverages/pink-lemonade.jpg" alt="pink" class="img13"> -->
-                    <!-- <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button> -->
+                    <img src="/Images/Beverages/pink-lemonade.jpg" alt="pink" class="img13">
                 </div>
-                <p class="name">Pink Lemonade</p>
-                <p class="price">€ 4.50</p>
+                <div class="item-info">
+                    <p class="name">Pink Lemonade</p>
+                    <div class="add-info">
+                        <p class="price">€ 3.00</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">A delightful blend of lemony zest with a hint of berry sweetness—this pink lemonade is a refreshing twist on a classic!</p>
-                <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
             </div>
+
             <div class="menu-item">
                 <div class="item-image">
-                    <!-- <img src="/Images/Beverages/sour-cherry.jpg" alt="Cherry" class="img14"> -->
+                    <img src="/Images/Beverages/sour-cherry.jpg" alt="Cherry" class="img14">
                 </div>
-                <p class="name">Cherry juice</p>
-                <p class="price">€ 4.00</p>
+                <div class="item-info">
+                    <p class="name">Cherry juice</p>
+                    <div class="add-info">
+                        <p class="price">€ 3.00</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Bold, tangy, and tart—this refreshing cherry juice bursts with vibrant flavor in every sip.</p>
-                <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
             </div>
+
             <div class="menu-item">
                 <div class="item-image img15">
-                    <!-- <img src="/Images/Beverages/orange.jpg" alt="Orange" class="img15"> -->
+                    <img src="/Images/Beverages/orange.jpg" alt="Orange" class="img15">
                 </div>
-                <p class="name">Orange juice</p>
-                <p class="price">€ 3.00</p>
+                <div class="item-info">
+                    <p class="name">Orange juice</p>
+                    <div class="add-info">
+                        <p class="price">€ 3.00</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
+                </div>
                 <p class="description">Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that’s as bright as a Mediterranean morning.</p>
-                <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
             </div>
+
         </div>
 </section>
+
+<script src="/script.js"></script>
 </body>
 </html>
