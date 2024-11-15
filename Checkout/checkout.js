@@ -3,12 +3,22 @@ document.addEventListener("DOMContentLoaded", function () {
     let initialButtonHolderDisplay = document.querySelector(".button-holder");
     let pickUpButton = document.querySelector(".pick-up");
     let deliveryButton = document.querySelector(".Delivery");
+    let undoButton = document.querySelector(".undo");
     const paymentSection = document.querySelector(".payment");
     let isDelivery = false;
+    let inCheckout = false; // checks if we are in the checkout flow
+
+    const initialState = {//inital state is making variable that will hold the intial starting point for any of these buttons
+        buttonHolderHTML: initialButtonHolderDisplay.cloneNode(true).innerHTML,
+        paymentSectionHTML: paymentSection.cloneNode(true).innerHTML,
+        pickUpDisplay: pickUpButton.style.display,
+        deliveryDisplay: deliveryButton.style.display,
+    };
 
     // Function to show payment options (for both pick-up and delivery)
     function showPaymentOptions(isDeliverySelected) {
         isDelivery = isDeliverySelected;
+        inCheckout = true; // entering checkout flow
         pickUpButton.style.display = "none";
         deliveryButton.style.display = "none";
         initialButtonHolderDisplay.style.display = "none";
@@ -34,27 +44,44 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add event listeners for the new buttons 
         
         creditDebitButton.addEventListener("click", function () {
-            CreditDebitPayment(buttonHolderDisplay, creditDebitButton, cashButton);
+            CreditDebitPayment(buttonHolderDisplay,creditDebitButton, cashButton);
         });
 
         cashButton.addEventListener("click", function () {
-            // Display cash payment form 
-            // creditDebitButton.style.display = "none";
-            // cashButton.style.display = "none";
-            // buttonHolderDisplay.style.display = "none";
             cashPaymentForm();
-           
         });
     }
 
+    function PaymentButtonListener(){
     pickUpButton.addEventListener("click", () => showPaymentOptions(false));
     deliveryButton.addEventListener("click",() => showPaymentOptions(true));
+    }
+
+    PaymentButtonListener();
+    function UndoAction(){
+
+        if(!inCheckout) return;//exit if not in checkout flow
+        inCheckout = false; // exit checkout flow
+
+        pickUpButton.style.display = initialState.pickUpDisplay;
+        deliveryButton.style.display = initialState.deliveryDisplay;
+        initialButtonHolderDisplay.style.display = "block";
+        initialButtonHolderDisplay.innerHTML = initialState.buttonHolderHTML;
+        paymentSection.innerHTML = initialState.paymentSectionHTML;
+
+        pickUpButton.addEventListener("click", () => showPaymentOptions(false));
+        deliveryButton.addEventListener("click",() => showPaymentOptions(true));
+    }
+
+    undoButton.addEventListener("click", UndoAction);
+   
 
     function cashPaymentForm(){
         const cashDisplay = document.createElement("div");
         cashDisplay.classList.add(".payment");
+
         if(isDelivery){
-        cashDisplay.innerHTML = `
+        cashDisplay.innerHTML =`
             <div class="person-info">
                 <div class="user">
                     <label for="">Name for Order:</label>
@@ -308,9 +335,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>    
             </div>
             <div class="place-order-button-holder">
-                <button class="place-order">Place Order</button>
+                <button class="place-to-complete">Place Order</button>
             </div>`;
         
         paymentSection.append(userInfo);
+
+        let CheckoutButton = userInfo.querySelector('.place-to-complete');
+        CheckoutButton.addEventListener("click", function () {
+            userInfo.style.display = "none";
+            checkOut();
+        });
+    }
+
+
+    function checkOut(){
+        const checkOutDisplay = document.createElement("div");
+        checkOutDisplay.classList.add(".payment");
+        checkOutDisplay.innerHTML = ``;
+
+
+
+
+
     }
 });
