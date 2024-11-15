@@ -45,6 +45,41 @@
     height: 60px;
 }
 
+.back-arrow-and-tip-holder{
+    display: flex;
+    justify-content: space-between;
+    background-size: 10px;
+    background-color:blueviolet;
+    width: 100%;
+    height: 50%;
+}
+.undo{
+
+}
+.undo ion-icon:hover{
+color: white;
+}
+.back-arrow-and-tip-holder button{
+    width: 60px;
+    background-color: transparent;
+    border: 0px solid;
+    font-size: 60px;
+    height: 60px;
+    transition: 500ms;
+}
+
+
+.tip-and-total-holder{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 25px;
+
+    width: 40%;
+    height: 7.2vh;
+    background-color: brown;
+}
+
 
 .button-holder{
     display: flex;
@@ -238,4 +273,32 @@
 .place-order:hover{
     color: white;
     background-color: rgb(48, 216, 107);
+}
+
+.place-to-complete{
+    width: 100%;
+    height: 90%;
+    border: 0px;
+    font-size: 26px;
+    color: black;
+    background-color: rgb(97, 244, 149);
+    margin: 0 auto;
+    cursor: pointer;
+    transition: 300ms;
+}
+.place-to-complete:hover{
+    color: white;
+    background-color: rgb(48, 216, 107);
+}
+.checkout{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-top: 2%;
+    border-radius: 5px;
+    width: 500px;
+    height: 350px;
+    padding: 10px 15px;
+    background-color: white;
 }
