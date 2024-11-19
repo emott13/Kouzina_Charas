@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="manager">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Dongle&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="manager">
     <header class="header">
         <nav>
             <ul>
@@ -24,20 +24,32 @@
 
     <section class="options">
 
-        <div class="op">
-            <input type="radio" name="options" id="edit-btn">
-            <label for="edit-btn">Edit an item</label>
-        </div>
+        <h2>Select an option</h2>
 
-        <div class="op">
-            <input type="radio" name="options" id="add-btn">
-            <label for="add-btn">Add an item</label>
-        </div>
+        <div class="options-container">
 
-        <div class="op">
-            <input type="radio" name="options" id="remove-btn">
-            <label for="remove-btn">Remove an item</label>
+            <div class="op">
+                <input type="radio" name="options" id="edit-btn">
+                <label for="edit-btn">Edit an item</label>
+            </div>
+
+            <div class="op">
+                <input type="radio" name="options" id="add-btn">
+                <label for="add-btn">Add an item</label>
+            </div>
+
+            <div class="op">
+                <input type="radio" name="options" id="remove-btn">
+                <label for="remove-btn">Remove an item</label>
+            </div>
+
         </div>
+        
+    </section>
+
+    <section class="edit">
+
+
 
     </section>
 </body>

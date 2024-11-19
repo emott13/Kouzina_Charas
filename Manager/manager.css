@@ -67,15 +67,15 @@ header{
     flex-direction: column;
     align-items: center;
     margin: 2rem auto;
-    max-width: 1140px;
+    max-width: 900px;
 }
 
 .op{
     display: flex;
     flex-direction: row;
+    justify-content: start;
 }
 
 .op > input{
-    /* width: 20px;
-    height: 20px; */
+    margin: 5px;
 }
