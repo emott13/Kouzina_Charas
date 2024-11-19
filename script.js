@@ -9,10 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     addItemClick();
 });
 
+// -------------------- //
+// ---- MENU ITEMS ---- //
+// -------------------- //
+
 const menuData = {
     app: {
         names: ['Dolmades', 'Choriatiki', 'Saganaki', 'Tzatziki'],
-        prices: [6.00, 6.00, 7.00, 7.00],
+        prices: ['6.00', '6.00', '7.00', '7.00'],
         images: ['/Images/Appetizers/dolmades.jpg', '/Images/Appetizers/choriatiki.jpg', '/Images/Appetizers/saganaki.jpg', '/Images/Appetizers/Tzatziki.jpg'],
         descriptions: [
             'Rice, herbs, and seasonings wrapped in grape leaves. Served with lemon.',
@@ -23,7 +27,7 @@ const menuData = {
     },
     lunch: {
         names: ['Spanakopita', 'Souvlaki', 'Kalamarakia Psita', 'Moussaka'],
-        prices: [12.50, 13.70, 13.50, 13.00],
+        prices: ['12.50', '13.70', '13.50', '13.00'],
         images: ['/Images/Lunch/spanakopita-copy.jpg', '/Images/Lunch/souvlaki.jpeg', '/Images/Lunch/kalamarakia.jpg', '/Images/Lunch/moussaka.jpg'],
         descriptions: [
             'Flaky, golden pastry filled with a deliciously savory blend of spinach and feta.',
@@ -34,7 +38,7 @@ const menuData = {
     },
     dinner: {
         names: ['Gemista', 'Fava', 'Pastitsio', 'Chtapodi sti Schara', 'Psari plaki'],
-        prices: [14.70, 13.50, 13.50, 14.70, 14.50],
+        prices: ['14.70', '13.50', '13.50', '14.70', '14.50'],
         images: ['/Images/Dinner/gemista.jpg', '/Images/Dinner/fava.jpg', '/Images/dinner/Pastitsio.jpg', '/Images/Dinner/octopus.png', '/Images/Dinner/psari.jpg'],
         descriptions: [
             'Juicy tomatoes and bell peppers stuffed with herbed rice and vegetables, baked for a deliciously hearty bite.',
@@ -46,7 +50,7 @@ const menuData = {
     },
     dessert: {
         names: ['Loukoumades', 'Baklava'],
-        prices: [8.00, 9.00],
+        prices: ['8.00', '9.00'],
         images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg'],
         descriptions: [
             'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat that melts in your mouth.',
@@ -55,7 +59,7 @@ const menuData = {
     },
     drink: {
         names: ['Pink Lemonade', 'Cherry juice', 'Orange juice'],
-        prices: [3.00, 3.00, 3.00],
+        prices: ['3.00', '3.00', '3.00'],
         images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg'],
         descriptions: [
             'A delightful blend of lemony zest with a hint of berry sweetness—this pink lemonade is a refreshing twist on a classic!',
@@ -114,25 +118,10 @@ function setUpMenu(type) {
     });
 }
 
-// function fadeOut() {
-//     let add = document.querySelector('#add');
-//     add.style.opacity = 0;
-// }
 
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     if(document.body.classList.contains('menu')){
-//         setUpAppetizers();
-//     }
-//     if(document.body.classList.contains('cart')){
-//         setUpCart();
-//     }
-// });
-
-
-// // -------------------- //
-// // ---- APPETIZERS ---- //
-// // -------------------- //
+// --------------------- //
+// ---- ADD TO CART ---- //
+// --------------------- //
 
 function addItemClick(){
     let buttons = document.getElementsByClassName('addItem');
@@ -182,7 +171,7 @@ function fadeOut(){
 // ---- CART ---- //
 // -------------- //
 
-//export 
+
 function setUpCart(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -227,8 +216,8 @@ function removeButtons(){
     let removeButtons = document.querySelectorAll('.btn-remove');
     removeButtons.forEach(button => {
         button.addEventListener('click', (event) => {
+            loader();
             const itemName = event.target.closest('.bag-item').querySelector('.name').innerText;
-            console.log(itemName)
             removeItemFromLS(itemName, event);
         });
     });
@@ -237,17 +226,13 @@ function removeButtons(){
 function removeItemFromLS(itemName, event){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(cartItem => cartItem.name !== itemName);
-    console.log(cart)
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log(cart);
-    let eventDelete = event.target.closest('.bag-item'); 
-    eventDelete.remove();
-    console.log(cart)
-    getTotal();
+    event.target.closest('.bag-item').remove();
     if (cart.length === 0) {
         document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
     }
-    setUpCart();
+    setTimeout(setUpCart, 900);
+    // setUpCart();
 }
 
 function quantityChange(){
@@ -283,23 +268,14 @@ function getTotal(){
 
         total = total + (price * quantity);
     };
-    total = Math.round(total * 100) / 100;
+    // total = Math.round(total * 100) / 100;
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
 
-
-
-
-// function removeItemFromLS(event) {
-//     const removeButtons = document.querySelectorAll('.remove-btn');
-//         removeButtons.forEach(button => {
-//         button.addEventListener('click', (event) => {
-//             const itemName = event.target.closest('.cart-item').querySelector('.name').innerText;
-//             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-//             cart = cart.filter(cartItem => cartItem.name !== itemName);
-//             localStorage.setItem('cart', JSON.stringify(cart));
-//             event.target.closest('.cart-item').remove();
-//             alert(`${itemName} removed from cart.`);
-
-//         })})
-// }
+function loader() {
+    let loader = document.querySelector('.loader');
+    let cart = document.querySelector('.cart-items')
+    cart.style.display = 'none';
+    loader.style.opacity = 1;
+    setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 900);
+}
