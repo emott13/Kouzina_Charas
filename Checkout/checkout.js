@@ -1,5 +1,3 @@
-import { handleAddItem } from "../script";
-
 document.addEventListener("DOMContentLoaded", function () {
     // Select initial elements
     let initialButtonHolderDisplay = document.querySelector(".button-holder");
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         deliveryButton.addEventListener("click",() => showPaymentOptions(true));
     }
 
-    undoButton.addEventListener("click", UndoAction);
+    // undoButton.addEventListener("click", UndoAction);
    
 
     function cashPaymentForm(){
@@ -164,13 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         </select>
                     </div>        
             </div>
-            <div class="zip">
-                    <label for="">ZIP code:</label>
-                    <input type="text" placeholder="Enter ZIP code">
+                <div class="zip">
+                        <label for="">ZIP code:</label>
+                        <input type="text" placeholder="Enter ZIP code">
                 </div>  
             </div>
-            <div class="place-order-button-holder">
-                <button class="place-order">Place Order</button>
+            <div class="checkout-button-holder">
+                <button class="place-to-complete">Place Order</button>
             </div>`;
         }else{
             cashDisplay.innerHTML = `
@@ -185,8 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>        
             </div>
             </div>
-            <div class="place-order-button-holder">
-                <button class="place-order">Place Order</button>
+            <div class="checkout-button-holder">
+                <button class="place-to-complete">Place Order</button>
             </div>`;
         }
 
@@ -238,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>    
                 <button class="pay-button">Add Payment Method</button>
             </div>
-            <div class="place-order-button-holder">
+            <div class="checkout-button-holder">
                 <button class="place-order">NEXT</button>
             </div>`;
 
@@ -333,9 +331,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="phone-number">
                     <label for="">Phone:</label>
                     <input type="text" placeholder="Enter phone number">
-                </div>    
+                </div> 
+                <div class="zip">
+                        <label for="">ZIP code:</label>
+                        <input type="text" placeholder="Enter ZIP code">
+                </div>     
             </div>
-            <div class="place-order-button-holder">
+            <div class="checkout-button-holder">
                 <button class="place-to-complete">Place Order</button>
             </div>`;
         
@@ -344,19 +346,88 @@ document.addEventListener("DOMContentLoaded", function () {
         let CheckoutButton = userInfo.querySelector('.place-to-complete');
         CheckoutButton.addEventListener("click", function () {
             userInfo.style.display = "none";
-            checkOut();
+            displayCheckoutItems();
         });
     }
 
 
-    function checkOut(){
-        const checkOutDisplay = document.createElement("div");
-        checkOutDisplay.classList.add(".payment");
-        checkOutDisplay.innerHTML = ``;
+    function displayCheckoutItems(){
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let checkoutItems = document.createElement('div');
+        checkoutItems.classList.add(".payment");
+        const checkoutContainerDisplay = document.querySelector(".payment");
+        checkoutItems.innerHTML = `
+        <div class="checkout">
+            <h2>Items</h2>
+            <div class="checkout-items">
+                <div class="check-items">
+                    <div class="item-cata"><h3>Quantity</h3><h3>Item</h3><h3>price</h3></div>
+                    <div class="items-of-checkout">
+                           
+                    </div>
+                    <div class="total-container">
+                        <div class="total"><h3>total</h3></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-button-holder complete-button-holder">
+            <button class="complete-order-button">Place Order</button>
+        </div>
+        <div class="checkout-button-holder complete-button-holder">
+            <button class="tip-button">Add Tip</button>
+        </div>`;
+        
+        checkoutContainerDisplay.innerHTML = '';
+        checkoutContainerDisplay.appendChild(checkoutItems);
 
+        if(checkoutContainerDisplay){
+            checkoutContainerDisplay.innerHTML = ``;
+            checkoutContainerDisplay.appendChild(checkoutItems);
+        }else{
+            console.error("checkoutContainer not found");
+        }
 
+        if(cart.length === 0){
+            checkoutContainerDisplay.innerHTML = `<p>Cart is empty</p>`;
+            return;
+        }
 
+        cart.forEach(item =>{
+            let itemDiv = document.createElement("div");
+            itemDiv.classList.add('items');
+            itemDiv.innerHTML = `
+                <p>${item.quantity || 1}x</p>
+                <p>${item.name}</p>
+                <p>${item.price}</p>
+            `;
+            checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+        });
 
+        const totalPrice = cart.reduce((sum, item) => {
+            const quantity = item.quantity || 1;
+            const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+            if(isNaN(price)){
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                return sum;
+            }
+            return sum + (price * quantity);
+        }, 0);
+
+        let totalContainer = document.querySelector(".total-container");
+        totalContainer.innerHTML = `
+        <div class="total">
+            <h3>Total</h3>
+            <h2>€${totalPrice.toFixed(2)}</h2>
+        </div>
+        `;
+        console.log(cart);
 
     }
+
+    // complete order
+
+    // add tip
+    
+    
 });

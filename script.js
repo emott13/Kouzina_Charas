@@ -19,7 +19,7 @@ function setUpAppetizers(){
     };
 };
 
-export function handleAddItem(event){
+function handleAddItem(event){
     let button = event.target;
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
@@ -29,7 +29,8 @@ export function handleAddItem(event){
     let item = {
         name: name,
         price: price,
-        image: image
+        image: image,
+        quantity: 1
     };
     
     addToCartInLS(item);
@@ -43,7 +44,7 @@ function addToCartInLS(item){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
         return;
     }
-    let add = document.querySelector('#add')
+    let add = document.querySelector('#add');
     add.style.opacity = 1;
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
@@ -59,7 +60,7 @@ function fadeOut(){
 // ---- CART ---- //
 // -------------- //
 
-export function setUpCart(){
+function setUpCart(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     if(cart.length == 0){
@@ -89,7 +90,7 @@ function displayCartItems(cart){
                 </div>
                 <span class="price column">${item.price}</span>
                 <div class="quantity column"> 
-                    <input type="number" name="quantity" class="quantityInput" value="1">
+                    <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
                     <button class="btn-remove">Remove</button>
                 </div>
                 
@@ -130,34 +131,47 @@ function removeItemFromLS(itemName, event){
 function quantityChange(){
     let quantities = document.querySelectorAll('.quantityInput');
     quantities = Array.from(quantities);
+
     quantities.forEach(input => {
         input.addEventListener('change', (event) => {
             let change = event.target;
+            let itemName = change.closest('.bag-item').querySelector('.name').innerText;
+
             if(change.value <= 0 || isNaN(change.value)){
                 change.value = 1;
+                console.log(`Invalid quantity for ${itemName}, resetting to 1.`);
             }
-            else{
-                change.value = parseInt(change.value);
+           
+            //where quantity is changing
+            let newQuantity = parseInt(change.value);
+            console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItem = cart.find(item => item.name === itemName);
+
+            if(cartItem){
+                cartItem.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                console.log(`Updated Local Storage for ${itemName}:`,cart);
+            } else {
+                console.error(`Item ${itemName} not found in Local Storage`)
             }
             getTotal();
-        })
+        });
     });
 }
 
 function getTotal(){
-    let bagItems = document.getElementsByClassName('bag-item');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let total = 0;
-    for(let i = 0; i < bagItems.length; i++){
-        let count = bagItems[i];
-        let bagPrice = count.getElementsByClassName('price')[0];
-        let price = Number(bagPrice.innerText.replace('€', ''));
 
-        let quantities = count.getElementsByClassName('quantityInput')[0];
-        let quantity = quantities.value
-
+    cart.forEach(cartItem =>{
+        let price = parseFloat(cartItem.price.replace('€', ''));
+        let quantity = cartItem.quantity;
         total = total + (price * quantity);
-    };
+    });
     total = Math.round(total * 100) / 100;
+    console.log("Updated Total:", total);
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
 
