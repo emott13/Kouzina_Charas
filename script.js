@@ -219,6 +219,7 @@ function displayCartItems(cart){
                 
             `;
     container.append(cartItem);
+    removeButtons();
     });
 }
 
@@ -232,14 +233,15 @@ function removeButtons(){
         });
     });
 }
-//Not working currently, issue with line 242? ------------------------------------------------------
+
 function removeItemFromLS(itemName, event){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(cartItem => cartItem.name !== itemName);
     console.log(cart)
     localStorage.setItem('cart', JSON.stringify(cart));
-    console.log(cart)
-    event.target.closest('.bag-item').remove();
+    console.log(cart);
+    let eventDelete = event.target.closest('.bag-item'); 
+    eventDelete.remove();
     console.log(cart)
     getTotal();
     if (cart.length === 0) {
