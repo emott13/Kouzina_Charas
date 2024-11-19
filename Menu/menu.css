@@ -1,3 +1,9 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body{
     font-family: 'Athiti';
 }
@@ -125,3 +131,83 @@ h2{
     -webkit-filter: drop-shadow(1px 1px 1px #000000c5);
     filter: drop-shadow(1px 1px 1px #000000c5);
 } 
+
+/* app */
+
+.appetizer{
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+h2{
+    font-size: 34px;
+    text-align: center;
+}
+
+.holder{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 710px;
+    height: 600px;
+}
+
+
+/* lunch */
+
+.lunch{
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+.lunch-grid{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 1110px;
+    height: 600px;
+}
+
+
+/* dinner */
+
+.dinner{
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+.dinner-grid{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 1110px;
+    height: 600px;
+}
+
+
+/* desserts */
+
+.desserts{  /* come back to this later */
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+.dessert{
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 710px;
+    min-height: 450px;
+}
+
+
+/* beverages */
+
+/* .beverage-grid{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 1110px;
+} */
