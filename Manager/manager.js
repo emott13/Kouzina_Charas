@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function setItem(){
     let u = 'manager1988';
     let p = '1988'
-    localStorage.setItem(u, p)
+    let item = {username: u, password: p}
+    localStorage.setItem(item)
 }
 
 function login(){
