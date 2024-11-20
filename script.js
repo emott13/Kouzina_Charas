@@ -287,7 +287,7 @@ function getTotal(){
         let price = parseFloat(cartItem.price.replace('€', ''));
         let quantity = cartItem.quantity;
         total = total + (price * quantity);
-    };
+    });
     // total = Math.round(total * 100) / 100;
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
