@@ -79,14 +79,8 @@ function addToLS(type, item) {
     let data = JSON.parse(localStorage.getItem(type)) || [];
     const existingItem = data.find(existing => existing.name === item.name);
     if (existingItem) return;
-    // let page = document.body.classList;
-    // if(page.contains(type)){
-    //    let add = document.querySelector('#add');
-    //     add.style.opacity = 1; 
-    // }
     data.push(item);
     localStorage.setItem(type, JSON.stringify(data));
-    // setTimeout(fadeOut, 3000);
 }
 
 function setUpMenu(type) {
@@ -245,7 +239,6 @@ function removeItemFromLS(itemName, event){
         document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
     }
     setTimeout(setUpCart, 900);
-    // setUpCart();
 }
 
 function quantityChange(){
@@ -301,7 +294,6 @@ function getTotal(){
         let quantity = cartItem.quantity;
         total = total + (price * quantity);
     });
-    // total = Math.round(total * 100) / 100;
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
 
