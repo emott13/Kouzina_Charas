@@ -22,42 +22,44 @@
         </nav>
     </header>
 
-    <section class="options">
+    <section class="manager-dashboard">
 
         <h2>Select an option</h2>
 
         <div class="options-container">
 
-            <div class="op">
-                <input type="radio" name="options" id="edit-btn">
+            <div class="op main">
+                <input type="radio" name="options" class="options" value="edit" id="edit-btn">
                 <label for="edit-btn">Edit an item</label>
-                <!-- <div class="edit-container">
-                    <input type="radio" name="menu-sections" id="app">
-                    <input type="radio" name="menu-sections" id="lunch">
-                    <input type="radio" name="menu-sections" id="dinner">
-                    <input type="radio" name="menu-sections" id="desserts">
-                    <input type="radio" name="menu-sections" id="drinks">
-                </div> -->
             </div>
 
-            <div class="op">
-                <input type="radio" name="options" id="add-btn">
+            <div class="op main">
+                <input type="radio" name="options" class="options" value="add" id="add-btn">
                 <label for="add-btn">Add an item</label>
             </div>
 
-            <div class="op">
-                <input type="radio" name="options" id="remove-btn">
+            <div class="op main">
+                <input type="radio" name="options" class="options" value="remove" id="remove-btn">
                 <label for="remove-btn">Remove an item</label>
+            </div>
+
+            <div class="op main submit">
+                <!-- <input type="submit" id="submit"> -->
+            </div>
+
+            <div class="edit-container">
             </div>
 
         </div>
         
     </section>
 
-    <section class="edit">
-
-
-
-    </section>
+    <div class="wrapper">
+        <div class="menu-items-container"></div>
+        <div class="items-edit-container"></div>
+    </div>
+    
+    <div class="change"></div>
+    <script src="manager.js"></script>
 </body>
 </html>

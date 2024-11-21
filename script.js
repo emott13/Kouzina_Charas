@@ -1,17 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
     const pageClass = document.body.classList;
-    if(pageClass.contains('appetizers')) setUpMenu('app');
-    if(pageClass.contains('lunch')) setUpMenu('lunch');
-    if(pageClass.contains('dinner')) setUpMenu('dinner');
-    if(pageClass.contains('desserts')) setUpMenu('dessert');
-    if(pageClass.contains('beverages')) setUpMenu('drink');
+    if(pageClass.contains('main')){
+        setUpMenu('app');
+        setUpMenu('lunch'); 
+        setUpMenu('dinner'); 
+        setUpMenu('dessert'); 
+        setUpMenu('drink');
+    }
     if(pageClass.contains('cart')) setUpCart();
     addItemClick();
+    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
+    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
+    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
+    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
+    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
 });
 
-// -------------------- //
-// ---- MENU ITEMS ---- //
-// -------------------- //
+//some issues with local storage, now loads on index load to allow manager dash functionality. needs to change for menu page loads
+//so on each menu page, it takes from LS
+
+// ------------------------------ //
+// ---- LOCAL STORAGE SET UP ---- //
+// ------------------------------ //
 
 const menuData = {
     app: {
@@ -23,7 +33,8 @@ const menuData = {
             'Refreshing mix of tomato, cucumber, peppers, onion, and olives, topped with feta.',
             'Flour-coated kasseri cheese fried to a crispy, golden brown. Served with lemon.',
             'Creamy yogurt with cucumbers, garlic, and fresh herbs.'
-        ]
+        ],
+        identifiers: ['001', '002', '003', '004']
     },
     lunch: {
         names: ['Spanakopita', 'Souvlaki', 'Kalamarakia Psita', 'Moussaka'],
@@ -34,7 +45,8 @@ const menuData = {
             'Tender, marinated meat skewers grilled to perfection, served with warm pita and tangy tzatziki.',
             'Fresh caught thrapsalo squid, perfectly grilled and topped with fresh herbs and olive oil. Served with lemon.',
             'Rich layers of eggplant, seasoned meat, and béchamel sauce, baked until golden.'
-        ]
+        ],
+        identifiers: ['005', '006', '007', '008']
     },
     dinner: {
         names: ['Gemista', 'Fava', 'Pastitsio', 'Chtapodi sti Schara', 'Psari plaki'],
@@ -46,49 +58,33 @@ const menuData = {
             'Layers of pasta, seasoned ground meat, and creamy béchamel, baked to bubbly perfection—Greek lasagna with a twist.',
             'Fresh octopus, grilled over charcoal and served with olive oil and lemon.',
             'Tender baked fish in a creamy tomato and onion sauce. Topped with fresh herbs and served with lemon.'
-        ]
+        ],
+        identifiers: ['009', '010', '011', '012', '013']
     },
     dessert: {
-        names: ['Loukoumades', 'Baklava'],
-        prices: ['8.00', '9.00'],
-        images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg'],
+        names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
+        prices: ['8.00', '9.00', '8.00'],
+        images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg', '/Images/Dessert/ekmek.jpg'],
         descriptions: [
-            'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat that melts in your mouth.',
-            'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.'
-        ]
+            'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat to satisfy every sweet tooth.',
+            'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.',
+            'Crispy kataifi pastry layered with mastiha flavoured custard. Topped with whipped cream, chopped nuts, and cinnamon. Deliciously sweet and indulgent.'
+        ],
+        identifiers: ['014', '015', '016']
     },
     drink: {
-        names: ['Pink Lemonade', 'Cherry juice', 'Orange juice'],
-        prices: ['3.00', '3.00', '3.00'],
-        images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg'],
+        names: ['Pink Lemonade', 'Cherry juice', 'Orange juice', 'Ellinikos Kafes'],
+        prices: ['3.00', '3.00', '3.00', '3.50'],
+        images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg', '/Images/Beverages/coffee.jpg'],
         descriptions: [
             'A delightful blend of lemony zest with a hint of berry sweetness—this pink lemonade is a refreshing twist on a classic!',
             'Bold, tangy, and tart—this refreshing cherry juice bursts with vibrant flavor in every sip.',
-            'Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that is as bright as a Mediterranean morning.'
-        ]
+            'Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that is as bright as a Mediterranean morning.',
+            'Traditional Greek coffee, deliciously brewed for a strong, rich flavor. Served with a glass of water.'
+        ],
+        identifiers: ['017', '018', '019', '020']
     }
 };
-
-function addToLS(type, item) {
-    let data = JSON.parse(localStorage.getItem(type)) || [];
-    const existingItem = data.find(existing => existing.name === item.name);
-
-    console.log('Local Storage before adding item:', localStorage);//debugging log
-
-    if (existingItem){
-        console.log(`Item ${item.name} already exists in ${type}`);//debugging log
-        return;
-    } 
-    
-    let add = document.querySelector('#add');
-    add.style.opacity = 1;
-    data.push(item);
-
-    console.log('Adding to Local Storage',type,item);  //debugging log
-
-    localStorage.setItem(type, JSON.stringify(data));
-    setTimeout(fadeOut, 3000);
-}
 
 function setUpMenu(type) {
     const menu = menuData[type];
@@ -100,15 +96,32 @@ function setUpMenu(type) {
             price: menu.prices[i],
             image: menu.images[i],
             description: menu.descriptions[i],
-            quantity: 1
+            quantity: 1,
+            identifiers: menu.identifiers[i]
         };
         addToLS(type, item);
     });
-    
+}
+
+function addToLS(type, item) {
+    let data = JSON.parse(localStorage.getItem(type)) || [];
+    const existingItem = data.find(existing => existing.identifiers === item.identifiers);
+    if (existingItem) return;
+    data.push(item);
+    localStorage.setItem(type, JSON.stringify(data));
+}
+
+
+// ---------------------------- //
+// ---- MENU PAGES DISPLAY ---- //
+// ---------------------------- //
+
+
+function displayMenuOnPage(type){
     let container = document.querySelector('.holder');
     container.innerHTML = '';
     let storedItems = JSON.parse(localStorage.getItem(type)) || [];
-    
+        
     storedItems.forEach(item => {
         let menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
@@ -168,10 +181,10 @@ function addToCartInLS(item){
     add.style.opacity = 1;
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
-    setTimeout(fadeOut, 3000)
+    setTimeout(fadeOut(add), 3000)
 }
 
-function fadeOut(){
+function fadeOut(add){
     add.style.opacity = 0;
 }
 
@@ -242,7 +255,6 @@ function removeItemFromLS(itemName, event){
         document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
     }
     setTimeout(setUpCart, 900);
-    // setUpCart();
 }
 
 function quantityChange(){
@@ -291,7 +303,6 @@ function getTotal(){
         let quantity = cartItem.quantity;
         total = total + (price * quantity);
     });
-    // total = Math.round(total * 100) / 100;
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
 
