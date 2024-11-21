@@ -72,44 +72,75 @@ function menuOptions(value){
     })
 }
 
-function doStuff(event, value){
+function doStuff(event, value) {
     let item = event.target.value;
-    switch(value){
-        case 'edit': console.log(item); break;
-        case 'add': console.log(item); break;
-        case 'remove': console.log(item); break;
-        default: console.log("something's wrong");
-    }
+    let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
 
-    let menuItemsFromLS = JSON.parse(localStorage.getItem(`${item}`)) || [];
-
-    if(menuItemsFromLS.length == 0){
+    if (menuItemsFromLS.length == 0) {
         document.querySelector('.menu-items-container').innerHTML = 
-        `<p id="empty">This section is empty...</p>`
+        `<p id="empty">This section is empty...</p>`;
+    } else {
+        displayMenuItems(menuItemsFromLS, item, value);
     }
-    else{
-        let container = document.querySelector('.menu-items-container')
-        container.innerHTML = '';
-        menuItemsFromLS.forEach( (item) => {
-            let div = document.createElement('div');
-            div.classList.add('op');
-            div.innerHTML = 
-                `
-                    <input type="radio" class="menuItems" name="menuItems" id="${item.name}">
-                    <label for="${item.name}"><strong>NAME:</strong> ${item.name}</label>
-
-                    <input type="radio" class="menuItems" name="menuItems" id="${item.price}">
-                    <label for="${item.price}"><strong>PRICE:</strong> ${item.price}</label>
-
-                    <input type="radio" class="menuItems" name="menuItems" id="image">
-                    <label for="image"><strong>IMAGE:</strong> <img src="${item.image}" alt="${item.name}"></label>
-                `
-            container.append(div)
-        })
-    }
-    doOtherStuff();
 }
 
-function doOtherStuff(){
+function displayMenuItems(menuItems, itemType) {
+    let container = document.querySelector('.menu-items-container');
+    container.innerHTML = '';
 
+    menuItems.forEach(item => {
+        let div = document.createElement('div');
+        div.classList.add('op');
+        div.innerHTML = `
+            <div>
+                <strong>Name:</strong> ${item.name} <br>
+                <strong>Price:</strong> ${item.price} <br>
+                <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="50" />
+            </div>
+            <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
+            <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
+        `;
+        container.append(div);
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', (e) => editItem(e, itemType));
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', (e) => removeItem(e, itemType));
+    });
+}
+
+function editItem(event, itemType) {
+    let itemName = event.target.dataset.item;
+    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    let item = menuItems.find(i => i.name === itemName);
+
+    let formHtml = `
+        <h3>Edit Item: ${item.name}</h3>
+        <label for="newName">Name:</label>
+        <input type="text" id="newName" value="${item.name}"><br>
+        <label for="newPrice">Price:</label>
+        <input type="text" id="newPrice" value="${item.price}"><br>
+        <label for="newImage">Image URL:</label>
+        <input type="text" id="newImage" value="${item.image}"><br>
+        <button id="saveChanges">Save Changes</button>
+    `;
+    document.querySelector('.items-edit-container').innerHTML = formHtml;
+
+    document.getElementById('saveChanges').addEventListener('click', () => {
+        let newName = document.getElementById('newName').value;
+        let newPrice = document.getElementById('newPrice').value;
+        let newImage = document.getElementById('newImage').value;
+
+        item.name = newName;
+        item.price = newPrice;
+        item.image = newImage;
+
+        localStorage.setItem(itemType, JSON.stringify(menuItems));
+
+        alert('Item updated!');
+        location.reload();                                                                      
+    });
 }

@@ -1,13 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const pageClass = document.body.classList;
-    if(pageClass.contains('appetizers')) setUpMenu('app');
-    if(pageClass.contains('lunch')) setUpMenu('lunch');
-    if(pageClass.contains('dinner')) setUpMenu('dinner');
-    if(pageClass.contains('desserts')) setUpMenu('dessert');
-    if(pageClass.contains('beverages')) setUpMenu('drink');
+    if(pageClass.contains('main')){
+        setUpMenu('app');
+        console.log('reached');
+        setUpMenu('lunch'); 
+        setUpMenu('dinner'); 
+        setUpMenu('dessert'); 
+        setUpMenu('drink');
+    }
     if(pageClass.contains('cart')) setUpCart();
     addItemClick();
 });
+
+//some issues with local storage, now loads on index load to allow manager dash functionality. needs to change for menu page loads
+//so on each menu page, it takes from LS
 
 // -------------------- //
 // ---- MENU ITEMS ---- //
@@ -73,16 +79,19 @@ function addToLS(type, item) {
     let data = JSON.parse(localStorage.getItem(type)) || [];
     const existingItem = data.find(existing => existing.name === item.name);
     if (existingItem) return;
-    
-    let add = document.querySelector('#add');
-    add.style.opacity = 1;
+    // let page = document.body.classList;
+    // if(page.contains(type)){
+    //    let add = document.querySelector('#add');
+    //     add.style.opacity = 1; 
+    // }
     data.push(item);
     localStorage.setItem(type, JSON.stringify(data));
-    setTimeout(fadeOut, 3000);
+    // setTimeout(fadeOut, 3000);
 }
 
 function setUpMenu(type) {
     const menu = menuData[type];
+    console.log(menu)
     if (!menu) return;
     
     menu.names.forEach((name, i) => {
@@ -95,6 +104,9 @@ function setUpMenu(type) {
         };
         addToLS(type, item);
     });
+
+    let page = document.body.classList;
+    if(page.contains(type)){
     
     let container = document.querySelector('.holder');
     container.innerHTML = '';
@@ -116,6 +128,7 @@ function setUpMenu(type) {
         `;
         container.append(menuItem);
     });
+}
 }
 
 
@@ -159,10 +172,10 @@ function addToCartInLS(item){
     add.style.opacity = 1;
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
-    setTimeout(fadeOut, 3000)
+    setTimeout(fadeOut(add), 3000)
 }
 
-function fadeOut(){
+function fadeOut(add){
     add.style.opacity = 0;
 }
 

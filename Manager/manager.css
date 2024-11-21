@@ -72,6 +72,10 @@ header{
     max-width: 900px;
 }
 
+.items-edit-container{
+    margin: calc(2rem + 20px) auto;
+}
+
 .op{
     display: flex;
     flex-direction: row;
@@ -111,4 +115,11 @@ header{
     align-items: center;
     /* text-align: center; */
     margin: 20px auto;
+}
+
+.wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    max-width: 1000px;
 }
