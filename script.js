@@ -156,7 +156,7 @@ function handleAddItem(event){
     let button = event.target;
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
-    let price = menuItem.querySelector('.price').innerText;
+    let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
 
     let item = {
@@ -212,7 +212,8 @@ function setUpCart(){
 function displayCartItems(cart){
     let container = document.querySelector('.bag-items');
     container.innerHTML = '';
-
+    
+    // key change
     cart.forEach(item => {
         let cartItem = document.createElement('div');
         cartItem.classList.add('bag-item');
@@ -263,37 +264,27 @@ function quantityChange(){
     quantities.forEach(input => {
         input.addEventListener('change', (event) => {
             let change = event.target;
-
             let itemName = change.closest('.bag-item').querySelector('.name').innerText;
 
-            if(change.value <= 0 || isNaN(change.value)){
-                change.value = 1;
+            let newQuantity = parseInt(change.value);
+            if(isNaN(newQuantity) || newQuantity <= 0){
+                newQuantity = 1;
+                change.value = newQuantity;
                 console.log(`Invalid quantity for ${itemName}, resetting to 1.`);
             }
-           
-            //where quantity is changing
-            let newQuantity = parseInt(change.value);
-            console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
-
+            
+            //updates the local storage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cartItem = cart.find(item => item.name === itemName);
+            let cartItem = cart.find(item => item.name.trim() === itemName);
 
             if(cartItem){
                 cartItem.quantity = newQuantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
-                console.log(`Updated Local Storage for ${itemName}:`,cart);
+                console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
             } else {
                 console.error(`Item ${itemName} not found in Local Storage`)
-              
-//             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-//             let itemName = change.closest('.bag-item').querySelector('.name').innerText;
-
-//             let cartItem = cart.find(item => item.name === itemName);
-//             if(cartItem){
-//                 cartItem.quantity = parseInt(change.value) || 1;
-
             }
-            localStorage.setItem('cart', JSON.stringify(cart));
+
             getTotal();
         });
     });
@@ -305,7 +296,10 @@ function getTotal(){
     let total = 0;
 
     cart.forEach(cartItem =>{
-        let price = parseFloat(cartItem.price.replace('€', ''));
+
+        let price = parseFloat(// short hand if statement since                                                      // typeof price === 'string' ? true : false checks what type price is
+            typeof cartItem.price === 'string' ? cartItem.price.replace('$', '') : cartItem.price                   //<---------------typeof ensures that cartItem.price is a string before calling .replace
+        );
         let quantity = cartItem.quantity;
         total = total + (price * quantity);
     });
