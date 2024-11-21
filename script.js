@@ -62,25 +62,27 @@ const menuData = {
         identifiers: ['009', '010', '011', '012', '013']
     },
     dessert: {
-        names: ['Loukoumades', 'Baklava'],
-        prices: ['8.00', '9.00'],
-        images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg'],
+        names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
+        prices: ['8.00', '9.00', '8.00'],
+        images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg', '/Images/Dessert/ekmek.jpg'],
         descriptions: [
-            'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat that melts in your mouth.',
-            'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.'
+            'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat to satisfy every sweet tooth.',
+            'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.',
+            'Crispy kataifi pastry layered with mastiha flavoured custard. Topped with whipped cream, chopped nuts, and cinnamon. Deliciously sweet and indulgent.'
         ],
-        identifiers: ['014', '015']
+        identifiers: ['014', '015', '016']
     },
     drink: {
-        names: ['Pink Lemonade', 'Cherry juice', 'Orange juice'],
-        prices: ['3.00', '3.00', '3.00'],
-        images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg'],
+        names: ['Pink Lemonade', 'Cherry juice', 'Orange juice', 'Ellinikos Kafes'],
+        prices: ['3.00', '3.00', '3.00', '3.50'],
+        images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg', '/Images/Beverages/coffee.jpg'],
         descriptions: [
             'A delightful blend of lemony zest with a hint of berry sweetness—this pink lemonade is a refreshing twist on a classic!',
             'Bold, tangy, and tart—this refreshing cherry juice bursts with vibrant flavor in every sip.',
-            'Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that is as bright as a Mediterranean morning.'
+            'Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that is as bright as a Mediterranean morning.',
+            'Traditional Greek coffee, deliciously brewed for a strong, rich flavor. Served with a glass of water.'
         ],
-        identifiers: ['016', '017', '018']
+        identifiers: ['017', '018', '019', '020']
     }
 };
 
