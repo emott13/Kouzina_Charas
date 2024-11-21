@@ -284,7 +284,10 @@ function getTotal(){
     let total = 0;
 
     cart.forEach(cartItem =>{
-        let price = parseFloat(cartItem.price.replace('€', ''));
+
+        let price = parseFloat(// short hand if statement since                                                      // typeof price === 'string' ? true : false checks what type price is
+            typeof cartItem.price === 'string' ? cartItem.price.replace('$', '') : cartItem.price                   //<---------------typeof ensures that cartItem.price is a string before calling .replace
+        );
         let quantity = cartItem.quantity;
         total = total + (price * quantity);
     });

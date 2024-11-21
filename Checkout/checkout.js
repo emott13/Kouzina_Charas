@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>  
             </div>
             <div class="checkout-button-holder">
-                <button class="place-to-complete">Place Order</button>
+                <button class="place-to-complete delivery-cash">Place Order</button>
             </div>`;
         }else{
             cashDisplay.innerHTML = `
@@ -184,13 +184,27 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             </div>
             <div class="checkout-button-holder">
-                <button class="place-to-complete">Place Order</button>
+                <button class="place-to-complete-pick-up-cash">Place Order</button>
             </div>`;
         }
 
         paymentSection.innerHTML = "";
         paymentSection.appendChild(cashDisplay);
-    }
+
+        // let deliveryCashOrder = document.querySelector('.place-to-complete .delivery-cash');// change this
+        // deliveryCashOrder.addEventListener('click', function(){
+        //     cashDisplay.style.display = 'none';
+        //     displayDeliveryCash();
+        // })
+
+        let pickUpCashOrder = document.querySelector('.place-to-complete-pick-up-cash');// change this
+        pickUpCashOrder.addEventListener('click', function() {
+            cashDisplay.style.display = 'none';
+            displayPickUpCashOrder();
+        })
+        
+    }//////////////////////////////<--------------------------- for cash pick-up payment give item quantitiy, item, item price, and total price
+    ///////////////////////////////<------------------------ it Says go up to the register and provide name of order and pay before receving item
 
 
     function CreditDebitPayment(buttonHolderDisplay, creditDebitButton, cashButton) {
@@ -347,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
         CheckoutButton.addEventListener("click", function () {
             userInfo.style.display = "none";
             displayCheckoutItems();
+            addTip();
         });
     }
 
@@ -365,17 +380,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="items-of-checkout">
                            
                     </div>
+                     <div class="tip-service">
+                         <div class="tip-row">
+                            <button class="tip-percentages"><p class="no-tip">No Tip</p></button>
+                            <button class="tip-percentages"><div><h3>10%</h3 class="tip-amount"><p class="amount1"></p></div></button>
+                            <button class="tip-percentages"><div><h3>15%</h3 class="tip-amount"><p class="amount2"></p></div></button>
+                            <button class="tip-percentages"><div><h3>20%</h3 class="tip-amount"><p class="amount3"></p></div></button>
+                            <button class="tip-percentages"><p>Custom Tip</p></button>
+                         </div>
+                         <div class="custom-tip-display"><h3 class="tip-input"></h3></div>
+                     </div> 
                     <div class="total-container">
-                        <div class="total"><h3>total</h3></div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="checkout-button-holder complete-button-holder">
-            <button class="complete-order-button">Place Order</button>
-        </div>
-        <div class="checkout-button-holder complete-button-holder">
-            <button class="tip-button">Add Tip</button>
+             <a href="/Checkout/Receipt/receipt.html"><button class="complete-order-button">Place Order</button></a>
         </div>`;
         
         checkoutContainerDisplay.innerHTML = '';
@@ -406,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const totalPrice = cart.reduce((sum, item) => {
             const quantity = item.quantity || 1;
-            const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+            const price = parseFloat(item.price);
             if(isNaN(price)){
                 console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
                 return sum;
@@ -417,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let totalContainer = document.querySelector(".total-container");
         totalContainer.innerHTML = `
         <div class="total">
-            <h3>Total</h3>
+            <h3>Total:</h3>
             <h2>€${totalPrice.toFixed(2)}</h2>
         </div>
         `;
@@ -425,9 +446,194 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    // complete order
+   
+    function addTip() {
+        let totalDisplay = document.querySelector('.total-container .total h2');
+        let totalValue = parseFloat(totalDisplay.textContent.replace('€','')) || 0;
+        let CustomTipDisplay = document.querySelector('.custom-tip-display .tip-input');
 
-    // add tip
+        let tip10 = (totalValue * 0.10).toFixed(2);
+        let tip15 = (totalValue * 0.15).toFixed(2);
+        let tip20 = (totalValue * 0.20).toFixed(2);
+
+        let tipDisplay1 = document.querySelector('.amount1')
+        let tipDisplay2 = document.querySelector('.amount2')
+        let tipDisplay3 = document.querySelector('.amount3')
+
+        if(tipDisplay1){ tipDisplay1.textContent = `€${tip10}`; } 
+        if(tipDisplay2){ tipDisplay2.textContent = `€${tip15}`; }
+        if(tipDisplay3){ tipDisplay3.textContent = `€${tip20}`; }
+
+        const tipButtons = document.querySelectorAll('.tip-percentages');
+        tipButtons.forEach(button =>{
+            button.addEventListener('click', function (){
+            let tipPercentage = 0;
+            
+                if(this.querySelector('h3')){//takes the percent symbol out of the percentage and uses the number
+                    tipPercentage = parseInt(this.querySelector('h3').textContent.replace('%',''));
+                    CustomTipDisplay.style.display = 'none';
+                } else if(this.textContent === 'Custom Tip'){
+                    let customTip = parseFloat(prompt('Enter custom tip amount:'));
+                    if(!isNaN(customTip)){
+                        updateTotalWithTip(customTip);
+                        CustomTipDisplay.textContent = `Custom Tip: €${customTip}`
+                        CustomTipDisplay.style.display = 'block';
+                        return;
+                    } else{
+                        alert('please enter a valid number');
+                        return;
+                    }
+                } else if(this.textContent === 'No Tip'){
+                    CustomTipDisplay.style.display = 'none';
+                }
+                 const tipAmount = totalValue * (tipPercentage/100);
+                 updateTotalWithTip(tipAmount);
+            });
+        });
     
+    function updateTotalWithTip(tipAmount){
+        const newTotal = totalValue + tipAmount;
+        totalDisplay.textContent = `€${newTotal.toFixed(2)}`;
+    }
+}
     
+
+    function displayDeliveryCash(){
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let checkoutItems = document.createElement('div');
+        checkoutItems.classList.add(".payment");
+        const checkoutContainerDisplay = document.querySelector(".payment");
+        checkoutItems.innerHTML = `
+        <div class="checkout">
+            <h2>Items</h2>
+            <div class="checkout-items">
+                <div class="check-items">
+                    <div class="item-cata"><h3>Quantity</h3><h3>Item</h3><h3>price</h3></div>
+                    <div class="items-of-checkout">   
+                    </div>
+                    <div class="total-container">
+                    </div>
+                     <div class="instructions-pickup-cash"><div class="words-instruction"><p>Please go to the register and provide the name for your order.</p></div></div>
+                </div>
+            </div>
+        </div>
+        `;
+        
+        checkoutContainerDisplay.innerHTML = '';
+        checkoutContainerDisplay.appendChild(checkoutItems);
+
+        if(checkoutContainerDisplay){
+            checkoutContainerDisplay.innerHTML = ``;
+            checkoutContainerDisplay.appendChild(checkoutItems);
+        }else{
+            console.error("checkoutContainer not found");
+        }
+
+        if(cart.length === 0){
+            checkoutContainerDisplay.innerHTML = `<p>Cart is empty</p>`;
+            return;
+        }
+
+        cart.forEach(item =>{
+            let itemDiv = document.createElement("div");
+            itemDiv.classList.add('items');
+            itemDiv.innerHTML = `
+                <p>${item.quantity || 1}x</p>
+                <p>${item.name}</p>
+                <p>${item.price}</p>
+            `;
+            checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+        });
+
+        const totalPrice = cart.reduce((sum, item) => {
+            const quantity = item.quantity || 1;
+            const price = parseFloat(item.price);
+            if(isNaN(price)){
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                return sum;
+            }
+            return sum + (price * quantity);
+        }, 0);
+
+        let totalContainer = document.querySelector(".total-container");
+        totalContainer.innerHTML = `
+        <div class="total">
+            <h3>Total:</h3>
+            <h2>€${totalPrice.toFixed(2)}</h2>
+        </div>
+        `;
+        console.log(cart);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+
+    function displayPickUpCashOrder(){
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let checkoutItems = document.createElement('div');
+        checkoutItems.classList.add(".payment");
+        const checkoutContainerDisplay = document.querySelector(".payment");
+        checkoutItems.innerHTML = `
+        <div class="checkout">
+            <h2>Items</h2>
+            <div class="checkout-items">
+                <div class="check-items">
+                    <div class="item-cata"><h3>Quantity</h3><h3>Item</h3><h3>price</h3></div>
+                    <div class="items-of-checkout">   
+                    </div>
+                    <div class="total-container">
+                    
+                    </div>
+                     <div class="instructions-pickup-cash"><div class="words-instruction"><p>Please go to the register and provide the name for your order.</p></div></div>
+                </div>
+            </div>
+        </div>
+        `;
+        
+        checkoutContainerDisplay.innerHTML = '';
+        checkoutContainerDisplay.appendChild(checkoutItems);
+
+        if(checkoutContainerDisplay){
+            checkoutContainerDisplay.innerHTML = ``;
+            checkoutContainerDisplay.appendChild(checkoutItems);
+        }else{
+            console.error("checkoutContainer not found");
+        }
+
+        if(cart.length === 0){
+            checkoutContainerDisplay.innerHTML = `<p>Cart is empty</p>`;
+            return;
+        }
+
+        cart.forEach(item =>{
+            let itemDiv = document.createElement("div");
+            itemDiv.classList.add('items');
+            itemDiv.innerHTML = `
+                <p>${item.quantity || 1}x</p>
+                <p>${item.name}</p>
+                <p>${item.price}</p>
+            `;
+            checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+        });
+
+        const totalPrice = cart.reduce((sum, item) => {
+            const quantity = item.quantity || 1;
+            const price = parseFloat(item.price);
+            if(isNaN(price)){
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                return sum;
+            }
+            return sum + (price * quantity);
+        }, 0);
+
+        let totalContainer = document.querySelector(".total-container");
+        totalContainer.innerHTML = `
+        <div class="total">
+            <h3>Total:</h3>
+            <h2>€${totalPrice.toFixed(2)}</h2>
+        </div>
+        `;
+        console.log(cart);
+
+    }
+
 });
