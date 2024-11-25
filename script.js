@@ -16,12 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pageClass.contains('beverages')) displayMenuOnPage('drink');
 });
 
-//some issues with local storage, now loads on index load to allow manager dash functionality. needs to change for menu page loads
-//so on each menu page, it takes from LS
 
 // ------------------------------ //
 // ---- LOCAL STORAGE SET UP ---- //
 // ------------------------------ //
+
 
 const menuData = {
     app: {
@@ -86,7 +85,7 @@ const menuData = {
     }
 };
 
-function setUpMenu(type) {
+function setUpMenu(type){
     const menu = menuData[type];
     if (!menu) return;
     
@@ -103,13 +102,21 @@ function setUpMenu(type) {
     });
 }
 
-function addToLS(type, item) {
+function addToLS(type, item){
     let data = JSON.parse(localStorage.getItem(type)) || [];
-    const existingItem = data.find(existing => existing.identifiers === item.identifiers);
-    if (existingItem) return;
+    
+    const baseIdentifier = item.identifiers.substring(0, 3);
+    const nanKey = baseIdentifier + 'NaN';
+
+    const existingItem = data.find(existing => existing.identifiers === item.identifiers || existing.identifiers === nanKey);
+    if(existingItem){
+        return; 
+    }
+
     data.push(item);
     localStorage.setItem(type, JSON.stringify(data));
 }
+
 
 
 // ---------------------------- //
@@ -119,24 +126,45 @@ function addToLS(type, item) {
 
 function displayMenuOnPage(type){
     let container = document.querySelector('.holder');
-    container.innerHTML = '';
+    container.innerHTML = ''; 
     let storedItems = JSON.parse(localStorage.getItem(type)) || [];
-        
+
+    let validIdentifiers = new Set(); 
+
     storedItems.forEach(item => {
-        let menuItem = document.createElement('div');
-        menuItem.classList.add('menu-item');
-        menuItem.innerHTML = `
-            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-            <div class="item-info">
-                <p class="name">${item.name}</p>
-                <div class="add-info">
-                    <p class="price">€ ${item.price}</p>
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+        let id = item.identifiers;
+        if(!isNaN(id) && id.length === 3){
+            let baseId = id.substring(0, 3); 
+            let counterpartExists = storedItems.some(otherItem => 
+                otherItem.identifiers === baseId + 'NaN'
+            );
+
+            if(!counterpartExists){
+                validIdentifiers.add(baseId);
+                validIdentifiers.add(baseId + 'NaN');
+            }
+        }
+    });
+
+    storedItems.forEach(item => {
+        let id = item.identifiers;
+
+        if(validIdentifiers.has(id)){
+            let menuItem = document.createElement('div');
+            menuItem.classList.add('menu-item');
+            menuItem.innerHTML = `
+                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="item-info">
+                    <p class="name">${item.name}</p>
+                    <div class="add-info">
+                        <p class="price">€ ${item.price}</p>
+                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                    </div>
                 </div>
-            </div>
-            <p class="description">${item.description}</p>
-        `;
-        container.append(menuItem);
+                <p class="description">${item.description}</p>
+            `;
+            container.append(menuItem);
+        }
     });
 }
 
@@ -144,6 +172,7 @@ function displayMenuOnPage(type){
 // --------------------- //
 // ---- ADD TO CART ---- //
 // --------------------- //
+
 
 function addItemClick(){
     let buttons = document.getElementsByClassName('addItem');
@@ -168,8 +197,7 @@ function handleAddItem(event){
     
     addToCartInLS(item);
 };
-
-    
+ 
 function addToCartInLS(item){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      //JSON.parse -----------
     const existingItem = cart.find(cartItem => cartItem.name === item.name)
@@ -212,7 +240,6 @@ function setUpCart(){
 function displayCartItems(cart){
     let container = document.querySelector('.bag-items');
     container.innerHTML = '';
-    
     // key change
     cart.forEach(item => {
         let cartItem = document.createElement('div');
@@ -228,7 +255,6 @@ function displayCartItems(cart){
                     <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
                     <button class="btn-remove">Remove</button>
                 </div>
-                
             `;
     container.append(cartItem);
     removeButtons();
@@ -281,10 +307,10 @@ function quantityChange(){
                 cartItem.quantity = newQuantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
                 console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
-            } else {
+            } 
+            else{
                 console.error(`Item ${itemName} not found in Local Storage`)
             }
-
             getTotal();
         });
     });
@@ -306,7 +332,7 @@ function getTotal(){
     document.querySelector('.bag-total-price').innerText = '€' + total;
 }
 
-function loader() {
+function loader(){
     let loader = document.querySelector('.loader');
     let cart = document.querySelector('.cart-items')
     cart.style.display = 'none';
