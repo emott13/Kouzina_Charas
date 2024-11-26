@@ -1,30 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if(document.body.classList.contains('login')){
+    if (document.body.classList.contains('login')) {
         setItem();
     }
-    if(document.body.classList.contains('manager')){
-        let buttons = document.querySelectorAll('.options');
-        buttons.forEach(button => {
-            button.addEventListener('change', showOptions);
+    if (document.body.classList.contains('manager')) {
+        let options = document.querySelectorAll('.options')
+        options.forEach(option => {
+            option.addEventListener('change', showOptions);
         });
+        let menuContainer = document.querySelector('.menu-items-container');
+        if(menuContainer){
+            menuContainer.addEventListener('click', handleMenuAction);
+        }
     }
 });
 
-function setItem(){
+function setItem(){                 // --------------------------------------------------- sets manager username/password in local storage
     let u = 'manager1988';
     let p = '1988';
-    let item = {username: u, password: p};
-    localStorage.setItem('item', JSON.stringify(item));
+    let item = { username: u, password: p };
+    localStorage.setItem('login', JSON.stringify(item));         
+
     let loginBtn = document.querySelector('.login-btn');
     loginBtn.addEventListener('click', login);
 }
 
-function login(){
+function login(){                   // --------------------------------------------------- checks user input against local storage 'login' data        
     let u = document.getElementById('username').value;
     let p = document.getElementById('password').value;
     let message = document.getElementById('message');
-    let item = JSON.parse(localStorage.getItem('item')) || [];   
-    if(item.username == u && item.password == p){
+    let login = JSON.parse(localStorage.getItem('login')) || [];
+    
+    if(login.username === u && login.password === p){         
         location.replace('../manager.html');
     }
     else{
@@ -32,108 +38,86 @@ function login(){
     }
 }
 
-function showOptions(event){
+function showOptions(event){                    // --------------------------------------- sets innerHTML options
     let value = event.target.value;
     let editOptions = document.querySelector('.edit-container');
-    editOptions.innerHTML = 
-    `
-        <h3>What would you like to ${value}?</h3>
-        <div class="op">
-            <input type="radio" name="menu-sections" class="menu-sections" value="app" id="app">
-            <label for="app">Appetizers</label>
-        </div>
-        <div class="op">
-            <input type="radio" name="menu-sections" class="menu-sections" value="lunch" id="lunch">
-            <label for="lunch">Lunch</label>
-        </div>
-        <div class="op">
-            <input type="radio" name="menu-sections" class="menu-sections" value="dinner" id="dinner">
-            <label for="dinner">Dinner</label>
-        </div>
-        <div class="op">
-            <input type="radio" name="menu-sections" class="menu-sections" value="dessert" id="dessert">
-            <label for="desserts">Desserts</label>
-        </div>
-        <div class="op">
-            <input type="radio" name="menu-sections" class="menu-sections" value="drink" id="drink">
-            <label for="drinks">Beverages</label>
-        </div>
-    `
+    editOptions.innerHTML = generateOptionsHtml(value);
     menuOptions(value);
 }
 
-function menuOptions(value){
-    let menOptions = document.querySelectorAll('.menu-sections');
-    menOptions.forEach(option => {
-        option.addEventListener('change', (event) => {
-            checkLS(event, value)
-        })
-    })
+function generateOptionsHtml(value){
+    return `
+        <h3>What would you like to ${value}?</h3>
+        ${['app', 'lunch', 'dinner', 'dessert', 'drink'].map(type => `
+            <div class="op">
+                <input type="radio" name="menu-sections" class="menu-sections" value="${type}" id="${type}">
+                <label for="${type}">${capitalizeFirstLetter(type)}</label>
+            </div>
+        `).join('')}
+    `;
 }
 
-function checkLS(event){
-    let item = event.target.value;
-    let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
+function capitalizeFirstLetter(string){
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-    if(menuItemsFromLS.length == 0){
-        document.querySelector('.menu-items-container').innerHTML = 
-        `<p id="empty">This section is empty...</p>`;
-    } 
+function menuOptions(value){                    // -------------------------------------- sets listeners for menu section radio button or calls addItem
+    let itemType = value;
+    if (value === 'change'){
+        document.querySelectorAll('.menu-sections').forEach(option => {
+            option.addEventListener('change', (event) => checkLS(event, itemType));
+        });
+    }
     else{
-        displayMenuItems(menuItemsFromLS, item);
+        addItem();
     }
 }
 
-function displayMenuItems(menuItems, itemType){
+function checkLS(event){                    // ------------------------------------------ checks LS, calls display menu items or empty message
+    let item = event.target.value;
+    let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
     let container = document.querySelector('.menu-items-container');
-    container.innerHTML = '';
-
-    menuItems.forEach(item => {         // --------------------------------------------------------------------------------- displays each item
-        let div = document.createElement('div');
-        div.classList.add('op');
-        div.innerHTML = `
-            <div>
-                <strong>Name:</strong> ${item.name} <br>
-                <strong>Price:</strong> ${item.price} <br>
-                <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="50" />
-            </div>
-            <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
-            <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
-        `;
-
-        if (item.identifiers.length > 3){           // --------------------------------------------------------------------- check if identifier is longer than 3. if so, it has been removed from the menu
-            div.innerHTML += 
-            `
-                <div class="extra">
-                    <p>This item is not being displayed.</p>
-                    <button class="add-back" data-item="${item.name}" data-type="${itemType}">Add back to menu</button>
-                </div>
-            `
-        }
-        container.append(div);
-    });
-
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', event => editItem(event, itemType));
-    });
-
-    document.querySelectorAll('.remove-btn').forEach(button => {
-        button.addEventListener('click', event => removeItem(event, itemType));
-    });
-
-    document.querySelectorAll('.add-back').forEach(button => {
-        button.addEventListener('click', event => {
-            addBack(event, itemType);
-        });
-    });
-    
+    container.innerHTML = menuItemsFromLS.length ? displayMenuItems(menuItemsFromLS, item) : `<p id="empty">This section is empty...</p>`;
 }
 
-function editItem(event, itemType){
-    let itemName = event.target.dataset.item;
+function displayMenuItems(menuItems, itemType){                 // ---------------------- shows menu items when menu type is selected
+    return menuItems.map(item => {
+        return `
+            <div class="op">
+                <div>
+                    <strong>Name:</strong> ${item.name} <br>
+                    <strong>Price:</strong> ${item.price} <br>
+                    <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="50" />
+                </div>
+                <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
+                <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
+                ${item.identifiers.length > 3 ? `                   
+                    <div class="extra">
+                        <p>This item is not being displayed.</p>
+                        <button class="add-back" data-item="${item.name}" data-type="${itemType}">Add back to menu</button>
+                    </div>` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
+    let {dataset: {item, type}, classList } = event.target;
+
+    if(classList.contains('edit-btn')){
+        editItem(item, type);
+    }
+    else if(classList.contains('remove-btn')){
+        removeItem(item, type);
+    }
+    else if(classList.contains('add-back')){
+        addBack(item, type);
+    }
+}
+
+function editItem(itemName, itemType){                  // ------------------------------ handles edit btn click to display edit inputs and allow to be saved + set in LS
     let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
     let item = menuItems.find(i => i.name === itemName);
-
     let formHtml = 
     `
         <h3>Edit Item: ${item.name}</h3>
@@ -148,64 +132,109 @@ function editItem(event, itemType){
     document.querySelector('.items-edit-container').innerHTML = formHtml;
 
     document.getElementById('saveChanges').addEventListener('click', () => {
-        let newName = document.getElementById('newName').value;
-        let newPrice = document.getElementById('newPrice').value;
-        let newImage = document.getElementById('newImage').value;
-
-        item.name = newName;
-        item.price = newPrice;
-        item.image = newImage;
+        item.name = document.getElementById('newName').value;
+        item.price = document.getElementById('newPrice').value;
+        item.image = document.getElementById('newImage').value;
 
         localStorage.setItem(itemType, JSON.stringify(menuItems));
-
         alert('Item updated.');
-        location.reload();                                                                      
+        updateMenuItems(itemType);
     });
 }
 
-function removeItem(event, itemType){
-    let itemName = event.target.dataset.item;
+function removeItem(itemName, itemType){                    // -------------------------- handles remove btn click to remove item from menu display. stil shows in manager display with label that it is not being displayed.
     let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    let itemIndex = menuItems.findIndex(item => item.name === itemName);  
 
-    let itemChange = menuItems.find(item => item.name === itemName);
-
-    if(itemChange){
-        let newId = `${itemChange.identifiers}NaN`;         // --------------------------------------- change item's identifier to 3 digits + 'NaN'
-        itemChange.identifiers = newId;         // --------------------------------------------------- this allows us to prevent it from being displayed and allow it to be added back if desired
-                                                                                                
+    if(itemIndex !== -1){  
+        menuItems[itemIndex].identifiers += 'NaN';
         localStorage.setItem(itemType, JSON.stringify(menuItems));
-
         alert('Item removed from menu.');
-    } 
-    else{
-        alert('Item not found!');
+        updateMenuItems(itemType);  
     }
-    location.reload();
+    else{
+        alert('Item not found!');  
+    }
 }
 
-function addBack(event, itemType){
-    let itemName = event.target.dataset.item;
-    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+function addBack(itemName, itemType) {                  // ------------------------------ handles addBack btn click to add back removed items that still exist in LS
+    const menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    const item = menuItems.find(item => item.name === itemName);
 
-    let itemChange = menuItems.find(item => item.name == itemName);
-    if (itemChange){
-        let id = itemChange.identifiers;
-
-        if (id && id.length > 3) {          // -------------------------------------------------------- checks if identifier has 'NaN'
-            let baseId = id.substring(0, 3);            // -------------------------------------------- defines baseId as 3 digit num
-
-            if(!menuItems.some(item => item.identifiers === baseId)) {         // -------------------- check if baseId already exists without 'NaN' attached
-                itemChange.identifiers = baseId;            // ---------------------------------------- if yes, remove NaN
-                localStorage.setItem(itemType, JSON.stringify(menuItems));
-                alert('Item restored.');
-            } 
-            else{
-                alert('This item has already been restored.');
-            }
-        } 
-        else{
-            alert('Invalid identifier format!');
-        }
+    if (item && item.identifiers.endsWith('NaN')) {
+        item.identifiers = item.identifiers.slice(0, 3);
+        localStorage.setItem(itemType, JSON.stringify(menuItems));
+        alert('Item restored.');
+        updateMenuItems(itemType);
     }
-    location.reload();
+    else{
+        alert('This item has already been restored.');
+    }
+}
+
+function updateMenuItems(itemType){                 // ---------------------------------- takes itemType and displays corresponding menu items
+    const itemContainer = document.querySelector('.menu-items-container');
+    const menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    itemContainer.innerHTML = displayMenuItems(menuItems, itemType); 
+}
+
+function addItem(){                 // -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
+    let formHtml = 
+    `
+        <h3>Add New Item</h3>
+        <label for="type">Choose a menu type:</label>
+        <select name="type" id="type">
+            <option value="app">Appetizer</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="dessert">Dessert</option>
+            <option value="drink">Beverage</option>
+        </select>
+        <label for="itemName">Name:</label>
+        <input type="text" id="itemName"><br>
+        <label for="itemPrice">Price:</label>
+        <input type="text" id="itemPrice"><br>
+        <label for="itemImage">Image URL:</label>
+        <input type="text" id="itemImage"><br>
+        <label for="itemDesc">Description:</label>
+        <input type="text" id="itemDesc"><br>
+        <button id="addNewItem">Add Item</button>
+    `;
+    document.querySelector('.edit-container').innerHTML = formHtml;
+    document.querySelector('.menu-items-container').innerHTML = '';
+
+    document.getElementById('addNewItem').addEventListener('click', () => {
+        let name = document.querySelector('#itemName').value;
+        let price = document.querySelector('#itemPrice').value;
+        let image = document.querySelector('#itemImage').value;
+        let description = document.querySelector('#itemDesc').value;
+        let type = document.querySelector('#type').value;
+
+        if(!name || !price || !image || !description){
+            alert("All fields are required!");
+            return;
+        }
+
+        const newItem = {
+            name, price, image, description,
+            identifiers: getIdentifier(),
+            quantity: 1
+        };
+
+        let menuItems = JSON.parse(localStorage.getItem(type)) || [];
+        menuItems.push(newItem);
+        localStorage.setItem(type, JSON.stringify(menuItems));
+
+        alert('New item added!');
+        updateMenuItems(type);
+    });
+}
+
+function getIdentifier(){                   // ----------------------------------------- compares existing number part identifiers and sets new unique id for new menu item, pads the beginning with extra 0s like preexisting items.
+    const allItems = ['app', 'lunch', 'dinner', 'dessert', 'drink']
+        .map(type => JSON.parse(localStorage.getItem(type)) || [])
+        .flat();
+    const currentId = new Set(allItems.map(item => item.identifiers));
+    let largest = Math.max(...[...currentId].map(id => parseInt(id, 10) || 0)) + 1;
+    return String(largest).padStart(3, '0');
 }
