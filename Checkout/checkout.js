@@ -115,61 +115,61 @@ document.addEventListener("DOMContentLoaded", function () {
                         <label for="">State:</label>
                         <select name="states" id="states">
                             <option value="">-----Select State-----</option>
-                            <option value="">AL</option>
-                            <option value="">AK</option>
-                            <option value="">AZ</option>
-                            <option value="">AR</option>
-                            <option value="">AS</option>
-                            <option value="">CA</option>
-                            <option value="">CO</option>
-                            <option value="">CT</option>
-                            <option value="">DE</option>
-                            <option value="">DC</option>
-                            <option value="">FL</option>
-                            <option value="">GA</option>
-                            <option value="">GU</option>
-                            <option value="">HI</option>
-                            <option value="">ID</option>
-                            <option value="">IL</option>
-                            <option value="">IN</option>
-                            <option value="">IA</option>
-                            <option value="">KS</option>
-                            <option value="">KY</option>
-                            <option value="">LA</option>
-                            <option value="">ME</option>
-                            <option value="">MD</option>
-                            <option value="">MA</option>
-                            <option value="">MI</option>
-                            <option value="">MN</option>
-                            <option value="">MS</option>
-                            <option value="">MO</option>
-                            <option value="">MT</option>
-                            <option value="">NE</option>
-                            <option value="">NV</option>
-                            <option value="">NH</option>
-                            <option value="">NJ</option>
-                            <option value="">NM</option>
-                            <option value="">NY</option>
-                            <option value="">NC</option>
-                            <option value="">ND</option>
-                            <option value="">OH</option>
-                            <option value="">OK</option>
-                            <option value="">OR</option>
-                            <option value="">PA</option>
-                            <option value="">PR</option>
-                            <option value="">RI</option>
-                            <option value="">SC</option>
-                            <option value="">SD</option>
-                            <option value="">TN</option>
-                            <option value="">TX</option>
-                            <option value="">UT</option>
-                            <option value="">VT</option>
-                            <option value="">VA</option>
-                            <option value="">VI</option>
-                            <option value="">WA</option>
-                            <option value="">WV</option>
-                            <option value="">WI</option>
-                            <option value="">WY</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="AS">American Samoa</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="GU">Guam</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="PR">Puerto Rico</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="VI">Virgin Islands</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
                         </select>
                     </div>        
             </div>
@@ -202,6 +202,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         paymentSection.innerHTML = "";
         paymentSection.appendChild(cashDisplay);
+        
+        validatePersonalInfo(paymentSection)
 
         let newUndoButton = cashDisplay.querySelector('.undo');
         newUndoButton.addEventListener('click', UndoAction);
@@ -338,22 +340,36 @@ document.addEventListener("DOMContentLoaded", function () {
         const phoneNumber = PaymentDisplay.querySelector(".phone-number input");//phone
         const streetAdress = PaymentDisplay.querySelector(".address input");//street  
         const city = PaymentDisplay.querySelector(".city input");//city 
-        const state = PaymentDisplay.querySelector(".state input");//state
+        const state = PaymentDisplay.querySelector(".state select");//state
         const zipCode = PaymentDisplay.querySelector(".zip input");//zip code
-        const placeOrder = PaymentDisplay.querySelector(".place-order");
+        const placeOrder = PaymentDisplay.querySelector(".place-to-complete");
+
+        console.log({
+            phoneNumber,
+            streetAdress,
+            city,
+            state,
+            zipCode,
+            placeOrder,
+        });
+
+        if(!phoneNumber || !streetAdress || !city || !state || !zipCode || !placeOrder){
+            console.error("One or more elements for validation are missing.");
+            return;
+        }
 
         function updatePlaceOrderButtonState(){// comeback and attach correct validation inputs
-            const isPhoneNumberValid = /^(\d{2}\/\d{2})$/.test(phoneNumber.value);
-            const isAddressValid = streetAdress.value.length >= 3 && cardCVC.value.length <= 4;
-            const isCityValid = city.value.length >= 5;
-            const isStateValid = state.value.length >= 5;
-            const isZipCodeValid = zipCode.value.length >= 5;
+            const isPhoneNumberValid = /^\d{10}$/.test(phoneNumber.value);//ensures 10 digits
+            const isAddressValid = streetAdress.value.trim().length > 0;//not empty
+            const isCityValid = city.value.trim().length > 0;//not empty
+            const isStateValid = state ? state.value.trim().length > 0 && state.value !== "" : true;// make sure state is selected
+            const isZipCodeValid = /^\d{5}$/.test(zipCode.value); // 5-digit-zipCode
 
             console.log("Validation State of :");
-            console.log("Phone Number Valid:", isPhoneNumberValid, `(${cardNumber.value})`);
-            console.log("Address Valid:", isAddressValid, `(${cardExpiry.value})`);
-            console.log("City Valid:", isCityValid, `(${cardCVC.value})`);
-            console.log("State Valid:", isStateValid, `(${cardCVC.value})`);
+            console.log("Address Valid:", isAddressValid, `(${streetAdress.value})`);
+            console.log("City Valid:", isCityValid, `(${city.value})`);
+            console.log("State Valid:", isStateValid, `(${state.value})`);
+            console.log("Phone Number Valid:", isPhoneNumberValid, `(${phoneNumber.value})`);
             console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
             
             if (isPhoneNumberValid && isAddressValid && isCityValid && isStateValid && isZipCodeValid) {
@@ -364,6 +380,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Validation failed. PLACEORDER button disabled.");
             }
         }
+
+        //phone number Validation
+        phoneNumber.addEventListener("input", function(){
+            this.value = this.value.replace(/\D/g, '');// Allow only numbers
+            if(this.value.length > 10){this.value = this.value.slice(0, 10);}
+            updatePlaceOrderButtonState();
+        });
+
+        //address Validation
+        streetAdress.addEventListener("input", updatePlaceOrderButtonState());
+
+        //city Validation
+        city.addEventListener("input", updatePlaceOrderButtonState());
+        //state Validation
+        if(state){
+            state.addEventListener("change", function(){
+                console.log("State changed:", state.value)
+                updatePlaceOrderButtonState();
+            });
+        }
+        //zipCode Validation
+        zipCode.addEventListener("input", function(){
+            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');// Allows alphanumberic
+            if(this.value.length > 5){this.value = this.value.slice(0, 5);}
+            updatePlaceOrderButtonState();
+        });
+        //inital state update
+        updatePlaceOrderButtonState();
     }
 
     function showUserInfo() {
@@ -387,61 +431,61 @@ document.addEventListener("DOMContentLoaded", function () {
                         <label for="">State:</label>
                         <select name="states" id="states">
                             <option value="">-----Select State-----</option>
-                            <option value="">AL</option>
-                            <option value="">AK</option>
-                            <option value="">AZ</option>
-                            <option value="">AR</option>
-                            <option value="">AS</option>
-                            <option value="">CA</option>
-                            <option value="">CO</option>
-                            <option value="">CT</option>
-                            <option value="">DE</option>
-                            <option value="">DC</option>
-                            <option value="">FL</option>
-                            <option value="">GA</option>
-                            <option value="">GU</option>
-                            <option value="">HI</option>
-                            <option value="">ID</option>
-                            <option value="">IL</option>
-                            <option value="">IN</option>
-                            <option value="">IA</option>
-                            <option value="">KS</option>
-                            <option value="">KY</option>
-                            <option value="">LA</option>
-                            <option value="">ME</option>
-                            <option value="">MD</option>
-                            <option value="">MA</option>
-                            <option value="">MI</option>
-                            <option value="">MN</option>
-                            <option value="">MS</option>
-                            <option value="">MO</option>
-                            <option value="">MT</option>
-                            <option value="">NE</option>
-                            <option value="">NV</option>
-                            <option value="">NH</option>
-                            <option value="">NJ</option>
-                            <option value="">NM</option>
-                            <option value="">NY</option>
-                            <option value="">NC</option>
-                            <option value="">ND</option>
-                            <option value="">OH</option>
-                            <option value="">OK</option>
-                            <option value="">OR</option>
-                            <option value="">PA</option>
-                            <option value="">PR</option>
-                            <option value="">RI</option>
-                            <option value="">SC</option>
-                            <option value="">SD</option>
-                            <option value="">TN</option>
-                            <option value="">TX</option>
-                            <option value="">UT</option>
-                            <option value="">VT</option>
-                            <option value="">VA</option>
-                            <option value="">VI</option>
-                            <option value="">WA</option>
-                            <option value="">WV</option>
-                            <option value="">WI</option>
-                            <option value="">WY</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="AS">American Samoa</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="GU">Guam</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="PR">Puerto Rico</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="VI">Virgin Islands</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
                         </select>
                     </div>
                 </div> 
@@ -459,6 +503,8 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>`;
         
         paymentSection.append(userInfo);
+
+        validatePersonalInfo(userInfo)
 
         let CheckoutButton = userInfo.querySelector('.place-to-complete');
         CheckoutButton.addEventListener("click", function () {
