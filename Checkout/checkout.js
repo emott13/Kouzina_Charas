@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to show payment options (for both pick-up and delivery)
     function showPaymentOptions(isDeliverySelected) {
         isDelivery = isDeliverySelected;
-        inCheckout = true;                                                          //<-------------------------entering checkout flow
+        inCheckout = true;                                                       //<-------------------------entering checkout flow
         pickUpButton.style.display = "none";
         deliveryButton.style.display = "none";
         initialButtonHolderDisplay.style.display = "none";
-
+        
         let buttonHolderDisplay = document.createElement("div");
         buttonHolderDisplay.classList.add("button-holder");
 
@@ -39,7 +39,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         buttonHolderDisplay.appendChild(creditDebitButton);
         buttonHolderDisplay.appendChild(cashButton);
-        paymentSection.appendChild(buttonHolderDisplay);
+
+        let checkoutHolder = document.querySelector(".checkout-holder-back-select")
+        checkoutHolder.appendChild(buttonHolderDisplay);
+        paymentSection.appendChild(checkoutHolder);
 
         // Add event listeners for the new buttons 
         creditDebitButton.addEventListener("click", function () {
@@ -50,29 +53,36 @@ document.addEventListener("DOMContentLoaded", function () {
             cashPaymentForm();
         });
     }
+    PaymentButtonListener();
 
     function PaymentButtonListener(){
     pickUpButton.addEventListener("click", () => showPaymentOptions(false));
     deliveryButton.addEventListener("click",() => showPaymentOptions(true));
     }
 
-    PaymentButtonListener();
+  
     function UndoAction(){
-
         if(!inCheckout) return;                                              //<-------------------------exit if not in checkout flow
         inCheckout = false;                                                  //<-------------------------exit checkout flow
 
+        //intial display states
         pickUpButton.style.display = initialState.pickUpDisplay;
         deliveryButton.style.display = initialState.deliveryDisplay;
-        initialButtonHolderDisplay.style.display = "block";
-        initialButtonHolderDisplay.innerHTML = initialState.buttonHolderHTML;
+
+        //restores the payment section and button  holder
         paymentSection.innerHTML = initialState.paymentSectionHTML;
 
-        pickUpButton.addEventListener("click", () => showPaymentOptions(false));
-        deliveryButton.addEventListener("click",() => showPaymentOptions(true));
+        initialButtonHolderDisplay = document.querySelector(".button-holder");
+        pickUpButton = document.querySelector(".pick-up");
+        deliveryButton = document.querySelector(".Delivery");
+
+        PaymentButtonListener();
+
+        undoButton = document.querySelector('.undo');
+        undoButton.addEventListener("click", UndoAction);
     }
 
-    // undoButton.addEventListener("click", UndoAction);
+    undoButton.addEventListener("click", UndoAction);
    
 
     function cashPaymentForm(){
@@ -81,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if(isDelivery){
         cashDisplay.innerHTML =`
+        <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
             <div class="person-info">
                 <div class="user">
                     <label for="">Name for Order:</label>
@@ -105,60 +116,60 @@ document.addEventListener("DOMContentLoaded", function () {
                         <select name="states" id="states">
                             <option value="">-----Select State-----</option>
                             <option value="">AL</option>
-                                        <option value="">AK</option>
-                                        <option value="">AZ</option>
-                                        <option value="">AR</option>
-                                        <option value="">AS</option>
-                                        <option value="">CA</option>
-                                        <option value="">CO</option>
-                                        <option value="">CT</option>
-                                        <option value="">DE</option>
-                                        <option value="">DC</option>
-                                        <option value="">FL</option>
-                                        <option value="">GA</option>
-                                        <option value="">GU</option>
-                                        <option value="">HI</option>
-                                        <option value="">ID</option>
-                                        <option value="">IL</option>
-                                        <option value="">IN</option>
-                                        <option value="">IA</option>
-                                        <option value="">KS</option>
-                                        <option value="">KY</option>
-                                        <option value="">LA</option>
-                                        <option value="">ME</option>
-                                        <option value="">MD</option>
-                                        <option value="">MA</option>
-                                        <option value="">MI</option>
-                                        <option value="">MN</option>
-                                        <option value="">MS</option>
-                                        <option value="">MO</option>
-                                        <option value="">MT</option>
-                                        <option value="">NE</option>
-                                        <option value="">NV</option>
-                                        <option value="">NH</option>
-                                        <option value="">NJ</option>
-                                        <option value="">NM</option>
-                                        <option value="">NY</option>
-                                        <option value="">NC</option>
-                                        <option value="">ND</option>
-                                        <option value="">OH</option>
-                                        <option value="">OK</option>
-                                        <option value="">OR</option>
-                                        <option value="">PA</option>
-                                        <option value="">PR</option>
-                                        <option value="">RI</option>
-                                        <option value="">SC</option>
-                                        <option value="">SD</option>
-                                        <option value="">TN</option>
-                                        <option value="">TX</option>
-                                        <option value="">UT</option>
-                                        <option value="">VT</option>
-                                        <option value="">VA</option>
-                                        <option value="">VI</option>
-                                        <option value="">WA</option>
-                                        <option value="">WV</option>
-                                        <option value="">WI</option>
-                                        <option value="">WY</option>
+                            <option value="">AK</option>
+                            <option value="">AZ</option>
+                            <option value="">AR</option>
+                            <option value="">AS</option>
+                            <option value="">CA</option>
+                            <option value="">CO</option>
+                            <option value="">CT</option>
+                            <option value="">DE</option>
+                            <option value="">DC</option>
+                            <option value="">FL</option>
+                            <option value="">GA</option>
+                            <option value="">GU</option>
+                            <option value="">HI</option>
+                            <option value="">ID</option>
+                            <option value="">IL</option>
+                            <option value="">IN</option>
+                            <option value="">IA</option>
+                            <option value="">KS</option>
+                            <option value="">KY</option>
+                            <option value="">LA</option>
+                            <option value="">ME</option>
+                            <option value="">MD</option>
+                            <option value="">MA</option>
+                            <option value="">MI</option>
+                            <option value="">MN</option>
+                            <option value="">MS</option>
+                            <option value="">MO</option>
+                            <option value="">MT</option>
+                            <option value="">NE</option>
+                            <option value="">NV</option>
+                            <option value="">NH</option>
+                            <option value="">NJ</option>
+                            <option value="">NM</option>
+                            <option value="">NY</option>
+                            <option value="">NC</option>
+                            <option value="">ND</option>
+                            <option value="">OH</option>
+                            <option value="">OK</option>
+                            <option value="">OR</option>
+                            <option value="">PA</option>
+                            <option value="">PR</option>
+                            <option value="">RI</option>
+                            <option value="">SC</option>
+                            <option value="">SD</option>
+                            <option value="">TN</option>
+                            <option value="">TX</option>
+                            <option value="">UT</option>
+                            <option value="">VT</option>
+                            <option value="">VA</option>
+                            <option value="">VI</option>
+                            <option value="">WA</option>
+                            <option value="">WV</option>
+                            <option value="">WI</option>
+                            <option value="">WY</option>
                         </select>
                     </div>        
             </div>
@@ -172,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>`;
         }else{
             cashDisplay.innerHTML = `
+        <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
             <div class="person-info">
                 <div class="user">
                     <label for="">Name for Order:</label>
@@ -191,17 +203,17 @@ document.addEventListener("DOMContentLoaded", function () {
         paymentSection.innerHTML = "";
         paymentSection.appendChild(cashDisplay);
 
-        // let deliveryCashOrder = document.querySelector('.place-to-complete .delivery-cash');// change this
-        // deliveryCashOrder.addEventListener('click', function(){
-        //     cashDisplay.style.display = 'none';
-        //     displayDeliveryCash();
-        // })
-
-        let pickUpCashOrder = document.querySelector('.place-to-complete-pick-up-cash');// change this
-        pickUpCashOrder.addEventListener('click', function() {
-            cashDisplay.style.display = 'none';
-            displayPickUpCashOrder();
-        })
+        let newUndoButton = cashDisplay.querySelector('.undo');
+        newUndoButton.addEventListener('click', UndoAction);
+       
+        let pickUpCashOrder = cashDisplay.querySelector('.place-to-complete-pick-up-cash');// change this
+        if(pickUpCashOrder){
+            pickUpCashOrder.addEventListener('click', function() {
+                cashDisplay.style.display = 'none';
+                displayPickUpCashOrder();
+            });
+        }
+        
         
     }//////////////////////////////<--------------------------- for cash pick-up payment give item quantitiy, item, item price, and total price
     ///////////////////////////////<------------------------ it Says go up to the register and provide name of order and pay before receving item
@@ -248,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <label for="">ZIP code:</label>
                     <input type="text" placeholder="Enter ZIP code">
                 </div>    
-                <button class="pay-button">Add Payment Method</button>
             </div>
             <div class="checkout-button-holder">
                 <button class="place-order">NEXT</button>
@@ -256,11 +267,103 @@ document.addEventListener("DOMContentLoaded", function () {
 
         paymentSection.append(paymentDisplay);
 
+        // validation for card inputs
+        validateCardInput(paymentDisplay);
+
         let nextButton = paymentDisplay.querySelector(".place-order");
         nextButton.addEventListener("click", function () {
             paymentDisplay.style.display = "none";
             showUserInfo();
         });
+    }
+
+    function validateCardInput(PaymentDisplay){
+        const cardNumber = PaymentDisplay.querySelector(".card-number input");
+        const cardExpiry = PaymentDisplay.querySelector(".card-exp input");
+        const cardCVC = PaymentDisplay.querySelector(".card-cvc input");
+        const zipCode = PaymentDisplay.querySelector(".zip input");
+        const nextButton = PaymentDisplay.querySelector(".place-order");
+
+        function updateNextButtonState(){
+            const isCardNumberValid = cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
+            const isCardExpiryValid = /^(\d{2}\/\d{2})$/.test(cardExpiry.value); // validate MM/YY format
+            const isCardCVCValid = cardCVC.value.length >= 3 && cardCVC.value.length <= 4;
+            const isZipCodeValid = zipCode.value.length >= 5;
+
+            console.log("Validation State:");
+            console.log("Card Number Valid:", isCardNumberValid, `(${cardNumber.value})`);
+            console.log("Card Expiry Valid:", isCardExpiryValid, `(${cardExpiry.value})`);
+            console.log("Card CVC Valid:", isCardCVCValid, `(${cardCVC.value})`);
+            console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
+            
+            if (isCardNumberValid && isCardExpiryValid && isCardCVCValid && isZipCodeValid) {
+                nextButton.disabled = false;
+                console.log("All fields valid. NEXT button enabled.");
+            } else {
+                nextButton.disabled = true;
+                console.log("Validation failed. NEXT button disabled.");
+            }
+        }
+
+        //card number Validation
+        cardNumber.addEventListener("input", function(){
+            this.value = this.value.replace(/\D/g, '');// Allow only numbers
+            if(this.value.length > 19){this.value = this.value.slice(0, 19);}
+            updateNextButtonState();
+        });
+
+        //Card Expiry Validation
+        cardExpiry.addEventListener("input", function(){
+            this.value = this.value.replace(/[^0-9/]/g, '');// Allow numbers and "/"
+            if(this.value.length > 5){this.value = this.value.slice(0, 5);}
+            updateNextButtonState();
+        });
+
+        //Card CVC Validation
+        cardCVC.addEventListener("input", function(){
+            this.value = this.value.replace(/\D/g, '');// Allow only numbers
+            if(this.value.length > 4){this.value = this.value.slice(0, 4);}
+            updateNextButtonState();
+        });
+
+        zipCode.addEventListener("input", function(){
+            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');// Allows alphanumberic
+            if(this.value.length > 10){this.value = this.value.slice(0, 10);}
+            updateNextButtonState();
+        });
+
+    }
+
+    function validatePersonalInfo(PaymentDisplay){
+        const phoneNumber = PaymentDisplay.querySelector(".phone-number input");//phone
+        const streetAdress = PaymentDisplay.querySelector(".address input");//street  
+        const city = PaymentDisplay.querySelector(".city input");//city 
+        const state = PaymentDisplay.querySelector(".state input");//state
+        const zipCode = PaymentDisplay.querySelector(".zip input");//zip code
+        const placeOrder = PaymentDisplay.querySelector(".place-order");
+
+        function updatePlaceOrderButtonState(){// comeback and attach correct validation inputs
+            const isPhoneNumberValid = /^(\d{2}\/\d{2})$/.test(phoneNumber.value);
+            const isAddressValid = streetAdress.value.length >= 3 && cardCVC.value.length <= 4;
+            const isCityValid = city.value.length >= 5;
+            const isStateValid = state.value.length >= 5;
+            const isZipCodeValid = zipCode.value.length >= 5;
+
+            console.log("Validation State of :");
+            console.log("Phone Number Valid:", isPhoneNumberValid, `(${cardNumber.value})`);
+            console.log("Address Valid:", isAddressValid, `(${cardExpiry.value})`);
+            console.log("City Valid:", isCityValid, `(${cardCVC.value})`);
+            console.log("State Valid:", isStateValid, `(${cardCVC.value})`);
+            console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
+            
+            if (isPhoneNumberValid && isAddressValid && isCityValid && isStateValid && isZipCodeValid) {
+                placeOrder.disabled = false;
+                console.log("All fields valid. PLACEORDER button enabled.");
+            } else {
+                placeOrder.disabled = true;
+                console.log("Validation failed. PLACEORDER button disabled.");
+            }
+        }
     }
 
     function showUserInfo() {
@@ -285,60 +388,60 @@ document.addEventListener("DOMContentLoaded", function () {
                         <select name="states" id="states">
                             <option value="">-----Select State-----</option>
                             <option value="">AL</option>
-                                        <option value="">AK</option>
-                                        <option value="">AZ</option>
-                                        <option value="">AR</option>
-                                        <option value="">AS</option>
-                                        <option value="">CA</option>
-                                        <option value="">CO</option>
-                                        <option value="">CT</option>
-                                        <option value="">DE</option>
-                                        <option value="">DC</option>
-                                        <option value="">FL</option>
-                                        <option value="">GA</option>
-                                        <option value="">GU</option>
-                                        <option value="">HI</option>
-                                        <option value="">ID</option>
-                                        <option value="">IL</option>
-                                        <option value="">IN</option>
-                                        <option value="">IA</option>
-                                        <option value="">KS</option>
-                                        <option value="">KY</option>
-                                        <option value="">LA</option>
-                                        <option value="">ME</option>
-                                        <option value="">MD</option>
-                                        <option value="">MA</option>
-                                        <option value="">MI</option>
-                                        <option value="">MN</option>
-                                        <option value="">MS</option>
-                                        <option value="">MO</option>
-                                        <option value="">MT</option>
-                                        <option value="">NE</option>
-                                        <option value="">NV</option>
-                                        <option value="">NH</option>
-                                        <option value="">NJ</option>
-                                        <option value="">NM</option>
-                                        <option value="">NY</option>
-                                        <option value="">NC</option>
-                                        <option value="">ND</option>
-                                        <option value="">OH</option>
-                                        <option value="">OK</option>
-                                        <option value="">OR</option>
-                                        <option value="">PA</option>
-                                        <option value="">PR</option>
-                                        <option value="">RI</option>
-                                        <option value="">SC</option>
-                                        <option value="">SD</option>
-                                        <option value="">TN</option>
-                                        <option value="">TX</option>
-                                        <option value="">UT</option>
-                                        <option value="">VT</option>
-                                        <option value="">VA</option>
-                                        <option value="">VI</option>
-                                        <option value="">WA</option>
-                                        <option value="">WV</option>
-                                        <option value="">WI</option>
-                                        <option value="">WY</option>
+                            <option value="">AK</option>
+                            <option value="">AZ</option>
+                            <option value="">AR</option>
+                            <option value="">AS</option>
+                            <option value="">CA</option>
+                            <option value="">CO</option>
+                            <option value="">CT</option>
+                            <option value="">DE</option>
+                            <option value="">DC</option>
+                            <option value="">FL</option>
+                            <option value="">GA</option>
+                            <option value="">GU</option>
+                            <option value="">HI</option>
+                            <option value="">ID</option>
+                            <option value="">IL</option>
+                            <option value="">IN</option>
+                            <option value="">IA</option>
+                            <option value="">KS</option>
+                            <option value="">KY</option>
+                            <option value="">LA</option>
+                            <option value="">ME</option>
+                            <option value="">MD</option>
+                            <option value="">MA</option>
+                            <option value="">MI</option>
+                            <option value="">MN</option>
+                            <option value="">MS</option>
+                            <option value="">MO</option>
+                            <option value="">MT</option>
+                            <option value="">NE</option>
+                            <option value="">NV</option>
+                            <option value="">NH</option>
+                            <option value="">NJ</option>
+                            <option value="">NM</option>
+                            <option value="">NY</option>
+                            <option value="">NC</option>
+                            <option value="">ND</option>
+                            <option value="">OH</option>
+                            <option value="">OK</option>
+                            <option value="">OR</option>
+                            <option value="">PA</option>
+                            <option value="">PR</option>
+                            <option value="">RI</option>
+                            <option value="">SC</option>
+                            <option value="">SD</option>
+                            <option value="">TN</option>
+                            <option value="">TX</option>
+                            <option value="">UT</option>
+                            <option value="">VT</option>
+                            <option value="">VA</option>
+                            <option value="">VI</option>
+                            <option value="">WA</option>
+                            <option value="">WV</option>
+                            <option value="">WI</option>
+                            <option value="">WY</option>
                         </select>
                     </div>
                 </div> 
