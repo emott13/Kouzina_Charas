@@ -157,8 +157,8 @@ function displayMenuOnPage(type){
                 <div class="item-info">
                     <p class="name">${item.name}</p>
                     <div class="add-info">
-                        <p class="price">€ ${item.price}</p>
-                        <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+                        <p class="price">${convertPrice(item.price)}</p>
+                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                     </div>
                 </div>
                 <p class="description">${item.description}</p>
@@ -166,6 +166,8 @@ function displayMenuOnPage(type){
             container.append(menuItem);
         }
     });
+
+    addItemClick();
 }
 
 
@@ -175,19 +177,21 @@ function displayMenuOnPage(type){
 
 
 function addItemClick(){
-    let buttons = document.getElementsByClassName('addItem');
-    for(let i = 0; i < buttons.length; i++){
-        buttons[i].addEventListener('click', handleAddItem);
-    };
+    let buttons = document.querySelectorAll('.addItem');
+    buttons.forEach(button => {
+        console.log('button clicked')
+        button.addEventListener('click', handleAddItem);
+    });
 };
 
 function handleAddItem(event){
-    let button = event.target;
+    let button = event.target.closest('.addItem');
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
     let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
-    let id = button.dataset.id; // Fixed to get dataset from button
+    let id = button.dataset.type; 
+    console.log(id)
 
     let item = {
         name: name,
@@ -197,12 +201,11 @@ function handleAddItem(event){
         identifiers: id
     };
     
-    console.log('Item to add:', item); // Debugging log
     addToCartInLS(item);
 };
  
 function addToCartInLS(item){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];                      //JSON.parse -----------
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
@@ -211,7 +214,7 @@ function addToCartInLS(item){
     let add = document.querySelector('#add');
     add.style.opacity = 1;
     cart.push(item);
-    localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
+    localStorage.setItem('cart', JSON.stringify(cart))                             
     setTimeout(() => fadeOut(add), 3000);
 }
 
@@ -228,9 +231,9 @@ function fadeOut(add){
 function setUpCart(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    if(cart.length == 0){
-        document.querySelector('.bag-items').innerHTML = 
-        `<p id="empty">Your bag is empty...</p>`
+    if(cart.length === 0){
+        getTotal();
+        document.querySelector('.bag-items').innerHTML = `<p id="empty">Your bag is empty...</p>`;
     }
     else{
         displayCartItems(cart);
@@ -243,7 +246,7 @@ function setUpCart(){
 function displayCartItems(cart){
     let container = document.querySelector('.bag-items');
     container.innerHTML = '';
-    // key change
+
     cart.forEach(item => {
         let cartItem = document.createElement('div');
         cartItem.classList.add('bag-item');
@@ -253,7 +256,7 @@ function displayCartItems(cart){
                     <img src="${item.image}" alt="${item.name}" class="bag-image">
                     <span class="name">${item.name}</span>
                 </div>
-                <span class="price column">${item.price}</span>
+                <span class="price column">${convertPrice(item.price)}</span>
                 <div class="quantity column"> 
                     <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
                     <button class="btn-remove">Remove</button>
@@ -284,7 +287,7 @@ function removeItemFromLS(itemName, event){
     if (cart.length === 0) {
         document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
     }
-    setTimeout(setUpCart, 900);
+    setTimeout(setUpCart, 700);
 }
 
 function quantityChange(){
@@ -303,7 +306,6 @@ function quantityChange(){
                 console.log(`Invalid quantity for ${itemName}, resetting to 1.`);
             }
             
-            //updates the local storage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let cartItem = cart.find(item => item.name.trim() === itemName);
 
@@ -324,16 +326,13 @@ function quantityChange(){
 function getTotal(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let total = 0;
-
-    cart.forEach(cartItem =>{
-
-        let price = parseFloat(// short hand if statement since                                                      // typeof price === 'string' ? true : false checks what type price is
-            typeof cartItem.price === 'string' ? cartItem.price.replace('$', '') : cartItem.price                   //<---------------typeof ensures that cartItem.price is a string before calling .replace
-        );
+    let totalContainer = document.querySelector('.bag-total-price');
+    cart.forEach(cartItem => {
+        let price = parseFloat(cartItem.price);
         let quantity = cartItem.quantity;
-        total = total + (price * quantity);
+        total += (price * quantity);
     });
-    document.querySelector('.bag-total-price').innerText = '€' + total;
+    totalContainer.innerText = convertPrice(total);
 }
 
 function loader(){
@@ -341,5 +340,12 @@ function loader(){
     let cart = document.querySelector('.cart-items')
     cart.style.display = 'none';
     loader.style.opacity = 1;
-    setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 900);
+    setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 800);
+}
+
+function convertPrice(price){
+    let split = String(price).split('.');
+    let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
+    if(split[0] == 0){return '0€'}
+    return split[0] + ',' + end + '€'; 
 }
