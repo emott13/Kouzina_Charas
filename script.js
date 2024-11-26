@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
     }
     if(pageClass.contains('cart')) setUpCart();
-    addItemClick();
+
     if(pageClass.contains('appetizers')) displayMenuOnPage('app');
     if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
@@ -126,15 +126,15 @@ function displayMenuOnPage(type){
         let menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
         menuItem.innerHTML = `
-            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-            <div class="item-info">
-                <p class="name">${item.name}</p>
-                <div class="add-info">
-                    <p class="price">€ ${item.price}</p>
-                    <button class="addItem shadow"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
-                </div>
-            </div>
-            <p class="description">${item.description}</p>
+             <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+    <div class="item-info">
+        <p class="name">${item.name}</p>
+        <div class="add-info">
+            <p class="price">€${item.price}</p>
+            <button class="addItem shadow" data-id="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt=""></button>
+        </div>
+    </div>
+    <p class="description">${item.description}</p>
         `;
         container.append(menuItem);
     });
@@ -148,7 +148,7 @@ function displayMenuOnPage(type){
 function addItemClick(){
     let buttons = document.getElementsByClassName('addItem');
     for(let i = 0; i < buttons.length; i++){
-        buttons[i].addEventListener('click', handleAddItem)
+        buttons[i].addEventListener('click', handleAddItem);
     };
 };
 
@@ -158,21 +158,24 @@ function handleAddItem(event){
     let name = menuItem.querySelector('.name').innerText;
     let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
+    let id = button.dataset.id; // Fixed to get dataset from button
 
     let item = {
         name: name,
         price: price,
         image: image,
-        quantity: 1
+        quantity: 1,
+        identifiers: id
     };
     
+    console.log('Item to add:', item); // Debugging log
     addToCartInLS(item);
 };
 
     
 function addToCartInLS(item){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      //JSON.parse -----------
-    const existingItem = cart.find(cartItem => cartItem.name === item.name)
+    const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
         return;
@@ -181,7 +184,7 @@ function addToCartInLS(item){
     add.style.opacity = 1;
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart))                              //JSON.stringify -------
-    setTimeout(fadeOut(add), 3000)
+    setTimeout(() => fadeOut(add), 3000);
 }
 
 function fadeOut(add){
@@ -231,8 +234,9 @@ function displayCartItems(cart){
                 
             `;
     container.append(cartItem);
+    }); 
+       
     removeButtons();
-    });
 }
 
 function removeButtons(){

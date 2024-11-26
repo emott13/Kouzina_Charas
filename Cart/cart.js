@@ -80,7 +80,7 @@ const addToCartClick = (event) => {
     } else {
         cartItems.push({ name, price: parseFloat(price.replace('$', '')), quantity: 1 });
     }
-
+    
     updateLocalStorage(cartItems);
     updateCartTotal();
 };
