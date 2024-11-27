@@ -16,33 +16,50 @@
 */
 
 body{
-    font-family: 'Athiti';
+    font-family: 'Thasadith';
+}
+
+:root{
+    --color-1: #2c2c2c;
+    --color-2: #484b46;
+    --color-3: #979d94;
+    --color-4: #ece6da;
+    --color-5: #1e5f21;
+    --color-6: #24a82a;
+    --color-7: #0032d4;
+    --color-8: #9fa7b0;
+    --color-9: #5F1E5C;
+    --color-10: #c227ba;
+    --color-11: #5F421E;
+    --color-12: #795427;
+
 }
 
 /* header */
 
 .header{
-    margin: 3% auto 1%;
-    background-color: bisque;
-    width: 700px;
-    height: 90px ;
+    margin: 0 auto 1%;
     text-transform: uppercase;
+    color: var(--color-1);
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    background-color: var(--color-4);
+    filter: drop-shadow(5px 5px 10px var(--color-1));
+    transition: left .8s ease;
 }
 
 .header nav{
-    margin: auto;
-    padding: 25px;
-    width: 500px;
-    height: 90px;
-    text-align: center;
+    padding: 20px 30px;
+    width: fit-content;
 }
 
 .header ul{
     display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
     align-items: start;
-    margin: auto;
-    list-style: none;
+    list-style: none; 
 }
 
 .header li{
@@ -51,18 +68,95 @@ body{
     text-align: center;
 }
 
+.close{
+    padding: 0;
+    width: 35px;
+}
+
 .header li a{
-    font-size: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 5px;
+    font-size: 28px;
     text-decoration: none;
     text-align: center;
+    color: var(--color-1);
+}
+
+.header li a.food{
+    color: var(--color-7);
+}
+
+.menu-items{
+    display: none;
 }
 
 .iconImg{
-    width: 30px;
+    width: 25px;
 }
 
 .login{
     margin-left: 2rem;
+}
+
+/* image section */
+
+.image-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(/Images/Selector/building.webp);
+    background-size: cover;
+    background-position: 20%;
+    min-height: 1000px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.image-section h2{
+    position: fixed;
+    top: 0;
+    background-image: linear-gradient(to bottom, #000, #00000000);
+    margin: 0 auto;
+    width: 100%;
+    font-family: 'Ruthie';
+    font-weight: 400;
+    font-size: 80px;
+    text-align: center;
+    letter-spacing: 3px;
+    color: #fff;
+}
+
+.nav{
+    position: fixed;
+    left: 5%;
+    top: 2%;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.admin-login{
+    position: fixed;
+    right: 5%;
+    top: 1%;
+    font-size: 40px;
+    color: #fff;
+}
+
+.intro{
+    display: block;
+    position: absolute;
+    left: 30%;
+    bottom: 20%;
+    transform: translate(-50%, -50%);
+    font-family: 'Thasadith';
+    font-size: 40px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    color: var(--color-7);
+    filter: drop-shadow(4px 4px 5px var(--color-7));
 }
 
 /* select screen */
