@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('dinner'); 
         setUpMenu('dessert'); 
         setUpMenu('drink');
+        flyout();
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -117,6 +118,23 @@ function addToLS(type, item){
     localStorage.setItem(type, JSON.stringify(data));
 }
 
+
+// -------------------------- //
+// ---- HOME PAGE FLYOUT ---- //
+// -------------------------- //
+
+
+function flyout(){
+    let navBtn = document.querySelector('.nav');
+    let flyout = document.querySelector('.header');
+    navBtn.addEventListener('click', () => {
+        flyout.style.left = '0';
+    });
+    let closeBtn = document.querySelector('.close');
+    closeBtn.addEventListener('click', () => {
+        flyout.style.left = '-100%'
+    })
+}
 
 
 // ---------------------------- //
@@ -321,7 +339,6 @@ function quantityChange(){
         });
     });
 }
-
 
 function getTotal(){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
