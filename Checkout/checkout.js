@@ -242,16 +242,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
                 <div class="card-number">
                     <label for="">CARD NUMBER</label>
-                    <input type="text" placeholder="**** **** **** ****">
+                    <input type="text" placeholder="XXXX XXXX XXXX XXXX">
                 </div>
+                <div class="error-message"></div>
+                
                 <div class="card-sect">
                     <div class="card-exp">
                         <label for="">CARD EXPIRY</label>
                         <input type="text" placeholder="--/--">
+                        <div class="error-message"></div>
                     </div>
+                    
                     <div class="card-cvc">
                         <label for="">CARD CVC</label>
                         <input type="text" placeholder="***">
+                        <div class="error-message"></div>
                     </div>
                 </div>
                 <div class="card-holder-name">
@@ -261,7 +266,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="zip">
                     <label for="">ZIP code:</label>
                     <input type="text" placeholder="Enter ZIP code">
-                </div>    
+                </div>
+                <div class="error-message"></div>
             </div>
             <div class="checkout-button-holder">
                 <button class="place-order">NEXT</button>
@@ -269,13 +275,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         paymentSection.append(paymentDisplay);
 
-        // validation for card inputs
-        validateCardInput(paymentDisplay);
-
         let nextButton = paymentDisplay.querySelector(".place-order");
         nextButton.addEventListener("click", function () {
-            paymentDisplay.style.display = "none";
-            showUserInfo();
+            const isValid = validateCardInput(paymentDisplay)
+            if(isValid){
+                paymentDisplay.style.display = "none";
+                showUserInfo();
+            }
         });
     }
 
@@ -284,56 +290,56 @@ document.addEventListener("DOMContentLoaded", function () {
         const cardExpiry = PaymentDisplay.querySelector(".card-exp input");
         const cardCVC = PaymentDisplay.querySelector(".card-cvc input");
         const zipCode = PaymentDisplay.querySelector(".zip input");
-        const nextButton = PaymentDisplay.querySelector(".place-order");
 
-        function updateNextButtonState(){
-            const isCardNumberValid = cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
-            const isCardExpiryValid = /^(\d{2}\/\d{2})$/.test(cardExpiry.value); // validate MM/YY format
-            const isCardCVCValid = cardCVC.value.length >= 3 && cardCVC.value.length <= 4;
-            const isZipCodeValid = zipCode.value.length >= 5;
+        let isValid = true;
 
-            console.log("Validation State:");
-            console.log("Card Number Valid:", isCardNumberValid, `(${cardNumber.value})`);
-            console.log("Card Expiry Valid:", isCardExpiryValid, `(${cardExpiry.value})`);
-            console.log("Card CVC Valid:", isCardCVCValid, `(${cardCVC.value})`);
-            console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
-            
-            if (isCardNumberValid && isCardExpiryValid && isCardCVCValid && isZipCodeValid) {
-                nextButton.disabled = false;
-                console.log("All fields valid. NEXT button enabled.");
-            } else {
-                nextButton.disabled = true;
-                console.log("Validation failed. NEXT button disabled.");
+        function displayError(input,message){
+            let errorElement = input.nextElementSibling;
+            if(errorElement && errorElement.classList.contains("error-message")){
+                errorElement.textContent = message;
+                errorElement.style.display = "block";
             }
         }
 
-        //card number Validation
-        cardNumber.addEventListener("input", function(){
-            this.value = this.value.replace(/\D/g, '');// Allow only numbers
-            if(this.value.length > 19){this.value = this.value.slice(0, 19);}
-            updateNextButtonState();
-        });
+        function clearError(input){
+            const errorElement = input.nextElementSibling;
+            if (errorElement && errorElement.classList.contains("error-message")) {
+                errorElement.textContent = "";
+                errorElement.style.display = "none";
+            }
+        }
 
-        //Card Expiry Validation
-        cardExpiry.addEventListener("input", function(){
-            this.value = this.value.replace(/[^0-9/]/g, '');// Allow numbers and "/"
-            if(this.value.length > 5){this.value = this.value.slice(0, 5);}
-            updateNextButtonState();
-        });
 
-        //Card CVC Validation
-        cardCVC.addEventListener("input", function(){
-            this.value = this.value.replace(/\D/g, '');// Allow only numbers
-            if(this.value.length > 4){this.value = this.value.slice(0, 4);}
-            updateNextButtonState();
-        });
+        if(cardNumber.value.length >= 13 && cardNumber.value.length <= 19){
+            displayError(cardNumber, "Card number must be 13-19 digits.");
+            isValid = false;
+        }
+        else{
+            clearError(cardNumber);
+        }
+        
+        if(!/^(\d{2}\/\d{2})$/.test(cardExpiry.value)){
+            displayError(cardExpiry, "Expiry MM/YY format.");
+            isValid = false;
+        }else{
+            clearError(cardExpiry);
+        }
+        
+        if(cardCVC.value.length < 3 || cardCVC.value.length > 4){
+            displayError(cardCVC, "CVC must be 3-4 digits.");
+            isValid = false;
+        }else{
+            clearError(cardCVC);
+        }
 
-        zipCode.addEventListener("input", function(){
-            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');// Allows alphanumberic
-            if(this.value.length > 10){this.value = this.value.slice(0, 10);}
-            updateNextButtonState();
-        });
-
+        if(zipCode.value.length < 5){
+            displayError(zipCode, "zip code must be at least 5 characters.");
+            isValid = false;
+        }else{
+            clearError(zipCode);
+        }
+        
+        return isValid;
     }
 
     function validatePersonalInfo(PaymentDisplay){
