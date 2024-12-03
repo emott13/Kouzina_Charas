@@ -132,11 +132,11 @@ color: white;
     justify-content: space-between;
     flex-direction: row;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
 }
 .city{
     width: 48%;
-    height: 50px;
+    min-height: 50px;
 }
 .state{
     display: flex;
@@ -150,19 +150,17 @@ color: white;
 }
 .state select{
     padding: 0px 10px;
-    height: 30px;
+    min-height: 30px;
 }
 
 .zip{
     width: 100%;
-    height: 50px;
+    min-height: 50px;
 }
 .phone-number{
     width: 100%;
-    height: 50px;
+    min-height: 50px;
 }
-
-
 
 .credit-debit-display{
     display: flex;
@@ -172,7 +170,7 @@ color: white;
     margin-top: 2%;
     border-radius: 5px;
     width: 400px;
-    height: 350px;
+    min-height: 350px;
     padding: 10px 15px;
     background-color: white;
 }
@@ -224,7 +222,7 @@ color: white;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 60px;
+    min-height: 60px;
     /* background-color: aquamarine; */
 }
 
@@ -232,21 +230,21 @@ color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 50px;
+    min-height: 50px;
 }
 .card-exp{
     width: 180px;
-    height: 50px;
+    min-height: 50px;
     /* background-color: aquamarine; */
 }
 .card-cvc{
     width: 180px;
-    height: 50px;
+    min-height: 50px;
     /* background-color: aquamarine; */
 }
 .card-holder-name{
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     /* background-color: aquamarine; */
 }
 .pay-button{
@@ -475,64 +473,19 @@ color: white;
     flex-direction: column;
     justify-content: space-evenly;
     width: 100%;
-    height: 5vh;
+    min-height: 5vh;
 }
 .words-instruction{
     text-align: center;
      font-size: 18.3px;
 }
-/* <option value="">AL</option>
-    <option value="">AK</option>
-    <option value="">AZ</option>
-    <option value="">AR</option>
-    <option value="">AS</option>
-    <option value="">CA</option>
-    <option value="">CO</option>
-    <option value="">CT</option>
-    <option value="">DE</option>
-    <option value="">DC</option>
-    <option value="">FL</option>
-    <option value="">GA</option>
-    <option value="">GU</option>
-    <option value="">HI</option>
-    <option value="">ID</option>
-    <option value="">IL</option>
-    <option value="">IN</option>
-    <option value="">IA</option>
-    <option value="">KS</option>
-    <option value="">KY</option>
-    <option value="">LA</option>
-    <option value="">ME</option>
-    <option value="">MD</option>
-    <option value="">MA</option>
-    <option value="">MI</option>
-    <option value="">MN</option>
-    <option value="">MS</option>
-    <option value="">MO</option>
-    <option value="">MT</option>
-    <option value="">NE</option>
-    <option value="">NV</option>
-    <option value="">NH</option>
-    <option value="">NJ</option>
-    <option value="">NM</option>
-    <option value="">NY</option>
-    <option value="">NC</option>
-    <option value="">ND</option>
-    <option value="">OH</option>
-    <option value="">OK</option>
-    <option value="">OR</option>
-    <option value="">PA</option>
-    <option value="">PR</option>
-    <option value="">RI</option>
-    <option value="">SC</option>
-    <option value="">SD</option>
-    <option value="">TN</option>
-    <option value="">TX</option>
-    <option value="">UT</option>
-    <option value="">VT</option>
-    <option value="">VA</option>
-    <option value="">VI</option>
-    <option value="">WA</option>
-    <option value="">WV</option>
-    <option value="">WI</option>
-    <option value="">WY</option> */
+.error-message-container {
+    color: red;
+    /* margin-top: 5px; Space between input and error message */
+    font-size: 1.0rem; /* Adjust font size */
+    height: 20px;
+    display: none;
+}
+body{
+    background-color: #282828;
+}

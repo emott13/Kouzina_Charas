@@ -65,20 +65,20 @@ document.addEventListener("DOMContentLoaded", function () {
         if(!inCheckout) return;                                              //<-------------------------exit if not in checkout flow
         inCheckout = false;                                                  //<-------------------------exit checkout flow
 
-        //intial display states
+       //restores the payment section and button  holder
+        paymentSection.innerHTML = initialState.paymentSectionHTML;
+
+         //intial display states
         pickUpButton.style.display = initialState.pickUpDisplay;
         deliveryButton.style.display = initialState.deliveryDisplay;
 
-        //restores the payment section and button  holder
-        paymentSection.innerHTML = initialState.paymentSectionHTML;
 
         initialButtonHolderDisplay = document.querySelector(".button-holder");
         pickUpButton = document.querySelector(".pick-up");
         deliveryButton = document.querySelector(".Delivery");
+        undoButton = document.querySelector('.undo');
 
         PaymentButtonListener();
-
-        undoButton = document.querySelector('.undo');
         undoButton.addEventListener("click", UndoAction);
     }
 
@@ -91,25 +91,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if(isDelivery){
         cashDisplay.innerHTML =`
-        <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
+         <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
             <div class="person-info">
-                <div class="user">
-                    <label for="">Name for Order:</label>
-                    <input type="text" placeholder="Ex: John Doe">
+                <div class="name-of-order">
+                <label for="">Name for Order:</label>
+                <input type="text" placeholder="Ex: John Doe">
+                <div class="error-message-container name-of-order-error"></div>
                 </div>
-                <div class="phone-number">
-                    <label for="">Phone:</label>
-                    <input type="text" placeholder="Enter phone number">
-                </div>
+                
                 <div class="address">
                     <label for="">Street</label>
                     <input type="text" name="" placeholder="123 N Main St">
                     <input type="text" name="" placeholder="Apartment, suite, etc. (optional)">
+                    <div class="error-message-container street-address-error"></div>
                 </div>
                 <div class="city-state">
                     <div class="city">
                         <label for="">City:</label>
                         <input type="text" placeholder="Enter city">
+                        <div class="error-message-container city-error"></div>
                     </div>
                     <div class="state">
                         <label for="">State:</label>
@@ -117,82 +117,38 @@ document.addEventListener("DOMContentLoaded", function () {
                             <option value="">-----Select State-----</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <option value="AR">Arkansas</option>
-                            <option value="AS">American Samoa</option>
-                            <option value="CA">California</option>
-                            <option value="CO">Colorado</option>
-                            <option value="CT">Connecticut</option>
-                            <option value="DE">Delaware</option>
-                            <option value="DC">District of Columbia</option>
-                            <option value="FL">Florida</option>
-                            <option value="GA">Georgia</option>
-                            <option value="GU">Guam</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="ID">Idaho</option>
-                            <option value="IL">Illinois</option>
-                            <option value="IN">Indiana</option>
-                            <option value="IA">Iowa</option>
-                            <option value="KS">Kansas</option>
-                            <option value="KY">Kentucky</option>
-                            <option value="LA">Louisiana</option>
-                            <option value="ME">Maine</option>
-                            <option value="MD">Maryland</option>
-                            <option value="MA">Massachusetts</option>
-                            <option value="MI">Michigan</option>
-                            <option value="MN">Minnesota</option>
-                            <option value="MS">Mississippi</option>
-                            <option value="MO">Missouri</option>
-                            <option value="MT">Montana</option>
-                            <option value="NE">Nebraska</option>
-                            <option value="NV">Nevada</option>
-                            <option value="NH">New Hampshire</option>
-                            <option value="NJ">New Jersey</option>
-                            <option value="NM">New Mexico</option>
-                            <option value="NY">New York</option>
-                            <option value="NC">North Carolina</option>
-                            <option value="ND">North Dakota</option>
-                            <option value="OH">Ohio</option>
-                            <option value="OK">Oklahoma</option>
-                            <option value="OR">Oregon</option>
-                            <option value="PA">Pennsylvania</option>
-                            <option value="PR">Puerto Rico</option>
-                            <option value="RI">Rhode Island</option>
-                            <option value="SC">South Carolina</option>
-                            <option value="SD">South Dakota</option>
-                            <option value="TN">Tennessee</option>
-                            <option value="TX">Texas</option>
-                            <option value="UT">Utah</option>
-                            <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>
-                            <option value="VI">Virgin Islands</option>
-                            <option value="WA">Washington</option>
-                            <option value="WV">West Virginia</option>
-                            <option value="WI">Wisconsin</option>
-                            <option value="WY">Wyoming</option>
                         </select>
-                    </div>        
-            </div>
+                        <div class="error-message-container state-error"></div>
+                    </div> 
+                </div> 
+                <div class="phone-number">
+                    <label for="">Phone:</label>
+                    <input type="text" placeholder="Enter phone number">
+                    <div class="error-message-container phone-number-error"></div>
+                </div> 
                 <div class="zip">
-                        <label for="">ZIP code:</label>
-                        <input type="text" placeholder="Enter ZIP code">
-                </div>  
+                    <label for="">ZIP code:</label>
+                    <input type="text" placeholder="Enter ZIP code">
+                    <div class="error-message-container zip-error"></div>
+                </div>     
             </div>
             <div class="checkout-button-holder">
-                <button class="place-to-complete delivery-cash">Place Order</button>
+                <button class="place-to-complete">Place Order</button>
             </div>`;
         }else{
             cashDisplay.innerHTML = `
-        <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
+            <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
             <div class="person-info">
-                <div class="user">
+                <div class="name-of-order">
                     <label for="">Name for Order:</label>
                     <input type="text" placeholder="Ex: John Doe">
+                    <div class="error-message-container name-of-order-error"></div>
                 </div>
                 <div class="phone-number">
                     <label for="">Phone:</label>
                     <input type="text" placeholder="Enter phone number">
-                </div>        
+                    <div class="error-message-container phone-number-error"></div>
+                </div>      
             </div>
             </div>
             <div class="checkout-button-holder">
@@ -203,22 +159,36 @@ document.addEventListener("DOMContentLoaded", function () {
         paymentSection.innerHTML = "";
         paymentSection.appendChild(cashDisplay);
         
-        validatePersonalInfo(paymentSection)
+        enforceInputLimitsPersonalInformation(cashDisplay);
 
         let newUndoButton = cashDisplay.querySelector('.undo');
-        newUndoButton.addEventListener('click', UndoAction);
-       
-        let pickUpCashOrder = cashDisplay.querySelector('.place-to-complete-pick-up-cash');// change this
-        if(pickUpCashOrder){
-            pickUpCashOrder.addEventListener('click', function() {
-                cashDisplay.style.display = 'none';
-                displayPickUpCashOrder();
-            });
+        if (newUndoButton) {
+            newUndoButton.addEventListener('click', UndoAction);
+        }else {
+            console.error("Undo button not found");
         }
         
-        
-    }//////////////////////////////<--------------------------- for cash pick-up payment give item quantitiy, item, item price, and total price
-    ///////////////////////////////<------------------------ it Says go up to the register and provide name of order and pay before receving item
+        const placeOrderButton = cashDisplay.querySelector('.place-to-complete');
+        const cashOrderButton = cashDisplay.querySelector('.place-to-complete-pick-up-cash');
+        if (placeOrderButton) {
+            placeOrderButton.addEventListener('click', function () {
+                const isValid = validatePersonalInfo(paymentSection);
+                if (isValid) {
+                    cashDisplay.style.display = 'none';
+                    displayDeliveryCash()
+                }
+            });
+        }else if(cashOrderButton) {
+            cashOrderButton.addEventListener('click', function () {
+                const isValid = validatePersonalInfo(paymentSection);
+                if (isValid) {
+                    cashDisplay.style.display = 'none';
+                    displayPickUpCashOrder()
+                }
+            }); 
+        }
+    }
+   
 
 
     function CreditDebitPayment(buttonHolderDisplay, creditDebitButton, cashButton) {
@@ -233,35 +203,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="title">
                     <label for="">CREDIT CARD PAYMENT</label>
                     <div class="card-img-holder">
-                        <div class="card-img card-1">
-                            <img src="" alt="">
-                        </div>
+                        <div class="card-img card-1"></div>
                         <div class="card-img card-2"></div>
                         <div class="card-img card-3"></div>
                     </div>
                 </div>
+                
                 <div class="card-number">
                     <label for="">CARD NUMBER</label>
-                    <input type="text" placeholder="**** **** **** ****">
-                </div>
+                    <input type="text" placeholder="XXXX XXXX XXXX XXXX">
+                    <div class="error-message-container card-number-error"></div>
+                </div>  
+                
                 <div class="card-sect">
                     <div class="card-exp">
                         <label for="">CARD EXPIRY</label>
                         <input type="text" placeholder="--/--">
+                        <div class="error-message-container card-exp-error"></div>
                     </div>
+                    
                     <div class="card-cvc">
                         <label for="">CARD CVC</label>
                         <input type="text" placeholder="***">
+                        <div class="error-message-container card-cvc-error"></div>
                     </div>
+                    
                 </div>
                 <div class="card-holder-name">
                     <label for="">CARD HOLDER NAME</label>
                     <input type="text">
+                    <div class="error-message-container card-holder-name-error"></div>
                 </div>
                 <div class="zip">
                     <label for="">ZIP code:</label>
                     <input type="text" placeholder="Enter ZIP code">
-                </div>    
+                    <div class="error-message-container zip-error"></div>
+                </div>
+                
             </div>
             <div class="checkout-button-holder">
                 <button class="place-order">NEXT</button>
@@ -269,145 +247,174 @@ document.addEventListener("DOMContentLoaded", function () {
 
         paymentSection.append(paymentDisplay);
 
-        // validation for card inputs
-        validateCardInput(paymentDisplay);
+        enforceInputLimits(paymentDisplay);
 
         let nextButton = paymentDisplay.querySelector(".place-order");
-        nextButton.addEventListener("click", function () {
-            paymentDisplay.style.display = "none";
-            showUserInfo();
-        });
+        if(!nextButton){
+            console.error("Next button not found")
+        } else{
+                nextButton.addEventListener("click", function () {
+                    const isValid = validateCardInput(paymentDisplay)
+                    if(isValid){
+                        paymentDisplay.style.display = "none";
+                        showUserInfo();
+                    }
+                });
+            }
     }
 
     function validateCardInput(PaymentDisplay){
         const cardNumber = PaymentDisplay.querySelector(".card-number input");
         const cardExpiry = PaymentDisplay.querySelector(".card-exp input");
         const cardCVC = PaymentDisplay.querySelector(".card-cvc input");
+        const cardHolderName = PaymentDisplay.querySelector(".card-holder-name input");
         const zipCode = PaymentDisplay.querySelector(".zip input");
-        const nextButton = PaymentDisplay.querySelector(".place-order");
 
-        function updateNextButtonState(){
-            const isCardNumberValid = cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
-            const isCardExpiryValid = /^(\d{2}\/\d{2})$/.test(cardExpiry.value); // validate MM/YY format
-            const isCardCVCValid = cardCVC.value.length >= 3 && cardCVC.value.length <= 4;
-            const isZipCodeValid = zipCode.value.length >= 5;
+        const cardNumberError = PaymentDisplay.querySelector(".card-number-error");
+        const cardExpiryError = PaymentDisplay.querySelector(".card-exp-error");
+        const cardCVCError = PaymentDisplay.querySelector(".card-cvc-error");
+        const cardHolderNameError = PaymentDisplay.querySelector(".card-holder-name-error");
+        const zipCodeError = PaymentDisplay.querySelector(".zip-error");
 
-            console.log("Validation State:");
-            console.log("Card Number Valid:", isCardNumberValid, `(${cardNumber.value})`);
-            console.log("Card Expiry Valid:", isCardExpiryValid, `(${cardExpiry.value})`);
-            console.log("Card CVC Valid:", isCardCVCValid, `(${cardCVC.value})`);
-            console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
-            
-            if (isCardNumberValid && isCardExpiryValid && isCardCVCValid && isZipCodeValid) {
-                nextButton.disabled = false;
-                console.log("All fields valid. NEXT button enabled.");
-            } else {
-                nextButton.disabled = true;
-                console.log("Validation failed. NEXT button disabled.");
-            }
+        let isValid = true;
+
+        function displayError(errorContainer,message){
+            errorContainer.textContent = message;
+            errorContainer.style.display = "block";
         }
 
-        //card number Validation
-        cardNumber.addEventListener("input", function(){
-            this.value = this.value.replace(/\D/g, '');// Allow only numbers
-            if(this.value.length > 19){this.value = this.value.slice(0, 19);}
-            updateNextButtonState();
-        });
+        function clearError(errorContainer){
+           errorContainer.textContent = "";
+           errorContainer.style.display = "none";
+        }
 
-        //Card Expiry Validation
-        cardExpiry.addEventListener("input", function(){
-            this.value = this.value.replace(/[^0-9/]/g, '');// Allow numbers and "/"
-            if(this.value.length > 5){this.value = this.value.slice(0, 5);}
-            updateNextButtonState();
-        });
+        if(cardNumber.value.length < 13 || cardNumber.value.length > 19){
+            displayError(cardNumberError, "Card number must be 13-19 digits.");
+            isValid = false;
+        }
+        else{
+            clearError(cardNumberError);
+        }
+        
+        if (!/^(\d{2}\/\d{2})$/.test(cardExpiry.value)) {
+            displayError(cardExpiryError, "Expiry MM/YY format.");
+            isValid = false;
+        }
+        else{
+            clearError(cardExpiryError);
+        }
+        
+        if(cardCVC.value.length < 3 || cardCVC.value.length > 4){
+            displayError(cardCVCError, "CVC must be 3-4 digits.");
+            isValid = false;
+        }else{
+            clearError(cardCVCError);
+        }
 
-        //Card CVC Validation
-        cardCVC.addEventListener("input", function(){
-            this.value = this.value.replace(/\D/g, '');// Allow only numbers
-            if(this.value.length > 4){this.value = this.value.slice(0, 4);}
-            updateNextButtonState();
-        });
+        if(cardHolderName.value.trim() === ""){
+            displayError(cardHolderNameError, "Please enter cardholder name");
+            isValid = false;
+        }else{
+            clearError(cardHolderNameError);
+        }
 
-        zipCode.addEventListener("input", function(){
-            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');// Allows alphanumberic
-            if(this.value.length > 10){this.value = this.value.slice(0, 10);}
-            updateNextButtonState();
-        });
-
+        if(zipCode.value.length < 5){
+            displayError(zipCodeError, "ZIP code must be at least 5 digits.");
+            isValid = false;
+        }else{
+            clearError(zipCodeError);
+        }
+        
+        return isValid;
     }
 
-    function validatePersonalInfo(PaymentDisplay){
-        const phoneNumber = PaymentDisplay.querySelector(".phone-number input");//phone
-        const streetAdress = PaymentDisplay.querySelector(".address input");//street  
-        const city = PaymentDisplay.querySelector(".city input");//city 
-        const state = PaymentDisplay.querySelector(".state select");//state
-        const zipCode = PaymentDisplay.querySelector(".zip input");//zip code
-        const placeOrder = PaymentDisplay.querySelector(".place-to-complete");
+    function enforceInputLimits(paymentDisplay){
+        const cardNumber = paymentDisplay.querySelector(".card-number input");
+        const cardExpiry = paymentDisplay.querySelector(".card-exp input");
+        const cardCVC = paymentDisplay.querySelector(".card-cvc input");
+        const cardHolderName = paymentDisplay.querySelector(".card-holder-name input");
+        const zipCode = paymentDisplay.querySelector(".zip input"); 
 
-        console.log({
-            phoneNumber,
-            streetAdress,
-            city,
-            state,
-            zipCode,
-            placeOrder,
-        });
+        const cardNumberError = paymentDisplay.querySelector(".card-number-error");
+        const cardExpiryError = paymentDisplay.querySelector(".card-exp-error");
+        const cardCVCError = paymentDisplay.querySelector(".card-cvc-error");
+        const cardHolderNameError = paymentDisplay.querySelector(".card-holder-name-error");
+        const zipCodeError = paymentDisplay.querySelector(".zip-error");
+        
+    function limitInput(event, maxLength) {
+        const input = event.target;
+        input.value = input.value.slice(0, maxLength); // restrict length
+    }
 
-        if(!phoneNumber || !streetAdress || !city || !state || !zipCode || !placeOrder){
-            console.error("One or more elements for validation are missing.");
+    function enforceNumberInput(event) {
+        const input = event.target;
+        input.value = input.value.replace(/\D/g, ''); // remove non-numeric characters
+    }
+
+   function validateAndClearError(input, errorContainer, validationFn) {
+        if (!input) { // Check if input is null
+            console.error("Input element not found for validation");
             return;
         }
-
-        function updatePlaceOrderButtonState(){// comeback and attach correct validation inputs
-            const isPhoneNumberValid = /^\d{10}$/.test(phoneNumber.value);//ensures 10 digits
-            const isAddressValid = streetAdress.value.trim().length > 0;//not empty
-            const isCityValid = city.value.trim().length > 0;//not empty
-            const isStateValid = state ? state.value.trim().length > 0 && state.value !== "" : true;// make sure state is selected
-            const isZipCodeValid = /^\d{5}$/.test(zipCode.value); // 5-digit-zipCode
-
-            console.log("Validation State of :");
-            console.log("Address Valid:", isAddressValid, `(${streetAdress.value})`);
-            console.log("City Valid:", isCityValid, `(${city.value})`);
-            console.log("State Valid:", isStateValid, `(${state.value})`);
-            console.log("Phone Number Valid:", isPhoneNumberValid, `(${phoneNumber.value})`);
-            console.log("ZIP Code Valid:", isZipCodeValid, `(${zipCode.value})`);
-            
-            if (isPhoneNumberValid && isAddressValid && isCityValid && isStateValid && isZipCodeValid) {
-                placeOrder.disabled = false;
-                console.log("All fields valid. PLACEORDER button enabled.");
-            } else {
-                placeOrder.disabled = true;
-                console.log("Validation failed. PLACEORDER button disabled.");
+        input.addEventListener('input', (e) => {
+            validationFn(e);
+            if(validationFn(e)){
+                errorContainer.textContent = '';
+                errorContainer.style.display = 'none';
             }
-        }
-
-        //phone number Validation
-        phoneNumber.addEventListener("input", function(){
-            this.value = this.value.replace(/\D/g, '');// Allow only numbers
-            if(this.value.length > 10){this.value = this.value.slice(0, 10);}
-            updatePlaceOrderButtonState();
         });
+   }
 
-        //address Validation
-        streetAdress.addEventListener("input", updatePlaceOrderButtonState());
+    function validateCardHolderName(){
+        return /^[a-zA-Z\s'-]+$/.test(cardHolderName.value.trim());;
+    }
 
-        //city Validation
-        city.addEventListener("input", updatePlaceOrderButtonState());
-        //state Validation
-        if(state){
-            state.addEventListener("change", function(){
-                console.log("State changed:", state.value)
-                updatePlaceOrderButtonState();
-            });
-        }
-        //zipCode Validation
-        zipCode.addEventListener("input", function(){
-            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');// Allows alphanumberic
-            if(this.value.length > 5){this.value = this.value.slice(0, 5);}
-            updatePlaceOrderButtonState();
-        });
-        //inital state update
-        updatePlaceOrderButtonState();
+   function validateCardNumber() {
+        return cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
+    }
+
+    function validateCardExpiry() {
+        return /^(\d{2}\/\d{2})$/.test(cardExpiry.value);
+    }
+
+    function validateCardCVC() {
+        return cardCVC.value.length >= 3 && cardCVC.value.length <= 4;
+    }
+
+    function validateZipCode() {
+        return zipCode.value.length >= 5;
+    }
+
+    // Real-time validation with error display
+    validateAndClearError(cardNumber, cardNumberError, validateCardNumber);
+    validateAndClearError(cardExpiry, cardExpiryError, validateCardExpiry);
+    validateAndClearError(cardCVC, cardCVCError, validateCardCVC);
+    validateAndClearError(cardHolderName, cardHolderNameError, validateCardHolderName);
+    validateAndClearError(zipCode, zipCodeError, validateZipCode);
+
+    // Add input restrictions
+    cardNumber.addEventListener("input", (e) => {
+        enforceNumberInput(e);
+        limitInput(e, 19);
+    });
+
+    cardExpiry.addEventListener("input", (e) => {
+        limitInput(e, 5);
+    });
+
+    cardCVC.addEventListener("input", (e) => {
+        enforceNumberInput(e);
+        limitInput(e, 4);
+    });
+
+    cardHolderName.addEventListener("input", (e) => {
+        limitInput(e, 50);
+    })
+
+    zipCode.addEventListener("input", (e) => {
+        enforceNumberInput(e);
+        limitInput(e, 5);
+    });
     }
 
     function showUserInfo() {
@@ -415,17 +422,23 @@ document.addEventListener("DOMContentLoaded", function () {
         userInfo.classList.add(".payment");
         userInfo.innerHTML = `
             <div class="person-info">
+                <div class="name-of-order">
                 <label for="">Name for Order:</label>
                 <input type="text" placeholder="Ex: John Doe">
+                <div class="error-message-container name-of-order-error"></div>
+                </div>
+                
                 <div class="address">
                     <label for="">Street</label>
                     <input type="text" name="" placeholder="123 N Main St">
                     <input type="text" name="" placeholder="Apartment, suite, etc. (optional)">
+                    <div class="error-message-container street-address-error"></div>
                 </div>
                 <div class="city-state">
                     <div class="city">
                         <label for="">City:</label>
                         <input type="text" placeholder="Enter city">
+                        <div class="error-message-container city-error"></div>
                     </div>
                     <div class="state">
                         <label for="">State:</label>
@@ -433,87 +446,138 @@ document.addEventListener("DOMContentLoaded", function () {
                             <option value="">-----Select State-----</option>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <option value="AR">Arkansas</option>
-                            <option value="AS">American Samoa</option>
-                            <option value="CA">California</option>
-                            <option value="CO">Colorado</option>
-                            <option value="CT">Connecticut</option>
-                            <option value="DE">Delaware</option>
-                            <option value="DC">District of Columbia</option>
-                            <option value="FL">Florida</option>
-                            <option value="GA">Georgia</option>
-                            <option value="GU">Guam</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="ID">Idaho</option>
-                            <option value="IL">Illinois</option>
-                            <option value="IN">Indiana</option>
-                            <option value="IA">Iowa</option>
-                            <option value="KS">Kansas</option>
-                            <option value="KY">Kentucky</option>
-                            <option value="LA">Louisiana</option>
-                            <option value="ME">Maine</option>
-                            <option value="MD">Maryland</option>
-                            <option value="MA">Massachusetts</option>
-                            <option value="MI">Michigan</option>
-                            <option value="MN">Minnesota</option>
-                            <option value="MS">Mississippi</option>
-                            <option value="MO">Missouri</option>
-                            <option value="MT">Montana</option>
-                            <option value="NE">Nebraska</option>
-                            <option value="NV">Nevada</option>
-                            <option value="NH">New Hampshire</option>
-                            <option value="NJ">New Jersey</option>
-                            <option value="NM">New Mexico</option>
-                            <option value="NY">New York</option>
-                            <option value="NC">North Carolina</option>
-                            <option value="ND">North Dakota</option>
-                            <option value="OH">Ohio</option>
-                            <option value="OK">Oklahoma</option>
-                            <option value="OR">Oregon</option>
-                            <option value="PA">Pennsylvania</option>
-                            <option value="PR">Puerto Rico</option>
-                            <option value="RI">Rhode Island</option>
-                            <option value="SC">South Carolina</option>
-                            <option value="SD">South Dakota</option>
-                            <option value="TN">Tennessee</option>
-                            <option value="TX">Texas</option>
-                            <option value="UT">Utah</option>
-                            <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>
-                            <option value="VI">Virgin Islands</option>
-                            <option value="WA">Washington</option>
-                            <option value="WV">West Virginia</option>
-                            <option value="WI">Wisconsin</option>
-                            <option value="WY">Wyoming</option>
                         </select>
-                    </div>
+                        <div class="error-message-container state-error"></div>
+                    </div> 
                 </div> 
                 <div class="phone-number">
                     <label for="">Phone:</label>
                     <input type="text" placeholder="Enter phone number">
+                    <div class="error-message-container phone-number-error"></div>
                 </div> 
                 <div class="zip">
-                        <label for="">ZIP code:</label>
-                        <input type="text" placeholder="Enter ZIP code">
+                    <label for="">ZIP code:</label>
+                    <input type="text" placeholder="Enter ZIP code">
+                    <div class="error-message-container zip-error"></div>
                 </div>     
             </div>
             <div class="checkout-button-holder">
                 <button class="place-to-complete">Place Order</button>
             </div>`;
-        
+    
+        paymentSection.innerHTML = ""; // Clear existing content
         paymentSection.append(userInfo);
 
-        validatePersonalInfo(userInfo)
+        enforceInputLimitsPersonalInformation(userInfo);
 
-        let CheckoutButton = userInfo.querySelector('.place-to-complete');
-        CheckoutButton.addEventListener("click", function () {
-            userInfo.style.display = "none";
-            displayCheckoutItems();
-            addTip();
+        const placeOrderButton = userInfo.querySelector(".place-to-complete");
+        placeOrderButton.addEventListener("click", function () {
+            const isValid = validatePersonalInfo(userInfo)
+            if(isValid){
+                userInfo.style.display = "none";
+                displayCheckoutItems();
+                addTip();
+            }
+            
         });
     }
 
+    function validatePersonalInfo(PaymentDisplay) {
+        const NameOfOrder = PaymentDisplay.querySelector(".name-of-order input");
+        const phoneNumber = PaymentDisplay.querySelector(".phone-number input");
+        const streetAddress = PaymentDisplay.querySelector(".address input");
+        const city = PaymentDisplay.querySelector(".city input");
+        const state = PaymentDisplay.querySelector(".state select");
+        const zipCode = PaymentDisplay.querySelector(".zip input");
+    
+        const NameOfOrderError = PaymentDisplay.querySelector(".name-of-order-error");
+        const phoneNumberError = PaymentDisplay.querySelector(".phone-number-error");
+        const streetAddressError = PaymentDisplay.querySelector(".street-address-error");
+        const cityError = PaymentDisplay.querySelector(".city-error");
+        const stateError = PaymentDisplay.querySelector(".state-error");
+        const zipCodeError = PaymentDisplay.querySelector(".zip-error");
+    
+        let isValid = true;
+    
+        // Helper to display errors
+        const displayError = (errorContainer, message) => {
+            if (errorContainer) {
+                errorContainer.textContent = message;
+                errorContainer.style.display = "block";
+            }
+            isValid = false;
+        };
+
+        const hideError = (errorContainer) =>{
+            if (errorContainer) {
+                errorContainer.style.display = "none";
+            }
+        }
+    
+        const validateField = (field, errorContainer, condition, errorMessage) => {
+            if (field && !condition(field.value.trim())) {
+                displayError(errorContainer, errorMessage);
+            }else{
+                hideError(errorContainer);
+            }
+        };
+    
+        // Validate only fields that exist
+        if (NameOfOrder) validateField(NameOfOrder, NameOfOrderError, (value) => value !== "", "Please enter name of order");
+        if (phoneNumber) validateField(phoneNumber, phoneNumberError, (value) => /^\d{10}$/.test(value), "Phone number must be 10 digits");
+        if (streetAddress) validateField(streetAddress, streetAddressError, (value) => value !== "", "Street address cannot be empty");
+        if (city) validateField(city, cityError, (value) => value !== "", "City cannot be empty");
+        if (state) validateField(state, stateError, (value) => value !== "", "Please select a state");
+        if (zipCode) validateField(zipCode, zipCodeError, (value) => /^\d{5}$/.test(value), "ZIP code must be 5 digits");
+    
+        console.log("Validation Result: ", isValid);
+        return isValid;
+    }
+    
+
+    function enforceInputLimitsPersonalInformation(userInformation){
+        const inputConfig = {
+            ".name-of-order input": {limit : 50},
+            ".phone-number input": {limit : 10, enforceNumbers : true},
+            ".address input": {limit : 100},
+            ".city input": {limit : 50},
+            ".state select": {isDropdown : true},
+            ".zip input": {limit : 5, enforceNumbers : true}
+        }
+
+        for(const [selector, config] of Object.entries(inputConfig)){
+            const input = userInformation.querySelector(selector);
+
+            if(input){
+                if(config.isDropdown){
+                    input.addEventListener("change", (e) =>{
+                        console.log(`${selector} changed:`, e.target.value);
+                        validatePersonalInfo(userInformation); 
+                    })
+                }else{
+                    input.addEventListener("input", (e) =>{
+                        if(config.enforceNumbers){enforceNumberInput(e)}
+                        if(config.limit){limitInput(e, config.limit)};
+                        validatePersonalInfo(userInformation); 
+                    })
+                }
+            }else{
+                console.warn(`input not found for selector: ${selector}`)
+            }
+        }
+
+        function limitInput(event, maxLength){
+            const input = event.target;
+            input.value = input.value.slice(0, maxLength); //restrict length
+        }
+
+        function enforceNumberInput(event){
+            const input = event.target;
+            input.value = input.value.replace(/\D/g, ''); //removing non-numeric characters
+        }
+
+    }
+    
 
     function displayCheckoutItems(){
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -569,7 +633,7 @@ document.addEventListener("DOMContentLoaded", function () {
             itemDiv.innerHTML = `
                 <p>${item.quantity || 1}x</p>
                 <p>${item.name}</p>
-                <p>${item.price}</p>
+                <p>${convertPrice(item.price)}</p>
             `;
             checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
         });
@@ -588,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function () {
         totalContainer.innerHTML = `
         <div class="total">
             <h3>Total:</h3>
-            <h2>€${totalPrice.toFixed(2)}</h2>
+            <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
         </div>
         `;
         console.log(cart);
@@ -609,9 +673,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let tipDisplay2 = document.querySelector('.amount2')
         let tipDisplay3 = document.querySelector('.amount3')
 
-        if(tipDisplay1){ tipDisplay1.textContent = `€${tip10}`; } 
-        if(tipDisplay2){ tipDisplay2.textContent = `€${tip15}`; }
-        if(tipDisplay3){ tipDisplay3.textContent = `€${tip20}`; }
+        if(tipDisplay1){ tipDisplay1.textContent = `${convertPrice(tip10)}`; } 
+        if(tipDisplay2){ tipDisplay2.textContent = `${convertPrice(tip15)}`; }
+        if(tipDisplay3){ tipDisplay3.textContent = `${convertPrice(tip20)}`; }
 
         const tipButtons = document.querySelectorAll('.tip-percentages');
         tipButtons.forEach(button =>{
@@ -625,8 +689,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     let customTip = parseFloat(prompt('Enter custom tip amount:'));
                     if(!isNaN(customTip)){
                         updateTotalWithTip(customTip);
-                        CustomTipDisplay.textContent = `Custom Tip: €${customTip}`
+                        CustomTipDisplay.textContent = `Custom Tip: €${convertPrice(customTip)}`
                         CustomTipDisplay.style.display = 'block';
+
+                        localStorage.setItem('customTip', customTip);;
                         return;
                     } else{
                         alert('please enter a valid number');
@@ -634,15 +700,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 } else if(this.textContent === 'No Tip'){
                     CustomTipDisplay.style.display = 'none';
+                    localStorage.removeItem('customTip');
                 }
                  const tipAmount = totalValue * (tipPercentage/100);
+                 localStorage.setItem('customTip', tipAmount.toFixed(2)); 
                  updateTotalWithTip(tipAmount);
             });
         });
     
     function updateTotalWithTip(tipAmount){
         const newTotal = totalValue + tipAmount;
-        totalDisplay.textContent = `€${newTotal.toFixed(2)}`;
+        totalDisplay.textContent = `${convertPrice(newTotal.toFixed(2))}`;
     }
 }
     
@@ -662,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                     <div class="total-container">
                     </div>
-                     <div class="instructions-pickup-cash"><div class="words-instruction"><p>Please go to the register and provide the name for your order.</p></div></div>
+                    <div class="instructions-pickup-cash"><div class="words-instruction"><div><h3>Delivery Time: ${waitTime()}</h3></div></div></div>
                 </div>
             </div>
         </div>
@@ -689,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function () {
             itemDiv.innerHTML = `
                 <p>${item.quantity || 1}x</p>
                 <p>${item.name}</p>
-                <p>${item.price}</p>
+                <p>${convertPrice(item.price)}</p>
             `;
             checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
         });
@@ -708,7 +776,7 @@ document.addEventListener("DOMContentLoaded", function () {
         totalContainer.innerHTML = `
         <div class="total">
             <h3>Total:</h3>
-            <h2>€${totalPrice.toFixed(2)}</h2>
+            <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
         </div>
         `;
         console.log(cart);
@@ -732,7 +800,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="total-container">
                     
                     </div>
-                     <div class="instructions-pickup-cash"><div class="words-instruction"><p>Please go to the register and provide the name for your order.</p></div></div>
+                     <div class="instructions-pickup-cash"><div class="words-instruction"><p>Please provide name of order at register.</p><div><h3>Pickup Time: ${waitTime()}</h3></div></div></div>
                 </div>
             </div>
         </div>
@@ -759,7 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
             itemDiv.innerHTML = `
                 <p>${item.quantity || 1}x</p>
                 <p>${item.name}</p>
-                <p>${item.price}</p>
+                <p>${convertPrice(item.price)}</p>
             `;
             checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
         });
@@ -768,7 +836,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const quantity = item.quantity || 1;
             const price = parseFloat(item.price);
             if(isNaN(price)){
-                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, convertPrice(item.price));
                 return sum;
             }
             return sum + (price * quantity);
@@ -778,11 +846,39 @@ document.addEventListener("DOMContentLoaded", function () {
         totalContainer.innerHTML = `
         <div class="total">
             <h3>Total:</h3>
-            <h2>€${totalPrice.toFixed(2)}</h2>
+            <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
         </div>
         `;
         console.log(cart);
 
+    }
+
+    function convertPrice(price){
+        let split = String(price).split('.');
+        let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
+        if(split[0] == 0){return '0€'}
+        return split[0] + ',' + end + '€'; 
+    }
+
+    function waitTime(){                                                          //<------------------------------------will be used for all the checkout diplay function delivery and pickup times
+        const startTime = new Date();
+        startTime.setMinutes(startTime.getMinutes() + 35);
+
+        const endTime = new Date(startTime);
+        endTime.setMinutes(endTime.getMinutes() + 5);
+
+        function formatTime(date){
+            let h = date.getHours();
+            var m = String(date.getMinutes()).padStart(2,'0');
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12; // Convert 0 to 12 for 12-hour clock
+            return `${h}:${m} ${ampm}`;
+        }
+
+        const formattedStartTime = formatTime(startTime);
+        const formattedEndTime = formatTime(endTime);
+
+        return `${formattedStartTime} - ${formattedEndTime}`
     }
 
 });

@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // receipt();
+    receipt();
 });
 
 function receipt(){
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const customTip = parseFloat(localStorage.getItem('customTip')) || 0;
     let receiptItems = document.createElement('div');
     receiptItems.classList.add(".receipt");
     const receiptContainerDisplay = document.querySelector(".receipt");
@@ -18,7 +19,15 @@ function receipt(){
         Address <br>
         ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}  <br>
         ---------------------------------------------</p></div>
+    <div class="receipt-item-cata"><p>Qt</p><p>item</p><p>AMT.(€)</p></div>
+     <div class="receipt-item-cata" style="height: 1vh;"><p style="line-height: 3px;">----------------------------------------------------------</p></div>
     <div class="receipt-body">
+    </div>
+    <div class="receipt-total">
+           <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
+           <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
+           <div class="receipt-total-after-sub"><h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3></div>
+           <div class="wait-time"><h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2></div>
     </div>
     <div class="receipt-end"><p>THANK YOU FOR DINING WITH US! <br> 
     PLEASE COME AGAIN</p></div>
@@ -27,13 +36,6 @@ function receipt(){
     
     receiptContainerDisplay.innerHTML = '';
     receiptContainerDisplay.appendChild(receiptItems);
-
-    if(receiptContainerDisplay){
-        receiptContainerDisplay.innerHTML = ``;
-        receiptContainerDisplay.appendChild(receiptItems);
-    }else{
-        console.error("checkoutContainer not found");
-    }
 
     if(cart.length === 0){
         receiptContainerDisplay.innerHTML = `<p>Cart is empty</p>`;
@@ -46,30 +48,10 @@ function receipt(){
         itemDiv.innerHTML = `
             <p>${item.quantity || 1}x</p>
             <p>${item.name}</p>
-            <p>€${item.price}</p>
+            <p>${convertPrice(item.price)}</p>
         `;
         receiptItems.querySelector('.receipt-body').appendChild(itemDiv);
     });
-
-    const totalPrice = cart.reduce((sum, item) => {
-        const quantity = item.quantity || 1;
-        const price = parseFloat(item.price);
-        if(isNaN(price)){
-            console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
-            return sum;
-        }
-        return sum + (price * quantity);
-    }, 0);
-
-    // let totalContainer = document.querySelector(".total-container");
-    // totalContainer.innerHTML = `
-    // <div class="total">
-    //     <h3>Total:</h3>
-    //     <h2>€${totalPrice.toFixed(2)}</h2>
-    // </div>
-    // `;
-    console.log(cart);
-
 }
 
 function time(){
@@ -80,4 +62,32 @@ function time(){
     const ampm = h >= 12 ? 'PM' : 'AM';
     h = h % 12 || 12; // Convert 0 to 12 for 12-hour clock
     return `${h}:${m}:${s} ${ampm}`;
+}
+
+function waitTime(){                                                          //<------------------------------------will be used for all the checkout diplay function delivery and pickup times
+    const startTime = new Date();
+    startTime.setMinutes(startTime.getMinutes() + 35);
+
+    const endTime = new Date(startTime);
+    endTime.setMinutes(endTime.getMinutes() + 5);
+
+    function formatTime(date){
+        let h = date.getHours();
+        var m = String(date.getMinutes()).padStart(2,'0');
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12; // Convert 0 to 12 for 12-hour clock
+        return `${h}:${m} ${ampm}`;
+    }
+
+    const formattedStartTime = formatTime(startTime);
+    const formattedEndTime = formatTime(endTime);
+
+    return `${formattedStartTime} - ${formattedEndTime}`
+}
+
+function convertPrice(price){
+    let split = String(price).split('.');
+    let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
+    if(split[0] == 0){return '0€'}
+    return split[0] + ',' + end + '€'; 
 }
