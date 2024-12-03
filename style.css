@@ -23,7 +23,7 @@ body{
     --color-1: #2c2c2c;
     --color-2: #484b46;
     --color-3: #979d94;
-    --color-4: #ece6da;
+    --color-4: #e3e1d4;
     --color-5: #1e5f21;
     --color-6: #24a82a;
     --color-7: #0032d4;
@@ -32,6 +32,8 @@ body{
     --color-10: #c227ba;
     --color-11: #5F421E;
     --color-12: #795427;
+    --color-13: #e9e8e0;
+    --color-14: #232323;
 
 }
 
@@ -106,7 +108,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url(/Images/Selector/building.webp);
+    background-image: linear-gradient(#00000061, #00000061), url(/Images/Selector/building.webp);
     background-size: cover;
     background-position: 20%;
     min-height: 1000px;
@@ -125,7 +127,7 @@ body{
     font-size: 80px;
     text-align: center;
     letter-spacing: 3px;
-    color: #fff;
+    color: var(--color-13);
 }
 
 .nav{
@@ -133,7 +135,7 @@ body{
     left: 5%;
     top: 2%;
     font-size: 30px;
-    color: #fff;
+    color: var(--color-13);
     cursor: pointer;
 }
 
@@ -142,22 +144,26 @@ body{
     right: 5%;
     top: 1%;
     font-size: 40px;
-    color: #fff;
+    color: var(--color-13);
 }
 
-.intro{
+p.intro{
     display: block;
     position: absolute;
     left: 30%;
-    bottom: 20%;
+    bottom: 30%;
     transform: translate(-50%, -50%);
-    font-family: 'Thasadith';
     font-size: 40px;
     letter-spacing: 2px;
-    font-weight: 500;
-    color: var(--color-7);
-    filter: drop-shadow(4px 4px 5px var(--color-7));
+    font-family: 'Lato';
+    font-weight: 300;
+    color: var(--color-13);
+    filter: drop-shadow(2px 4px 4px var(--color-14));
 }
+
+/* .intro p{
+    font-weight: 900;
+} */
 
 /* select screen */
 
