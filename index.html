@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kouzina Charas</title>
+    <title>Kouzína Charás</title>
+    <link rel="icon" href="Flat_Icons/cooking.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,40 +14,54 @@
 </head>
 <body class="main">
     <div class="image-section">
-        <!-- <div class="headline"> -->
             <h2>Kouzína Charás</h2>
-            <p class="nav">MENU</p>
-            <a href="Manager/Login/login.html" class="admin-login"><img src="/Ion_Icons/person-outline.svg" alt="" class="iconImg"><img src="/Ion_Icons/log-in-outline.svg" alt="" class="iconImg"></a>
+            <p class="nav"><ion-icon name="menu-outline" class="iconImgHeader"></ion-icon></p>
+            <a href="Manager/Login/login.html" class="admin-login"><ion-icon class="iconImgHeader" name="person-outline"></ion-icon><ion-icon class="iconImgHeader" name="log-in-outline"></ion-icon></a>
             <p class="intro">Experience a taste of Greece at <br> the Joyful Kitchen</p>
-        <!-- </div> -->
-    <header class="header">
-        <nav>
-            <ul>
-                <li><img src="Ion_Icons/close-outline.svg" alt="close" class="close"></li>
-                <li><a href="index.html"><img src="/Ion_Icons/storefront-outline.svg" alt="home" class="iconImg">Home</a></li>
-                <li><a href="Menu/Appetizers/appetizers.html" class="food"><img src="Ion_Icons/book-outline.svg" alt="appetizers" class="iconImg">Appetizers</a></li>
-                <li><a href="Menu/Lunch/lunch.html" class="food"><img src="Ion_Icons/book-outline.svg" alt="lunch" class="iconImg">Lunch</a></li>
-                <li><a href="Menu/Dinner/dinner.html" class="food"><img src="Ion_Icons/book-outline.svg" alt="dinner" class="iconImg">Dinner</a></li>
-                <li><a href="Menu/Dessert/dessert.html" class="food"><img src="Ion_Icons/book-outline.svg" alt="dessert" class="iconImg">Dessert</a></li>
-                <li><a href="Menu/Beverages/beverage.html" class="food"><img src="Ion_Icons/book-outline.svg" alt="beverages" class="iconImg">Beverages</a></li>
-                <li><a href="Cart/cart.html"><img src="Ion_Icons/bag-outline.svg" alt="bag" class="iconImg">Bag</a></li>
-                <li><a href=""><img src="Ion_Icons/heart-outline.svg" alt="about" class="iconImg">About Us</a></li>
-                <li><a href=""><img src="Ion_Icons/search-outline.svg" alt="search" class="iconImg">Search</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-
+        <header class="header">
+            <nav>
+                <ul>
+                    <li><img src="Ion_Icons/close-outline.svg" alt="close" class="close"></li>
+                    <li><a href="index.html"><img src="Flat_Icons/restaurant.png" alt="home" class="flatIcon">Home</a></li>
+                    <li><a href="Cart/cart.html"><img src="Flat_Icons/shopping.png" alt="bag" class="flatIcon">Bag</a></li>
+                    <li><a href=""><img src="Flat_Icons/cooking.png" alt="about" class="flatIcon">About Us</a></li>
+                    <li><a href=""><img src="Flat_Icons/transparency.png" alt="search" class="flatIcon">Search</a></li>
+                </ul>
+            </nav>
+        </header>
     </div>
-    <!-- <section class="menu-selector">
-        <div class="selector-grid">
-        <a href="/Menu/Appetizers/appetizers.html"><div class="food-cata"><img src="Images/Selector/gyros.png" class="img-selector"><p>Appetizers</p></div></a>
-        <a href="/Menu/Lunch/lunch.html"><div class="food-cata"><img src="Images/Selector/lunch.png"  class="img-selector"><p>Lunch</p></div></a>
-        <a href="/Menu/Dinner/dinner.html"><div class="food-cata"><img src="Images/Selector/octo.png" alt="" class="img-selector"><p>Dinner</p></div></a>
-        <a href="/Menu/Dessert/dessert.html"><div class="food-cata"><img src="Images/Selector/yoghurt.png" class="img-selector desert"><p>Desserts</p></div></a>
-        <a href="/Menu/Beverages/beverage.html"><div class="food-cata"><img src="Images/Selector/Beverage.png" class="img-selector beverage"><p>Beverage</p></div></a>
+    <section class="menu-selections-container">
+        <h2>Menu</h2>
+        <p>Explore our delicious dishes, from refreshing Choriatiki, to savory Pastitsio, to sweet Baklava.</p>
+        <div class="menu-selections">
+            <ul class="selections">
+                <a href="Menu/Appetizers/appetizers.html" class="selection">
+                    <li class="options"><img src="Images/Selector/appetizers.jpg" alt="appetizer"></li>
+                    <li class="option-arrow app"><span>Appetizers</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Lunch/lunch.html" class="selection">
+                    <li class="options"><img src="Images/Selector/lunch.jpg" alt="lunch"></li>
+                    <li class="option-arrow"><span>Lunch</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Dinner/dinner.html" class="selection">
+                    <li class="options"><img src="Images/Selector/dinner.jpg" alt="dinner"></li>
+                    <li class="option-arrow"><span>Dinner</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Dessert/dessert.html" class="selection">
+                    <li class="options"><img src="Images/Selector/dessert.jpg" alt="dessert"></li>
+                    <li class="option-arrow"><span>Desserts</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Beverages/beverage.html" class="selection">
+                    <li class="options"><img src="Images/Selector/drinks.jpg" alt="beverages"></li>
+                    <li class="option-arrow"><span>Beverages</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+            </ul>
         </div>
-    </section> -->
+    </section>
     <script src="script.js"></script>
 </body>
 </html>

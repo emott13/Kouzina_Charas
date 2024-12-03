@@ -15,15 +15,11 @@
     color/font/text
 */
 
-body{
-    font-family: 'Thasadith';
-}
-
 :root{
     --color-1: #2c2c2c;
     --color-2: #484b46;
     --color-3: #979d94;
-    --color-4: #e3e1d4;
+    --color-4: #fefffe;
     --color-5: #1e5f21;
     --color-6: #24a82a;
     --color-7: #0032d4;
@@ -34,7 +30,13 @@ body{
     --color-12: #795427;
     --color-13: #e9e8e0;
     --color-14: #232323;
+    --color-15: #dadbda;
+    --font-family-plain: 'Thasadith';
+    --font-family-fancy: 'Ruthie';
+}
 
+body{
+    font-family: var(--font-family-plain);
 }
 
 /* header */
@@ -97,6 +99,12 @@ body{
 .iconImg{
     width: 25px;
 }
+.flatIcon{
+    width: 40px;
+}
+.flatIcon-menu{
+    width: 45px;
+}
 
 .login{
     margin-left: 2rem;
@@ -108,9 +116,10 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: linear-gradient(#00000061, #00000061), url(/Images/Selector/building.webp);
+    background-image: linear-gradient(#00000088, #00000088), url(/Images/Selector/building.webp);
     background-size: cover;
     background-position: 20%;
+    background-attachment: fixed;
     min-height: 1000px;
     max-width: 100%;
     margin: 0 auto;
@@ -122,29 +131,45 @@ body{
     background-image: linear-gradient(to bottom, #000, #00000000);
     margin: 0 auto;
     width: 100%;
+    height: 100px;
     font-family: 'Ruthie';
     font-weight: 400;
     font-size: 80px;
     text-align: center;
     letter-spacing: 3px;
     color: var(--color-13);
+    z-index: 1;
+    filter: drop-shadow(6px 6px 6px var(--color-14));
+    transition: 0.5s;
 }
 
 .nav{
     position: fixed;
     left: 5%;
-    top: 2%;
+    top: 2.5%;
     font-size: 30px;
     color: var(--color-13);
     cursor: pointer;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+.nav > img{
+    height: 35px;
+}
+
+.iconImgHeader{
+    height: 30px;
 }
 
 .admin-login{
     position: fixed;
     right: 5%;
-    top: 1%;
+    top: 2.5%;
     font-size: 40px;
     color: var(--color-13);
+    z-index: 1;
+    transition: 0.5s;
 }
 
 p.intro{
@@ -159,6 +184,10 @@ p.intro{
     font-weight: 300;
     color: var(--color-13);
     filter: drop-shadow(2px 4px 4px var(--color-14));
+}
+
+.header{
+    z-index: 2;
 }
 
 /* .intro p{
@@ -199,13 +228,13 @@ p.intro{
     max-width: 1140px;
     min-height: 700px;
     border-radius: 10px;
-    background-color: #EBE9E1;
+    background-color: #ebe9e1;
 }
 
 .selector-grid{
     display: grid;
     grid-template-columns: auto auto auto;
-    width:  1050px;
+    width: 1050px;
 }
 
 .img-selector{
@@ -240,7 +269,78 @@ p.intro{
     font-size: 15px;
 }
 
+/* menu index page */
 
+.menu-selections-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto 40px;
+    min-height: 400px;
+    background-color: var(--color-15);
+}
+
+.menu-selections-container h2{
+    margin-top: 30px;
+    font-family: var(--font-family-plain);
+    font-weight: 400;
+    text-align: center;
+    font-size: 30px;
+}
+
+.menu-selections-container p{
+    margin: 30px auto;
+    font-size: 20px;
+}
+
+.menu-selections{
+    margin-top: 20px;
+}
+
+ul.selections{
+    display: grid;
+    grid-template-columns: auto;
+}
+
+.selection{
+    text-decoration: none;
+    color: #000;
+}
+
+.selections .selection li.options{
+    margin-top: 20px;
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+    transition: 1s;
+}
+
+.selections .selection li.option-arrow{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 350px;
+    height: 70px;
+    font-family: 'Ruthie';
+    font-size: 50px;
+    font-weight: 500;
+    opacity: 0;
+    list-style: none;
+    transition: 1.8s;
+}
+
+.selections .selection:last-child{
+    margin-bottom: 20px;
+}
+
+.options > img{
+    width: 350px;
+}
+
+.icon-arrow{
+    width: 35px;
+    height: 40px;
+}
 
 /* Menu */
 

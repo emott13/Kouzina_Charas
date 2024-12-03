@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('dinner'); 
         setUpMenu('dessert'); 
         setUpMenu('drink');
+        headerScroll();
         flyout();
+        hover();
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -366,3 +368,62 @@ function convertPrice(price){
     if(split[0] == 0){return '0€'}
     return split[0] + ',' + end + '€'; 
 }
+
+function headerScroll(){
+    let header = document.querySelector('.image-section h2');
+    let menu = document.querySelector('.nav');
+    let login = document.querySelector('.admin-login');
+    let menuSelectionsContainer = document.querySelector('.menu-selections-container');
+    let icons = document.querySelector('.iconImgHeader');
+
+    window.addEventListener('scroll', () => {
+        let menuTop = menuSelectionsContainer.getBoundingClientRect().top;
+        if(menuTop <= 75){
+            header.style.height = '50px';
+            header.style.backgroundImage = 'linear-gradient(to bottom, #fff, #fff)';
+            header.style.fontSize = '40px';
+            header.style.color = '#000';
+            menu.style.color = '#000';
+            icons.style.height = '25px'
+            menu.style.top = '0.7%'
+            login.style.color = '#000';
+            login.style.top = '0'
+        }
+        else{
+            header.style.height = '100px';
+            header.style.backgroundImage = 'linear-gradient(to bottom, #000, #00000000)';
+            header.style.fontSize = '80px';
+            header.style.color = '#fff';
+            menu.style.color = '#fff';
+            icons.style.height = '30px'
+            menu.style.top = '2.5%'
+            login.style.color = '#fff';
+            login.style.top = '2.5%'
+        }
+
+    })
+}
+
+function hover(){
+    let options = document.querySelectorAll('.selections li.options');
+    let arrows = document.querySelectorAll('.selections li.option-arrow');
+    let selection = document.querySelectorAll('.selections .selection')
+    for(let i = 0; i < options.length; i++){
+        selection[i].addEventListener('mouseover', event => {
+            options[i].style.height = '150px';
+            arrows[i].style.display = 'flex';
+            arrows[i].style.opacity = '1';
+        })
+    }
+    for(let i = 0; i < arrows.length; i++){
+        selection[i].addEventListener('mouseout', event => {
+            options[i].style.height = '250px';
+            arrows[i].style.display = 'none';
+            arrows[i].style.opacity = '0';
+        })
+    }
+}
+
+// function hoverOff(option){
+//     option.style.height = '250px'
+// }
