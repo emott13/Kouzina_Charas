@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('dessert'); 
         setUpMenu('drink');
         headerScroll();
-        flyout();
         hover();
     }
     if(pageClass.contains('cart')) setUpCart();
@@ -17,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
     if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
     if(pageClass.contains('beverages')) displayMenuOnPage('drink');
+    flyout();
 });
 
 
