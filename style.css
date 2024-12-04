@@ -31,6 +31,8 @@
     --color-13: #e9e8e0;
     --color-14: #232323;
     --color-15: #dadbda;
+    --color-16: #515251;
+    --color-17: #aeb1ac;
     --font-family-plain: 'Thasadith';
     --font-family-fancy: 'Ruthie';
 }
@@ -190,10 +192,6 @@ p.intro{
     z-index: 2;
 }
 
-/* .intro p{
-    font-weight: 900;
-} */
-
 /* select screen */
 
 .food-cata{
@@ -255,8 +253,8 @@ p.intro{
     object-fit: cover;
 }
 
-
 /* item vairables */
+
 .name{
     font-size: 20px;
 }
@@ -275,7 +273,7 @@ p.intro{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 auto 40px;
+    margin: 0 auto;
     min-height: 400px;
     background-color: var(--color-15);
 }
@@ -283,9 +281,19 @@ p.intro{
 .menu-selections-container h2{
     margin-top: 30px;
     font-family: var(--font-family-plain);
-    font-weight: 400;
+    font-weight: 500;
     text-align: center;
-    font-size: 30px;
+    font-size: 42px;
+}
+
+.menu-selections-container h2::after{
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 50px;
+    height: 1px;
+    content: '';
+    background-color: #000;
 }
 
 .menu-selections-container p{
@@ -305,32 +313,56 @@ ul.selections{
 .selection{
     text-decoration: none;
     color: #000;
+    height: 260px;
+    position: relative;
 }
 
 .selections .selection li.options{
     margin-top: 20px;
     width: 350px;
-    height: 250px;
+    height: 240px;
     overflow: hidden;
-    transition: 1s;
+    transition: 0.5s;
+    position: relative;
 }
 
 .selections .selection li.option-arrow{
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    padding-top: 10px;
+    background-color: var(--color-15);
     width: 350px;
-    height: 70px;
+    height: 80px;
+
     font-family: 'Ruthie';
     font-size: 50px;
     font-weight: 500;
-    opacity: 0;
     list-style: none;
-    transition: 1.8s;
+
+    opacity: 0;
+    z-index: 2;
+}
+
+.option-arrow span,
+.option-arrow img{
+    opacity: 0;
+    z-index: 3;
+}
+
+li.option-arrow.visible span,
+li.option-arrow.visible img{
+    transition: opacity 700ms;
+    opacity: 1;
+    z-index: 3;
 }
 
 .selections .selection:last-child{
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .options > img{
@@ -344,7 +376,7 @@ ul.selections{
 
 /* Menu */
 
-.menu-item{
+/* .menu-item{
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -422,4 +454,57 @@ ul.selections{
     color: white;
     font-size: 16px;
     padding: 16px 32px;
+} */
+
+/* ---------------- */
+/* ---- FOOTER ---- */
+/* ---------------- */
+
+footer{
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    padding: 20px auto;
+    height: 170px;
+    background-color: var(--color-16);
+}
+
+.footer-main{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.info{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.info a,
+.icons-info-footer a{
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--color-17);
+}
+
+.icons-info-footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.social-icon{
+    margin: 40px auto;
+    font-size: 40px;
+    height: 25px;
+    color: var(--color-17);
+}
+
+.info a:hover,
+.social-icon:hover,
+.icons-info-footer a:hover{
+    color: var(--color-15);
+    transition: color 0.5s;
 }

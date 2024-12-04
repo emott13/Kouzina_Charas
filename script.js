@@ -44,9 +44,9 @@ const menuData = {
         images: ['/Images/Lunch/spanakopita-copy.jpg', '/Images/Lunch/souvlaki.jpeg', '/Images/Lunch/kalamarakia.jpg', '/Images/Lunch/moussaka.jpg'],
         descriptions: [
             'Flaky, golden pastry filled with a deliciously savory blend of spinach and feta.',
-            'Tender, marinated meat skewers grilled to perfection, served with warm pita and tangy tzatziki.',
+            'Tender, marinated pork skewers grilled to perfection, served with warm pita and tangy tzatziki.',
             'Fresh caught thrapsalo squid, perfectly grilled and topped with fresh herbs and olive oil. Served with lemon.',
-            'Rich layers of eggplant, seasoned meat, and béchamel sauce, baked until golden.'
+            'Rich layers of eggplant, seasoned beef, and béchamel sauce, baked until golden.'
         ],
         identifiers: ['005', '006', '007', '008']
     },
@@ -57,7 +57,7 @@ const menuData = {
         descriptions: [
             'Juicy tomatoes and bell peppers stuffed with herbed rice and vegetables, baked for a deliciously hearty bite.',
             'Hearty and creamy, yellow split peas drizzled with olive oil and topped with onions and capers—a smooth, savory classic.',
-            'Layers of pasta, seasoned ground meat, and creamy béchamel, baked to bubbly perfection—Greek lasagna with a twist.',
+            'Layers of pasta, seasoned ground beef, and creamy béchamel, baked to bubbly perfection—Greek lasagna with a twist.',
             'Fresh octopus, grilled over charcoal and served with olive oil and lemon.',
             'Tender baked fish in a creamy tomato and onion sauce. Topped with fresh herbs and served with lemon.'
         ],
@@ -378,7 +378,7 @@ function headerScroll(){
 
     window.addEventListener('scroll', () => {
         let menuTop = menuSelectionsContainer.getBoundingClientRect().top;
-        if(menuTop <= 75){
+        if(menuTop <= 50){
             header.style.height = '50px';
             header.style.backgroundImage = 'linear-gradient(to bottom, #fff, #fff)';
             header.style.fontSize = '40px';
@@ -396,34 +396,32 @@ function headerScroll(){
             header.style.color = '#fff';
             menu.style.color = '#fff';
             icons.style.height = '30px'
-            menu.style.top = '2.5%'
+            menu.style.top = '2.5%';
             login.style.color = '#fff';
-            login.style.top = '2.5%'
+            login.style.top = '2.5%';
         }
-
-    })
+    });
 }
 
 function hover(){
     let options = document.querySelectorAll('.selections li.options');
     let arrows = document.querySelectorAll('.selections li.option-arrow');
-    let selection = document.querySelectorAll('.selections .selection')
+    let selection = document.querySelectorAll('.selections .selection');
     for(let i = 0; i < options.length; i++){
-        selection[i].addEventListener('mouseover', event => {
-            options[i].style.height = '150px';
-            arrows[i].style.display = 'flex';
+        selection[i].addEventListener('mouseover', () => {
             arrows[i].style.opacity = '1';
+            arrows[i].style.display = 'flex';
+            setTimeout(() => {
+                arrows[i].classList.add('visible');
+            }, 250);
         })
     }
     for(let i = 0; i < arrows.length; i++){
-        selection[i].addEventListener('mouseout', event => {
-            options[i].style.height = '250px';
+        selection[i].addEventListener('mouseout', () => {
+            options[i].style.height = '240px';
             arrows[i].style.display = 'none';
             arrows[i].style.opacity = '0';
-        })
+            arrows[i].classList.remove('visible');
+        });
     }
 }
-
-// function hoverOff(option){
-//     option.style.height = '250px'
-// }
