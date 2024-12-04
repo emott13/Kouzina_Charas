@@ -4,16 +4,22 @@
     box-sizing: border-box;
 }
 
+body{
+    background-color: var(--color-111);
+}
+
 .payment{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     margin: 0 auto;
+    margin-top: 6%;
     padding: 3%;
     border-radius: 10px;
     width: 700px;
     min-height: 540px; 
-    background-color: antiquewhite; 
+    /* background-color: antiquewhite;  */
+    background-color: var(--color-111);
 }
 .payment label{
     font-size: 15px;
@@ -33,8 +39,8 @@
     margin: 0 auto;
     border-radius: 5px;
     width: 400px;
-    /* min-height: 280px; */
     margin-bottom: 3%;
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     padding: 10px 15px;
     background-color: white;
 }
@@ -53,9 +59,7 @@
     width:90%;
     height: 50%;
 }
-.undo{
-
-}
+.undo{}
 .undo ion-icon:hover{
 color: white;
 }
@@ -87,15 +91,18 @@ color: white;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-   
     height: 30vh;
     
 }
 .button-holder button{
     background-color: rgb(97, 244, 149);
     font-size: 3rem;
+    font-family: var(--font-family-plain);
     border: 0px solid rgb(48, 216, 107);
-    transition: 300ms;
+    vertical-align: top;
+    border-radius: 10px;
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
+    transition: 400ms;
 }
 
 .button-holder button:hover{
@@ -266,9 +273,10 @@ color: white;
     font-size: 26px;
     color: black;
     background-color: rgb(97, 244, 149);
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
     cursor: pointer;
-    transition: 300ms;
+    transition: 400ms;
 }
 .place-order:hover{
     color: white;
@@ -282,9 +290,10 @@ color: white;
     font-size: 26px;
     color: black;
     background-color: rgb(97, 244, 149);
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
     cursor: pointer;
-    transition: 300ms;
+    transition: 400ms;
 }
 .place-to-complete:hover{
     color: white;
@@ -298,6 +307,7 @@ color: white;
     font-size: 26px;
     color: black;
     background-color: rgb(97, 244, 149);
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
     cursor: pointer;
     transition: 300ms;
@@ -316,11 +326,13 @@ color: white;
     border-radius: 5px;
     width: 500px;
     min-height: 350px;
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     padding: 10px 15px;
     background-color: white;
 }
 .checkout h2{
     margin: 0 auto;
+    font-family: var(--font-family-plain);
     border-bottom: 2px solid black;
     width: 50%;
 }
@@ -341,6 +353,7 @@ color: white;
 .item-cata h3{
     border-bottom: 2px solid black;
     font-size: 20px;
+    font-family: var(--font-family-plain);
     width: 25%;
 }
 .items-of-checkout{
@@ -360,7 +373,7 @@ color: white;
     padding: 0px 30px;
     height: 25px;
     width: 100%;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
 
 }
 .total-container{
@@ -388,6 +401,7 @@ color: white;
     font-size: 26px;
     color: black;
     background-color: rgb(97, 244, 149);
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
     cursor: pointer;
     transition: 300ms;
@@ -429,6 +443,7 @@ color: white;
     margin: auto;
     width: 85px;
     height: 70px;
+    cursor: pointer;
     border-radius: 20px;
     background-color: rgb(235, 235, 235);
     border: 1px;
@@ -449,6 +464,7 @@ color: white;
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    font-family: var(--font-family-plain);
     height: 5vh;
 }
 .tip-input{
@@ -481,11 +497,14 @@ color: white;
 }
 .error-message-container {
     color: red;
+    font-family: var(--font-family-fancy);
     /* margin-top: 5px; Space between input and error message */
     font-size: 1.0rem; /* Adjust font size */
     height: 20px;
     display: none;
 }
-body{
-    background-color: #282828;
+.selected-tip{
+    background-color: var(--color-112);
+    color: white;
+    transition: 200ms;
 }
