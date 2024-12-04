@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerScroll();
         flyout();
         hover();
+        addingFilterItems();
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
     if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
     if(pageClass.contains('beverages')) displayMenuOnPage('drink');
+    
 });
 
 
@@ -36,7 +38,13 @@ const menuData = {
             'Flour-coated kasseri cheese fried to a crispy, golden brown. Served with lemon.',
             'Creamy yogurt with cucumbers, garlic, and fresh herbs.'
         ],
-        identifiers: ['001', '002', '003', '004']
+        identifiers: ['001', '002', '003', '004'],
+        tags: [
+            ['apperizer', 'light', ' vegetables'],//<-------------------------------------------------- change these placeholders
+            ['apperizer', 'light', ' vegetables'],
+            ['apperizer', 'light', ' vegetables'],
+            ['apperizer', 'light', ' vegetables'],
+        ]
     },
     lunch: {
         names: ['Spanakopita', 'Souvlaki', 'Kalamarakia Psita', 'Moussaka'],
@@ -425,3 +433,71 @@ function hover(){
         });
     }
 }
+
+function filterMenuData(filters){
+    const allData = [...Object.values(menuData).flatMap((category, categoryIndex) => 
+    category.names.map((name, i) => ({
+        name,
+        price: category.prices[i],
+        description: category.descriptions[i],
+        image: category.images[i],
+        identifiers: category.identifiers[i],
+        tags: category.tags[i]
+    }))
+    )];
+
+    return allData.filter(item =>{
+        return Object.entries(filters).every(([filterCategory, filterValues]) => {
+            return filterValues.length === 0 || filterValues.some(value => item.tags.includes(value));
+        })
+    })
+}
+
+function addingFilterItems(){
+    const filterButton = document.querySelector('.filter-button');
+    const filter = document.querySelector('.filters-container input[type="checkbox"]');
+    const foodContainer = document.querySelector('.food-container');
+
+    filterButton.addEventListener('click', () => {
+        const selectedFilters = getSelectedFilters();
+        const filteredData = filterMenuData(selectedFilters);
+        displayFilteredData(filteredData);
+    })
+
+    function getSelectedFilters(){
+        const selectedFilter = {};
+        filter.forEach(filter => {
+            if(filter.checked){
+                const group = filter.name; // group name ('meal', 'foodtype')
+                if(!selectedFilter[group]){selectedFilter[group] = [];
+                    selectedFilter[group].push(filter.value); // add value to corresponding group
+                }
+            }
+        })
+        return selectedFilter;
+    }
+
+    function displayFilteredData(data){
+        foodContainer.innerHTML = ''; // clear existing items
+        if(data.length === 0){
+            foodContainer.innerHTML = '<p>No items match your filter</p>';
+            return;
+        }
+        data.forEach(item => {
+            const menuItem = document.createElement('div');
+            menuItem.classList.add('food-item');
+            menuItem.innerHTML = `
+            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+            <div class="item-info">
+                <p class="name">${item.name}</p>
+                <p class="price">${item.price}€</p>
+                <p class="description">${item.description}</p>
+            </div>
+            `;
+            foodContainer.appendChild(menuItem);
+        })
+
+    }
+}
+
+
