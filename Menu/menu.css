@@ -4,11 +4,36 @@
     padding: 0;
 }
 
-body{
-    font-family: 'Athiti';
+:root{
+    --color-1: #2c2c2c;
+    --color-2: #484b46;
+    --color-3: #979d94;
+    --color-4: #fefffe;
+    --color-5: #1e5f21;
+    --color-6: #24a82a;
+    --color-7: #0032d4;
+    --color-8: #9fa7b0;
+    --color-9: #5F1E5C;
+    --color-10: #c227ba;
+    --color-11: #5F421E;
+    --color-12: #795427;
+    --color-13: #e9e8e0;
+    --color-14: #232323;
+    --color-15: #dadbda;
+    --color-16: #515251;
+    --color-17: #aeb1ac;
+    --font-family-plain: 'Thasadith';
+    --font-family-fancy: 'Ruthie';
 }
 
-/* header */
+body{
+    font-family: var(--font-family-plain);
+}
+
+/* ---------------- */
+/* ---- header ---- */
+/* ---------------- */
+
 .header{
     margin: 0 auto;
     margin-top: 3%;
@@ -65,7 +90,7 @@ h2{
     margin: 0 auto;
     margin-top: 3.5%;
     width: 340px;
-    min-height: 420px;
+    min-height: 390px;
     border-radius: 10px;
     background-color: white;
 }
@@ -212,3 +237,4 @@ h2{
     grid-template-columns: auto auto auto;
     width: 1110px;
 } */
+
