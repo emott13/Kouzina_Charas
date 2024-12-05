@@ -967,7 +967,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function convertPrice(price){
         let split = String(price).split('.');
         let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
-        if(split[0] == 0){return '0€'}
+        if(split[0] === 0){return '0€'}
         return split[0] + ',' + end + '€'; 
     }
 

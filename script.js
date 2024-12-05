@@ -531,7 +531,9 @@ function addingFilterItems(){
                 <p class="description">${item.description}</p>
             `;
             foodContainer.appendChild(menuItem);
-        })
+        });
+
+        addItemClick();
     }
 
     function filterMenuData(filters){

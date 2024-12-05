@@ -181,7 +181,7 @@ function updateMenuItems(itemType){                 // -------------------------
 function addItem(){                 // -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
     let formHtml = 
     `
-        <h3>Add New Item</h3>
+         <h3>Add New Item</h3>
         <label for="type">Choose a menu type:</label>
         <select name="type" id="type">
             <option value="app">Appetizer</option>
@@ -198,7 +198,46 @@ function addItem(){                 // -----------------------------------------
         <input type="text" id="itemImage"><br>
         <label for="itemDesc">Description:</label>
         <input type="text" id="itemDesc"><br>
+        <label for="Tags">Tags</label>
+        <div>
+        <select name="" id="">
+            <option value="">Meal</option>
+            <option value="">Appetizer</option>
+            <option value="">Lunch</option>
+            <option value="">Dinner</option>
+            <option value="">Dessert</option>
+            <option value="">Beverage</option>
+        </select> 
+        <select name="" id="">
+            <option value="">Food Type</option>
+            <option value="">Light</option>
+            <option value="">Medium</option>
+            <option value="">Heavy</option>
+        </select> 
+        <select name="" id="">
+            <option value="">Protein</option>
+            <option value="">Meat</option>
+            <option value="">SeaFood</option>
+            <option value="">Vegetables</option>
+        </select>
+        </div>
+        <div>
+        <select name="" id="">
+            <option value="">Dairy</option>
+            <option value="">Fried Cheese</option>
+            <option value="">Fresh Cheese</option>
+            <option value="">Yogurt</option>
+
+        </select> 
+        <select name="" id="">
+            <option value="">Beverage</option>
+            <option value="">refresher</option>
+            <option value="">juice</option>
+            <option value="">coffee</option>
+        </select> 
+        </div><br>
         <button id="addNewItem">Add Item</button>
+        
     `;
     document.querySelector('.edit-container').innerHTML = formHtml;
     document.querySelector('.menu-items-container').innerHTML = '';
