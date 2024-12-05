@@ -302,3 +302,15 @@ footer{
     color: var(--color-20);
     transition: color 0.5s;
 }
+
+/* ----------------------- */
+/* ---- ABOUT US PAGE ---- */
+/* ----------------------- */
+
+blockquote{
+    font-size: 25px;
+}
+
+blockquote.holder{
+    letter-spacing: 1px;
+}
