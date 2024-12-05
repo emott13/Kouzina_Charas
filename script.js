@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    addingFilterItems();
     const pageClass = document.body.classList;
     if(pageClass.contains('main')){
         setUpMenu('app');
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        addingFilterItems();
+        
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -39,10 +40,10 @@ const menuData = {
         ],
         identifiers: ['001', '002', '003', '004'],
         tags: [
-            ['apperizer', 'light', ' vegetables'],//<-------------------------------------------------- change these placeholders
-            ['apperizer', 'light', ' vegetables'],
-            ['apperizer', 'light', ' vegetables'],
-            ['apperizer', 'light', ' vegetables'],
+            ['appetizer', 'light', 'vegetables'],
+            ['appetizer', 'light', 'vegetables'],
+            ['appetizer', 'medium', 'fried_cheese'],
+            ['appetizer', 'light', 'yogurt'],
         ]
     },
     lunch: {
@@ -55,7 +56,13 @@ const menuData = {
             'Fresh caught thrapsalo squid, perfectly grilled and topped with fresh herbs and olive oil. Served with lemon.',
             'Rich layers of eggplant, seasoned beef, and béchamel sauce, baked until golden.'
         ],
-        identifiers: ['005', '006', '007', '008']
+        identifiers: ['005', '006', '007', '008'],
+        tags: [
+            ['lunch', 'medium', 'meat'],
+            ['lunch', 'medium', 'meat'],
+            ['lunch', 'medium', 'seafood'],
+            ['lunch', 'medium', 'meat'],
+        ]
     },
     dinner: {
         names: ['Gemista', 'Fava', 'Pastitsio', 'Chtapodi sti Schara', 'Psari plaki'],
@@ -68,7 +75,14 @@ const menuData = {
             'Fresh octopus, grilled over charcoal and served with olive oil and lemon.',
             'Tender baked fish in a creamy tomato and onion sauce. Topped with fresh herbs and served with lemon.'
         ],
-        identifiers: ['009', '010', '011', '012', '013']
+        identifiers: ['009', '010', '011', '012', '013'],
+        tags: [
+            ['dinner', 'medium', 'vegetable'],
+            ['dinner', 'medium', 'vegetable'],
+            ['dinner', 'medium', 'meat'],
+            ['dinner', 'medium', 'seafood'],
+            ['dinner', 'medium', 'seafood'],
+        ]
     },
     dessert: {
         names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
@@ -79,7 +93,13 @@ const menuData = {
             'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.',
             'Crispy kataifi pastry layered with mastiha flavoured custard. Topped with whipped cream, chopped nuts, and cinnamon. Deliciously sweet and indulgent.'
         ],
-        identifiers: ['014', '015', '016']
+        identifiers: ['014', '015', '016'],
+        tags: [
+            ['dessert', 'light'],
+            ['dessert', 'heavy'],
+            ['dessert', 'medium'],
+            
+        ]
     },
     drink: {
         names: ['Pink Lemonade', 'Cherry juice', 'Orange juice', 'Ellinikos Kafes'],
@@ -279,15 +299,15 @@ function displayCartItems(cart){
         cartItem.classList.add('bag-item');
         cartItem.innerHTML = 
             `
-                <div class="item column">
-                    <img src="${item.image}" alt="${item.name}" class="bag-image">
-                    <span class="name">${item.name}</span>
+                 <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="item-info">
+                    <p class="name">${item.name}</p>
+                    <div class="add-info">
+                        <p class="price">${convertPrice(item.price)}</p>
+                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    </div>
                 </div>
-                <span class="price column">${convertPrice(item.price)}</span>
-                <div class="quantity column"> 
-                    <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
-                    <button class="btn-remove">Remove</button>
-                </div>
+                <p class="description">${item.description}</p>
             `;
     container.append(cartItem);
     }); 
@@ -433,47 +453,39 @@ function hover(){
     }
 }
 
-function filterMenuData(filters){
-    const allData = [...Object.values(menuData).flatMap((category, categoryIndex) => 
-    category.names.map((name, i) => ({
-        name,
-        price: category.prices[i],
-        description: category.descriptions[i],
-        image: category.images[i],
-        identifiers: category.identifiers[i],
-        tags: category.tags[i]
-    }))
-    )];
-
-    return allData.filter(item =>{
-        return Object.entries(filters).every(([filterCategory, filterValues]) => {
-            return filterValues.length === 0 || filterValues.some(value => item.tags.includes(value));
-        })
-    })
-}
-
 function addingFilterItems(){
     const filterButton = document.querySelector('.filter-button');
-    const filter = document.querySelector('.filters-container input[type="checkbox"]');
+    const filters = document.querySelectorAll('.filters-container input[type="checkbox"]');
     const foodContainer = document.querySelector('.food-container');
 
+    if(!filterButton|| !foodContainer){
+        console.error('Filter button not found or food container not found');
+        return;
+    }
+
+    console.log('Filter button initialized');
     filterButton.addEventListener('click', () => {
+        console.log("hello")
         const selectedFilters = getSelectedFilters();
+        console.log('Selected Filters:',selectedFilters);
+
         const filteredData = filterMenuData(selectedFilters);
+        console.log('Filtered Data:', filteredData);
+
         displayFilteredData(filteredData);
+        
     })
 
     function getSelectedFilters(){
-        const selectedFilter = {};
-        filter.forEach(filter => {
+        const selectedFilters = {};
+        filters.forEach(filter => {
             if(filter.checked){
                 const group = filter.name; // group name ('meal', 'foodtype')
-                if(!selectedFilter[group]){selectedFilter[group] = [];
-                    selectedFilter[group].push(filter.value); // add value to corresponding group
-                }
+                if(!selectedFilters[group]){ selectedFilters[group] = []}
+                    selectedFilters[group].push(filter.value); // add value to corresponding group
             }
-        })
-        return selectedFilter;
+        });
+        return selectedFilters;
     }
 
     function displayFilteredData(data){
@@ -484,18 +496,40 @@ function addingFilterItems(){
         }
         data.forEach(item => {
             const menuItem = document.createElement('div');
-            menuItem.classList.add('food-item');
+            menuItem.classList.add('menu-item');
             menuItem.innerHTML = `
             <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-            <div class="item-info">
-                <p class="name">${item.name}</p>
-                <p class="price">${item.price}€</p>
+                <div class="item-info">
+                    <p class="name">${item.name}</p>
+                    <div class="add-info">
+                        <p class="price">${convertPrice(item.price)}</p>
+                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    </div>
+                </div>
                 <p class="description">${item.description}</p>
-            </div>
             `;
             foodContainer.appendChild(menuItem);
         })
+    }
 
+    function filterMenuData(filters){
+        const allData = Object.values(menuData).flatMap(category => 
+            category.names.map((name, i) => ({
+                name,
+                price: category.prices[i],
+                description: category.descriptions[i],
+                image: category.images[i],
+                identifiers: category.identifiers[i],
+                tags: category.tags ? category.tags[i] : []
+            }))
+        );
+    
+        return allData.filter(item =>
+            Object.entries(filters).every(([filterCategory, filterValues]) => {
+                console.log(`Checking filter category: ${filterCategory} with values: ${filterValues}`);
+                return filterValues.some(value => item.tags.includes(value));
+            })
+        );
     }
 }
 
