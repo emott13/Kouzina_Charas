@@ -4,28 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dinner</title>
-    <link rel="stylesheet" href="../menu.css">
+    <link rel="icon" href="/Flat_Icons/food.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Bonheur+Royale&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ruthie&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../menu.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body class="dinner">
-    <header class="header">
-        <nav>
-            <ul>
-                <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="">About Us</a></li>
-                <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt="" class="iconImg"></a><img src="/Ion_Icons/add-outline.svg" alt="add" id="add"></li>
-            </ul>
-        </nav>
+
+    <header class="image-section">
+        <a href="/index.html" class="home"><img src="/Flat_Icons/restaurant-white.png" alt="home" class="flatIcon"></a>
+        <h2>Kouzína Charás</h2>
+        <a href="/Cart/cart.html" class="bag"><img src="/Flat_Icons/shopping-white.png" alt="bag" class="flatIcon"></a>
     </header>
+
     <section class="menu dinner">
-        <h2>Dinner</h2>
-        <div class="holder dinner-grid"></div>
+        <div class="background">
+            <h2>Dinner</h2>
+            <div class="holder dinner-grid"></div>
+        </div>
     </section>
+
+    <footer>
+        <div class="footer-main">
+            <div class="info">
+                <a href="/about.html">About Us</a>
+                <a href="">Blog</a>
+                <a href="">Location</a>
+            </div>
+            <div class="social-media">
+                <a href="#"><ion-icon name="logo-twitter" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-facebook" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-instagram" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-google" class="social-icon"></ion-icon></a>
+            </div>
+        </div>
+        <div class="icons-info-footer">
+            <a href="https://www.flaticon.com/icons">Restaurant and bag icons created by Freepik - Flaticon</a>
+        </div>
+    </footer>
+
     <script src="/script.js"></script>
 </body>
 </html>
