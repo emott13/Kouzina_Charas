@@ -9,7 +9,7 @@
     --color-2: #484b46;
     --color-3: #979d94;
     --color-4: #fefffe;
-    --color-5: #1e5f21;
+    --color-5: #1f6122;
     --color-6: #24a82a;
     --color-7: #00155a;
     --color-8: #9fa7b0;
@@ -234,6 +234,7 @@ body{
 
 .item-image > img{
     height: 300px;
+    width: 100%;
 }
 
 .item-info{
@@ -251,47 +252,6 @@ body{
 .description{
     font-size: 16px;
 }
-
-/* ---- dinner ---- */
-
-.dinner{
-    background-color: #f1e7e7;
-    height: 730px;
-    margin-bottom: 3%;
-}
-
-.dinner-grid{
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    width: 1110px;
-    height: 600px;
-}
-
-
-/* ---- desserts ---- */
-
-.desserts{  /* come back to this later */
-    background-color: #f1e7e7;
-    height: 730px;
-    margin-bottom: 3%;
-}
-
-.dessert{
-    display: grid;
-    grid-template-columns: auto auto;
-    width: 710px;
-    min-height: 450px;
-}
-
-
-/* beverages */
-
-/* .beverage-grid{
-    display: grid;
-    grid-template-columns: auto auto auto;
-    width: 1110px;
-} */
 
 /* ---------------- */
 /* ---- FOOTER ---- */
