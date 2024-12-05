@@ -1,0 +1,121 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--color-111);
+}
+
+.receipt{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    margin-top: 6%;
+    padding: 1.2%;
+    border-radius: 3px;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
+    width: 400px;
+    min-height: 640px; 
+    background-color: var(--color-4); 
+}
+
+.receipt-title{
+    text-align: center;
+    font-size: 1.28rem;
+    font-family: var(--font-family-plain);
+    width: 100%;
+    height: 15vh;
+    /* background-color: rgb(185, 214, 205); */
+    background-color: var(--color-4); 
+}
+.receipt-body{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-family: var(--font-family-plain);
+    min-height: 25vh;
+    /* background-color: rgb(148, 170, 163); */
+    background-color: var(--color-4); 
+}
+.receipt-end{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    align-items: center;
+    font-size: 1.1rem;
+    font-family: var(--font-family-plain);
+    width: 100%;
+    min-height: 7vh;
+    
+    /* background-color: rgb(98, 151, 134); */
+    background-color: var(--color-4); 
+}
+.receipt-body{
+    display: flex;
+    height: 20vh;
+    flex-direction: column;
+    background-color: var(--color-4); 
+}
+
+.receipt-items{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 68%;
+    font-family: var(--font-family-plain);
+    height: 2.5vh;
+    /* background-color: aqua; */
+}
+.receipt-total{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    min-height: 18vh;
+    /* background-color: rgb(204, 216, 212); */
+    background-color: var(--color-4); 
+}
+.receipt-item-cata{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 2vh;
+    /* background-color: rgb(204, 216, 212); */
+    background-color: var(--color-4); 
+}
+
+.subtotal{
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 20px;
+    width: 68%;
+}
+.receipt-total-after-sub{
+    display: flex;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 20px;
+    width: 70%;
+    height: 5vh;
+    /* background-color: aqua; */
+    
+}
+.wait-time{
+    display: flex;
+    justify-content:space-evenly;
+    align-items: center;
+    height: 10vh;
+    width: 100%;
+}
+.wait-time h2{
+    font-size: 1.7rem;
+    font-family: var(--font-family-plain);
+}

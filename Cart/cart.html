@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Charm:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
+</head>
+<body class="cart">
+    <header class="header">
+        <nav>
+            <ul>
+                <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
+                <li><a href="">About Us</a></li>
+                <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
+                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt=""  class="iconImg"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="cartItemsContainer">
+        <h2>Your bag</h2>
+        <div class="bag-row">
+            <span class="item bag-header column">Item</span>
+            <span class="bag-price bag-header column">Price</span>
+            <span class="bag-quantity bag-header column">Quantity</span>
+        </div>
+        <div class="cart-items">
+            <div class="bag-row bag-items">
+            </div>
+        </div>
+        <div class="loader"></div>
+    </section>
+    <section class="purchase">
+        <div class="bag-total">
+            <strong class="bag-total-title">Total:</strong>
+            <span class="bag-total-price">€0</span>
+        </div>
+        <a href="/Checkout/checkout.html" class="btn-purchase">Checkout</a>
+    </section>
+    <footer></footer>
+</body>
+</html>

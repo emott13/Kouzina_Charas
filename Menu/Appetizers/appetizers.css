@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------- */
+/* ---- APPETIZERS ---- */
+/* -------------------- */
+
+
+.appetizer{
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+h2{
+    font-size: 34px;
+    text-align: center;
+}
+
+.holder{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 710px;
+    height: 600px;
+}
+

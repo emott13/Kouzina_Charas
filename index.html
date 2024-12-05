@@ -3,9 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
+    <title>Kouzína Charás</title>
+    <link rel="icon" href="Flat_Icons/food.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Bonheur+Royale&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ruthie&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
-<body>
-    
+<body class="main">
+
+    <header class="image-section">
+            <h2>Kouzína Charás</h2>
+            <p class="nav"><ion-icon name="menu-outline" class="iconImgHeader"></ion-icon></p>
+            <a href="Manager/Login/login.html" class="admin-login"><ion-icon class="iconImgHeader" name="person-outline"></ion-icon><ion-icon class="iconImgHeader" name="log-in-outline"></ion-icon></a>
+            <p class="intro">Experience a taste of Greece at <br><i>The Joyful Kitchen</i></p>
+        <div class="header">
+            <nav>
+                <ul>
+                    <li><img src="Ion_Icons/close-outline.svg" alt="close" class="close"></li>
+                    <li><a href="index.html"><img src="Flat_Icons/restaurant.png" alt="home" class="flatIcon">Home</a></li>
+                    <li><a href="Cart/cart.html"><img src="Flat_Icons/shopping.png" alt="bag" class="flatIcon">Bag</a></li>
+                    <li><a href=""><img src="Flat_Icons/cooking.png" alt="about" class="flatIcon">About Us</a></li>
+                    <li><a href="Search/search.html"><img src="Flat_Icons/transparency.png" alt="search" class="flatIcon">Search</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="menu-selections-container">
+        <h2>Menu</h2>
+        <p>Explore our delicious dishes, from refreshing Choriatiki, to savory Pastitsio, to sweet Baklava.</p>
+        <div class="menu-selections">
+            <ul class="selections">
+                <a href="Menu/Appetizers/appetizers.html" class="selection">
+                    <li class="options"><img src="Images/Selector/appetizers.jpg" alt="appetizer"></li>
+                    <li class="option-arrow"><span>Appetizers</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Lunch/lunch.html" class="selection">
+                    <li class="options"><img src="Images/Selector/lunch.jpg" alt="lunch"></li>
+                    <li class="option-arrow"><span>Lunch</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Dinner/dinner.html" class="selection">
+                    <li class="options"><img src="Images/Selector/dinner.jpg" alt="dinner"></li>
+                    <li class="option-arrow"><span>Dinner</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Dessert/dessert.html" class="selection">
+                    <li class="options"><img src="Images/Selector/dessert.jpg" alt="dessert"></li>
+                    <li class="option-arrow"><span>Desserts</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+
+                <a href="Menu/Beverages/beverage.html" class="selection">
+                    <li class="options"><img src="Images/Selector/drinks.jpg" alt="beverages"></li>
+                    <li class="option-arrow"><span>Beverages</span><img src="Flat_Icons/right-arrow.png" alt="right-arrow" class="icon-arrow"></li>
+                </a>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-main">
+            <div class="info">
+                <a href="about.html">About Us</a>
+                <a href="">Blog</a>
+                <a href="">Location</a>
+            </div>
+            <div class="social-media">
+                <a href="#"><ion-icon name="logo-twitter" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-facebook" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-instagram" class="social-icon"></ion-icon></a>
+                <a href="#"><ion-icon name="logo-google" class="social-icon"></ion-icon></a>
+            </div>
+        </div>
+        <div class="icons-info-footer">
+            <a href="https://www.flaticon.com/icons">Restaurant, bag, chef, and search icons created by Freepik - Flaticon</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
 </body>
 </html>

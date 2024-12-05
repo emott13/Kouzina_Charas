@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dinner{
+    background-color: #f1e7e7;
+    height: 730px;
+    margin-bottom: 3%;
+}
+
+.dinner-grid{
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: 1110px;
+    height: 600px;
+}
