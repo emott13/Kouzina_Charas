@@ -11,18 +11,8 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
-    <!-- <header class="header">
-    <nav>
-            <ul>
-                <li><a href="/index.html"><img src="/Ion_Icons/home-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="">About Us</a></li>
-                <li><a href=""><img src="/Ion_Icons/search-outline.svg" alt="" class="iconImg"></a></li>
-                <li><a href="/Cart/cart.html"><img src="/Ion_Icons/bag-outline.svg" alt=""  class="iconImg"></a><img src="/Ion_Icons/add-outline.svg" alt="add" id="add"></li>
-            </ul>
-        </nav>
-    </header> -->
 
-    <section class="payment">
+    <!-- <section class="payment">
         <div class="checkout-holder-back-select">
           <div class="back-arrow-and-tip-holder"><button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button></div>
             <div class="button-holder">
@@ -30,8 +20,41 @@
                 <button class="Delivery">Delivery</button>
             </div>
         </div>
-    </section>
+    </section> -->
 
+<!-- changes based on tutor recommendations, see js file for more notes -->
+
+    <section class="payment">
+        <div class="checkout-holder-back-select">
+            <div class="back-arrow-and-tip-holder">
+                <button class="undo"><ion-icon name="arrow-back-outline"></ion-icon></button>
+            </div>
+            <div class="button-holder">
+                <button class="pick-up">Pick-up</button>
+                <button class="delivery">Delivery</button>
+            </div>
+            <form class="payment-options hidden" id="payment-options">
+                <button class="credit-debit">Credit/Debit</button>
+                <button class="cash">Cash</button>
+            </form>
+            <form class="pickup-form hidden" id="pickup-form">
+                <label for="pickup-name">Name for Order:</label>
+                <input id="pickup-name" type="text" placeholder="Ex: John Doe">
+                <label for="pickup-phone">Phone:</label>
+                <input id="pickup-phone" type="text" placeholder="Enter phone number">
+                <button class="place-order">Place Order</button>
+            </form>
+            <form class="delivery-form hidden" id="delivery-form">
+                <label for="delivery-name">Name for Order:</label>
+                <input id="delivery-name" type="text" placeholder="Ex: John Doe">
+                <label for="delivery-street">Street:</label>
+                <input id="delivery-street" type="text" placeholder="123 N Main St">
+                <label for="delivery-phone">Phone:</label>
+                <input id="delivery-phone" type="text" placeholder="Enter phone number">
+                <button class="place-order">Place Order</button>
+            </form>
+        </div>
+    </section>
     <script src="checkout.js"></script>
 </body>
 </html>

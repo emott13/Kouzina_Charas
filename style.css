@@ -120,7 +120,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: linear-gradient(#00000088, #00000088), url(/Images/Selector/building.webp);
+    background-image: linear-gradient(#00000088, #00000088), url(Images/Selector/building.webp);
     background-size: cover;
     background-position: 20%;
     background-attachment: fixed;

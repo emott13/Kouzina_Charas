@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        
+        flyout();
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
     if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
     if(pageClass.contains('beverages')) displayMenuOnPage('drink');
-    flyout();
 });
 
 
