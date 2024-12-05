@@ -111,7 +111,14 @@ const menuData = {
             'Freshly squeezed, sun-ripened oranges bring a zesty and refreshing taste that is as bright as a Mediterranean morning.',
             'Traditional Greek coffee, deliciously brewed for a strong, rich flavor. Served with a glass of water.'
         ],
-        identifiers: ['017', '018', '019', '020']
+        identifiers: ['017', '018', '019', '020'],
+        tags: [
+            ['beverage', 'refresher'],
+            ['beverage', 'juice'],
+            ['beverage', 'juice'],
+            ['beverage', 'coffee'],
+        ]
+        
     }
 };
 
