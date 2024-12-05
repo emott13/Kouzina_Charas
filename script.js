@@ -305,17 +305,17 @@ function displayCartItems(cart){
         let cartItem = document.createElement('div');
         cartItem.classList.add('bag-item');
         cartItem.innerHTML = 
-            `
-                 <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-info">
-                    <p class="name">${item.name}</p>
-                    <div class="add-info">
-                        <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
-                    </div>
-                </div>
-                <p class="description">${item.description}</p>
-            `;
+        `
+        <div class="item column">
+            <img src="${item.image}" alt="${item.name}" class="bag-image">
+            <span class="name">${item.name}</span>
+        </div>
+        <span class="price column">${convertPrice(item.price)}</span>
+        <div class="quantity column"> 
+            <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
+            <button class="btn-remove">Remove</button>
+        </div>
+    `;
     container.append(cartItem);
     }); 
        
