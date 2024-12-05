@@ -173,6 +173,23 @@ body{
     background-size: 130%;
 }
 
+.menu h2{
+    margin-top: 2rem;
+    font-family: var(--font-family-plain);
+    font-size: 35px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.menu h2::after{
+    display: block;
+    margin: 10px auto;
+    width: 50px;
+    height: 1px;
+    content: '';
+    background-color: #000;
+}
+
 .background{
     width: 840px;
     margin: 0 auto;
@@ -233,41 +250,6 @@ body{
 
 .description{
     font-size: 16px;
-}
-
-/* ---- app ---- */
-
-.appetizer h2{
-    margin-top: 2rem;
-    font-family: var(--font-family-plain);
-    font-size: 35px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.appetizer h2::after{
-    display: block;
-    margin: 10px auto;
-    width: 50px;
-    height: 1px;
-    content: '';
-    background-color: #000;
-}
-
-/* ---- lunch ---- */
-
-.lunch{
-    background-color: #f1e7e7;
-    height: 730px;
-    margin-bottom: 3%;
-}
-
-.lunch-grid{
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    width: 1110px;
-    height: 600px;
 }
 
 /* ---- dinner ---- */
