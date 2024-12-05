@@ -119,3 +119,8 @@ body{
     font-size: 1.7rem;
     font-family: var(--font-family-plain);
 }
+
+.dash{
+    margin: auto;
+    font-size: 17px;
+}
