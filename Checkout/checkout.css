@@ -59,7 +59,7 @@ body{
     width:90%;
     height: 50%;
 }
-/* .undo{} */
+.undo{}
 .undo ion-icon:hover{
 color: white;
 }
@@ -465,8 +465,8 @@ color: white;
     text-align: center;
 }
 
-/* .tip-percentages:hover{
-} */
+.tip-percentages:hover{
+}
 .custom-tip-display{
     display: flex;
     justify-content: space-evenly;
@@ -514,8 +514,4 @@ color: white;
     background-color: var(--color-112);
     color: white;
     transition: 200ms;
-}
-
-.hidden {
-    display: none;
 }

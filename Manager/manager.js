@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             menuContainer.addEventListener('click', handleMenuAction);
         }
     }
+    initializeTags();
 });
 
 function setItem(){                 // --------------------------------------------------- sets manager username/password in local storage
@@ -104,6 +105,17 @@ function displayMenuItems(menuItems, itemType){                 // -------------
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
     let {dataset: {item, type}, classList } = event.target;
 
+    if (classList.contains('edit-btn')) {
+        console.log("Edit button clicked for:", item); // Confirm button type
+        editItem(item, type);
+    } else if (classList.contains('remove-btn')) {
+        console.log("Remove button clicked for:", item); // Confirm button type
+        removeItem(item, type);
+    } else if (classList.contains('add-back')) {
+        console.log("Add back button clicked for:", item); // Confirm button type
+        addBack(item, type);
+    }
+
     if(classList.contains('edit-btn')){
         editItem(item, type);
     }
@@ -115,11 +127,51 @@ function handleMenuAction(event){                   // -------------------------
     }
 }
 
-function editItem(itemName, itemType){                  // ------------------------------ handles edit btn click to display edit inputs and allow to be saved + set in LS
-    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
-    let item = menuItems.find(i => i.name === itemName);
-    let formHtml = 
-    `
+/*--------------------------------------- */
+/*--------------EDIT ITEM--------------- */
+/*------------------------------------- */
+
+function editItem(itemName, itemType) {
+   
+    const tags = JSON.parse(localStorage.getItem('tags')); //<--------------------------------------------------------Ensure tags are properly loaded from localStorage
+
+    if (!tags || typeof tags !== 'object') {//<-----------------------------------------------------------------------Defensive check to ensure tags are an object
+        console.error("Tags are not properly initialized in localStorage.");
+        alert("Error: Tags are not properly initialized. Please refresh the page.");
+        return; //<---------------------------------------------------------------------------------------------------Prevent further execution if tags are missing or malformed
+    }
+
+    const item = JSON.parse(localStorage.getItem(itemType)).find(i => i.name === itemName); //<-----------------------Check if item.tags is defined and ensure it defaults to an empty object if undefined
+
+    if (!item) {
+        console.error("Item not found!");
+        return;
+    }
+
+   
+    item.tags = item.tags || {}; //<-----------------------------------------------------------------------------------If item.tags is undefined, initialize it as an empty object
+
+    // Generate tag selectors (dropdowns for each tag category)
+    const tagSelectors = Object.entries(tags).map(([category, options]) => {
+        // Use an empty array if item.tags[category] is undefined or not an array
+        const selectedTags = Array.isArray(item.tags[category]) ? item.tags[category] : [];
+
+        return `
+            <label for="${category}">${capitalizeFirstLetter(category)}:</label>
+            <select id="${category}">
+                ${options.map(option => `
+                    <option value="${option}" ${selectedTags.includes(option) ? 'selected' : ''}>
+                        ${option}
+                    </option>
+                `).join('')}
+            </select>
+        `;
+    }).join('<br>');
+
+    console.log("Generated tag selectors:", tagSelectors); // Debugging line
+
+    // Construct the full form HTML, including tag selectors
+    let formHtml = `
         <h3>Edit Item: ${item.name}</h3>
         <label for="newName">Name:</label>
         <input type="text" id="newName" value="${item.name}"><br>
@@ -127,61 +179,62 @@ function editItem(itemName, itemType){                  // ---------------------
         <input type="text" id="newPrice" value="${item.price}"><br>
         <label for="newImage">Image URL:</label>
         <input type="text" id="newImage" value="${item.image}"><br>
+
+        <!-- Add tag selectors here -->
+        <div class="tag-selectors-container">
+            ${tagSelectors}
+        </div>
+
         <button id="saveChanges">Save Changes</button>
     `;
-    document.querySelector('.items-edit-container').innerHTML = formHtml;
+
+    const container = document.querySelector('.items-edit-container');
+    if (container) {
+        container.innerHTML = formHtml;
+    } else {
+        console.error("Items edit container not found!");
+    }
 
     document.getElementById('saveChanges').addEventListener('click', () => {
         item.name = document.getElementById('newName').value;
         item.price = document.getElementById('newPrice').value;
         item.image = document.getElementById('newImage').value;
 
-        localStorage.setItem(itemType, JSON.stringify(menuItems));
+        // Updating the tags
+        const updatedTags = Object.keys(tags).reduce((acc, key) => {
+            const selectedOptions = Array.from(document.getElementById(key).selectedOptions).map(option => option.value);
+            acc[key] = selectedOptions;
+            return acc;
+        }, {});
+
+        item.tags = updatedTags;
+
+        const menuItems = JSON.parse(localStorage.getItem(itemType));
+        const updatedMenuItems = menuItems.map(i => i.name === itemName ? item : i);
+        localStorage.setItem(itemType, JSON.stringify(updatedMenuItems));
+
         alert('Item updated.');
-        updateMenuItems(itemType);
+        updatedMenuItems(itemType);
     });
 }
 
-function removeItem(itemName, itemType){                    // -------------------------- handles remove btn click to remove item from menu display. stil shows in manager display with label that it is not being displayed.
-    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
-    let itemIndex = menuItems.findIndex(item => item.name === itemName);  
+/*--------------------------------------- */
+/*--------------ADD ITEM---------------- */
+/*------------------------------------- */
 
-    if(itemIndex !== -1){  
-        menuItems[itemIndex].identifiers += 'NaN';
-        localStorage.setItem(itemType, JSON.stringify(menuItems));
-        alert('Item removed from menu.');
-        updateMenuItems(itemType);  
-    }
-    else{
-        alert('Item not found!');  
-    }
-}
+function addItem() {// -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
 
-function addBack(itemName, itemType) {                  // ------------------------------ handles addBack btn click to add back removed items that still exist in LS
-    const menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
-    const item = menuItems.find(item => item.name === itemName);
+    const tags = JSON.parse(localStorage.getItem('tags'));
 
-    if (item && item.identifiers.endsWith('NaN')) {
-        item.identifiers = item.identifiers.slice(0, 3);
-        localStorage.setItem(itemType, JSON.stringify(menuItems));
-        alert('Item restored.');
-        updateMenuItems(itemType);
-    }
-    else{
-        alert('This item has already been restored.');
-    }
-}
+    const tagSelectors = Object.entries(tags).map(([category, options]) => `
+        <label for="${category}">${capitalizeFirstLetter(category)}:</label>
+        <select id="${category}">
+            ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
+        </select>
+    `).join('<br>');
 
-function updateMenuItems(itemType){                 // ---------------------------------- takes itemType and displays corresponding menu items
-    const itemContainer = document.querySelector('.menu-items-container');
-    const menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
-    itemContainer.innerHTML = displayMenuItems(menuItems, itemType); 
-}
-
-function addItem(){                 // -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
-    let formHtml = 
-    `
-         <h3>Add New Item</h3>
+    let formHtml = `
+        <h3>Add New Item</h3>
         <label for="type">Choose a menu type:</label>
         <select name="type" id="type">
             <option value="app">Appetizer</option>
@@ -198,47 +251,15 @@ function addItem(){                 // -----------------------------------------
         <input type="text" id="itemImage"><br>
         <label for="itemDesc">Description:</label>
         <input type="text" id="itemDesc"><br>
-        <label for="Tags">Tags</label>
-        <div>
-        <select name="" id="">
-            <option value="">Meal</option>
-            <option value="">Appetizer</option>
-            <option value="">Lunch</option>
-            <option value="">Dinner</option>
-            <option value="">Dessert</option>
-            <option value="">Beverage</option>
-        </select> 
-        <select name="" id="">
-            <option value="">Food Type</option>
-            <option value="">Light</option>
-            <option value="">Medium</option>
-            <option value="">Heavy</option>
-        </select> 
-        <select name="" id="">
-            <option value="">Protein</option>
-            <option value="">Meat</option>
-            <option value="">SeaFood</option>
-            <option value="">Vegetables</option>
-        </select>
-        </div>
-        <div>
-        <select name="" id="">
-            <option value="">Dairy</option>
-            <option value="">Fried Cheese</option>
-            <option value="">Fresh Cheese</option>
-            <option value="">Yogurt</option>
-
-        </select> 
-        <select name="" id="">
-            <option value="">Beverage</option>
-            <option value="">refresher</option>
-            <option value="">juice</option>
-            <option value="">coffee</option>
-        </select> 
-        </div><br>
-        <button id="addNewItem">Add Item</button>
         
+        <!-- Add tag selectors here -->
+        <div class="tag-selectors-container">
+            ${tagSelectors}
+        </div>
+
+        <button id="addNewItem">Add Item</button>
     `;
+
     document.querySelector('.edit-container').innerHTML = formHtml;
     document.querySelector('.menu-items-container').innerHTML = '';
 
@@ -249,14 +270,25 @@ function addItem(){                 // -----------------------------------------
         let description = document.querySelector('#itemDesc').value;
         let type = document.querySelector('#type').value;
 
-        if(!name || !price || !image || !description){
+        // Collect selected tags
+        const selectedTags = Object.keys(tags).reduce((acc, key) => {
+            const selectedOptions = Array.from(document.getElementById(key).selectedOptions).map(option => option.value);
+            acc[key] = selectedOptions;
+            return acc;
+        }, {});
+
+        if (!name || !price || !image || !description) {
             alert("All fields are required!");
             return;
         }
 
         const newItem = {
-            name, price, image, description,
-            identifiers: getIdentifier(),
+            name, 
+            price, 
+            image, 
+            description,
+            tags: selectedTags, // Attach selected tags
+            identifiers: getIdentifier(), // Generate a unique identifier
             quantity: 1
         };
 
@@ -267,13 +299,4 @@ function addItem(){                 // -----------------------------------------
         alert('New item added!');
         updateMenuItems(type);
     });
-}
-
-function getIdentifier(){                   // ----------------------------------------- compares existing number part identifiers and sets new unique id for new menu item, pads the beginning with extra 0s like preexisting items.
-    const allItems = ['app', 'lunch', 'dinner', 'dessert', 'drink']
-        .map(type => JSON.parse(localStorage.getItem(type)) || [])
-        .flat();
-    const currentId = new Set(allItems.map(item => item.identifiers));
-    let largest = Math.max(...[...currentId].map(id => parseInt(id, 10) || 0)) + 1;
-    return String(largest).padStart(3, '0');
 }
