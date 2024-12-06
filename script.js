@@ -66,7 +66,7 @@ const menuData = { // ----------------------------------------------------------
     dinner: {
         names: ['Gemista', 'Fava', 'Pastitsio', 'Chtapodi sti Schara', 'Psari plaki'],
         prices: ['14.70', '13.50', '13.50', '14.70', '14.50'],
-        images: ['../../Images/Dinner/gemista.jpg', '../../Images/Dinner/fava.jpg', '../../Images/dinner/Pastitsio.jpg', '../../Images/Dinner/octopus.png', '../../Images/Dinner/psari.jpg'],
+        images: ['../../Images/Dinner/gemista.jpg', '../../Images/Dinner/fava.jpg', '../../Images/Dinner/Pastitsio.jpg', '../../Images/Dinner/octopus.png', '../../Images/Dinner/psari.jpg'],
         descriptions: [
             'Juicy tomatoes and bell peppers stuffed with herbed rice and vegetables, baked for a deliciously hearty bite.',
             'Hearty and creamy, yellow split peas drizzled with olive oil and topped with onions and capers—a smooth, savory classic.',
