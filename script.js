@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     addingFilterItems();
     const pageClass = document.body.classList;
-    if(pageClass.contains('main')){
+    if(pageClass.contains('main')){                                                     //index.html listener
         setUpMenu('app');
         setUpMenu('lunch'); 
         setUpMenu('dinner'); 
@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         hover();
         flyout();
     }
-    if(pageClass.contains('cart')) setUpCart();
+    if(pageClass.contains('cart')) setUpCart();                                         //cart.html listener
 
-    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
-    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
-    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
-    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
-    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
+    if(pageClass.contains('appetizers')) displayMenuOnPage('app');                      //appetizers.html listener
+    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');                         //lunch.html listener
+    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');                       //dinner.html listener
+    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');                    //dessert.html listener
+    if(pageClass.contains('beverages')) displayMenuOnPage('drink');                     //beverages.html listener
 });
 
 
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ------------------------------ //
 
 
-const menuData = {
+const menuData = { // ---------------------------------------------------------------------- menu items information
     app: {
         names: ['Dolmades', 'Choriatiki', 'Saganaki', 'Tzatziki'],
         prices: ['6.00', '6.00', '7.00', '7.00'],
@@ -76,13 +76,13 @@ const menuData = {
         ],
         identifiers: ['009', '010', '011', '012', '013'],
         tags: [
-            ['dinner', 'medium', 'vegetable'],
-            ['dinner', 'medium', 'vegetable'],
+            ['dinner', 'heavy', 'vegetable'],
+            ['dinner', 'heavy', 'vegetable'],
             ['dinner', 'medium', 'meat'],
-            ['dinner', 'medium', 'seafood'],
+            ['dinner', 'heavy', 'seafood'],
             ['dinner', 'medium', 'seafood'],
         ]
-    },
+    }, //changed a few dinner items^ to heavy based on what i've read about the items but feel free to change back if you want
     dessert: {
         names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
         prices: ['8.00', '9.00', '8.00'],
@@ -121,7 +121,7 @@ const menuData = {
     }
 };
 
-function setUpMenu(type){
+function setUpMenu(type){ // -------------------------------------------------------------- called from event listener, takes menu items and sets them up to be added to local storage
     const menu = menuData[type];
     if (!menu) return;
     
@@ -138,7 +138,7 @@ function setUpMenu(type){
     });
 }
 
-function addToLS(type, item){
+function addToLS(type, item){ // ---------------------------------------------------------- takes item and type, checks for items that have been removed by manager, and sets in local storage
     let data = JSON.parse(localStorage.getItem(type)) || [];
     
     const baseIdentifier = item.identifiers.substring(0, 3);
@@ -154,12 +154,12 @@ function addToLS(type, item){
 }
 
 
-// -------------------------- //
-// ---- HOME PAGE FLYOUT ---- //
-// -------------------------- //
+// -------------------- //
+// ---- HOME PAGE  ---- //
+// -------------------- //
 
 
-function flyout(){
+function flyout(){ // -------------------------------------------------------------------- moves side menu flyout in and out onclick
     let navBtn = document.querySelector('.nav');
     let flyout = document.querySelector('.header');
     if(navBtn && flyout){
@@ -175,250 +175,7 @@ function flyout(){
     }
 }
 
-
-// ---------------------------- //
-// ---- MENU PAGES DISPLAY ---- //
-// ---------------------------- //
-
-
-function displayMenuOnPage(type){
-    let container = document.querySelector('.holder');
-    container.innerHTML = ''; 
-    let storedItems = JSON.parse(localStorage.getItem(type)) || [];
-
-    let validIdentifiers = new Set(); 
-
-    storedItems.forEach(item => {
-        let id = item.identifiers;
-        if(!isNaN(id) && id.length === 3){
-            let baseId = id.substring(0, 3); 
-            let counterpartExists = storedItems.some(otherItem => 
-                otherItem.identifiers === baseId + 'NaN'
-            );
-
-            if(!counterpartExists){
-                validIdentifiers.add(baseId);
-                validIdentifiers.add(baseId + 'NaN');
-            }
-        }
-    });
-
-    storedItems.forEach(item => {
-        let id = item.identifiers;
-
-        if(validIdentifiers.has(id)){
-            let menuItem = document.createElement('div');
-            menuItem.classList.add('menu-item');
-            menuItem.innerHTML = `
-                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-info">
-                    <p class="name">${item.name}</p>
-                    <div class="add-info">
-                        <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
-                    </div>
-                </div>
-                <p class="description">${item.description}</p>
-            `;
-            container.append(menuItem);
-        }
-    });
-
-    addItemClick();
-}
-
-
-// --------------------- //
-// ---- ADD TO CART ---- //
-// --------------------- //
-
-
-function addItemClick(){
-    let buttons = document.querySelectorAll('.addItem');
-    buttons.forEach(button => {
-        console.log('button clicked')
-        button.addEventListener('click', handleAddItem);
-    });
-};
-
-function handleAddItem(event){
-    let button = event.target.closest('.addItem');
-    let menuItem = button.closest('.menu-item');
-    let name = menuItem.querySelector('.name').innerText;
-    let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
-    let image = menuItem.querySelector('img').src;
-    let id = button.dataset.type; 
-    console.log({name, price, image, id})
-
-    let item = {
-        name: name,
-        price: price,
-        image: image,
-        quantity: 1,
-        identifiers: id
-    };
-    
-    addToCartInLS(item);
-};
- 
-function addToCartInLS(item){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
-    const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
-    if(existingItem){
-        alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
-        return;
-    }
-    let add = document.querySelector('#add');
-    console.log('Add Element', add)
-    if (!add) {
-        console.warn('Element with ID "add" not found. Creating one dynamically.');
-        add = document.createElement('div');
-        add.id = 'add';
-        add.style.opacity = '0';
-        add.textContent = 'Item added to cart!';
-        document.body.appendChild(add);
-    }
-
-    add.style.opacity = 1; // Make the element visible
-    cart.push(item);
-    localStorage.setItem('cart', JSON.stringify(cart));
-
-    
-    setTimeout(() => fadeOut(add), 3000);
-}
-
-function fadeOut(add){
-    add.style.opacity = 0;
-}
-
-
-// -------------- //
-// ---- CART ---- //
-// -------------- //
-
-
-function setUpCart(){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    if(cart.length === 0){
-        getTotal();
-        document.querySelector('.bag-items').innerHTML = `<p id="empty">Your bag is empty...</p>`;
-    }
-    else{
-        displayCartItems(cart);
-        quantityChange();
-        getTotal();
-        removeButtons();
-    }
-}
-
-function displayCartItems(cart){
-    let container = document.querySelector('.bag-items');
-    container.innerHTML = '';
-
-    cart.forEach(item => {
-        let cartItem = document.createElement('div');
-        cartItem.classList.add('bag-item');
-        cartItem.innerHTML = 
-        `
-        <div class="item column">
-            <img src="${item.image}" alt="${item.name}" class="bag-image">
-            <span class="name">${item.name}</span>
-        </div>
-        <span class="price column">${convertPrice(item.price)}</span>
-        <div class="quantity column"> 
-            <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
-            <button class="btn-remove">Remove</button>
-        </div>
-    `;
-    container.append(cartItem);
-    }); 
-       
-    removeButtons();
-}
-
-function removeButtons(){
-    let removeButtons = document.querySelectorAll('.btn-remove');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            loader();
-            const itemName = event.target.closest('.bag-item').querySelector('.name').innerText;
-            removeItemFromLS(itemName, event);
-        });
-    });
-}
-
-function removeItemFromLS(itemName, event){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(cartItem => cartItem.name !== itemName);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    event.target.closest('.bag-item').remove();
-    if (cart.length === 0) {
-        document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
-    }
-    setTimeout(setUpCart, 700);
-}
-
-function quantityChange(){
-    let quantities = document.querySelectorAll('.quantityInput');
-    quantities = Array.from(quantities);
-
-    quantities.forEach(input => {
-        input.addEventListener('change', (event) => {
-            let change = event.target;
-            let itemName = change.closest('.bag-item').querySelector('.name').innerText;
-
-            let newQuantity = parseInt(change.value);
-            if(isNaN(newQuantity) || newQuantity <= 0){
-                newQuantity = 1;
-                change.value = newQuantity;
-                console.log(`Invalid quantity for ${itemName}, resetting to 1.`);
-            }
-            
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let cartItem = cart.find(item => item.name.trim() === itemName);
-
-            if(cartItem){
-                cartItem.quantity = newQuantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
-            } 
-            else{
-                console.error(`Item ${itemName} not found in Local Storage`)
-            }
-            getTotal();
-        });
-    });
-}
-
-function getTotal(){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let total = 0;
-    let totalContainer = document.querySelector('.bag-total-price');
-    cart.forEach(cartItem => {
-        let price = parseFloat(cartItem.price);
-        let quantity = cartItem.quantity;
-        total += (price * quantity);
-    });
-    totalContainer.innerText = convertPrice(total);
-}
-
-function loader(){
-    let loader = document.querySelector('.loader');
-    let cart = document.querySelector('.cart-items')
-    cart.style.display = 'none';
-    loader.style.opacity = 1;
-    setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 800);
-}
-
-function convertPrice(price){
-    let split = String(price).split('.');
-    let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
-    if(split[0] == 0){return '0€'}
-    return split[0] + ',' + end + '€'; 
-}
-
-function headerScroll(){
+function headerScroll(){ // -------------------------------------------------------------- handles css changes for index page header on scroll
     let header = document.querySelector('.image-section h2');
     let menu = document.querySelector('.nav');
     let login = document.querySelector('.admin-login');
@@ -452,21 +209,21 @@ function headerScroll(){
     });
 }
 
-function hover(){
+function hover(){ // --------------------------------------------------------------------- handles css changes on hover over menu selector options
     let options = document.querySelectorAll('.selections li.options');
     let arrows = document.querySelectorAll('.selections li.option-arrow');
     let selection = document.querySelectorAll('.selections .selection');
     for(let i = 0; i < options.length; i++){
-        selection[i].addEventListener('mouseover', () => {
+        selection[i].addEventListener('mouseenter', () => {
             arrows[i].style.opacity = '1';
             arrows[i].style.display = 'flex';
             setTimeout(() => {
                 arrows[i].classList.add('visible');
-            }, 250);
+            }, 200);
         })
     }
     for(let i = 0; i < arrows.length; i++){
-        selection[i].addEventListener('mouseout', () => {
+        selection[i].addEventListener('mouseleave', () => {
             options[i].style.height = '240px';
             arrows[i].style.display = 'none';
             arrows[i].style.opacity = '0';
@@ -474,6 +231,231 @@ function hover(){
         });
     }
 }
+
+
+// ---------------------------- //
+// ---- MENU PAGES DISPLAY ---- //
+// ---------------------------- //
+
+
+function displayMenuOnPage(type){ // ----------------------------------------------------- takes items from LS based on type and displays on appropriate menu page
+    let container = document.querySelector('.holder');
+    container.innerHTML = ''; 
+    let storedItems = JSON.parse(localStorage.getItem(type)) || [];
+
+    let validIdentifiers = new Set(); 
+
+    storedItems.forEach(item => {
+        let id = item.identifiers;
+        if(!isNaN(id) && id.length === 3){
+            let baseId = id.substring(0, 3); 
+            let counterpartExists = storedItems.some(otherItem => 
+                otherItem.identifiers === baseId + 'NaN'
+            );
+
+            if(!counterpartExists){
+                validIdentifiers.add(baseId);
+                validIdentifiers.add(baseId + 'NaN');
+            }
+        }
+    });
+
+    storedItems.forEach(item => {
+        let id = item.identifiers;
+
+        if(validIdentifiers.has(id)){
+            let menuItem = document.createElement('div');
+            menuItem.classList.add('menu-item');
+            menuItem.innerHTML = `
+                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+                <div class="item-info">
+                    <p class="name">${item.name}</p>
+                    <div class="add-info">
+                        <p class="price">${convertPrice(item.price)}</p>
+                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    </div>
+                </div>
+                <p class="description">${item.description}</p>
+            `;
+            container.append(menuItem);
+        }
+    });
+
+    addItemClick();
+}
+
+
+// --------------------- //
+// ---- ADD TO CART ---- //
+// --------------------- //
+
+
+function addItemClick(){ // -------------------------------------------------------------- listener for add to bag button
+    let buttons = document.querySelectorAll('.addItem');
+    buttons.forEach(button => {
+        button.addEventListener('click', handleAddItem);
+    });
+};
+
+function handleAddItem(event){ // -------------------------------------------------------- takes price and displays in greek euro format, sets up to be added to LS
+    let button = event.target.closest('.addItem');
+    let menuItem = button.closest('.menu-item');
+    let name = menuItem.querySelector('.name').innerText;
+    let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
+    let image = menuItem.querySelector('img').src;
+    let id = button.dataset.type; 
+
+    let item = {
+        name: name,
+        price: price,
+        image: image,
+        quantity: 1,
+        identifiers: id
+    };
+    
+    addToCartInLS(item);
+};
+ 
+function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
+    const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
+    if(existingItem){
+        alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
+        return;
+    }
+
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+
+// -------------- //
+// ---- CART ---- //
+// -------------- //
+
+
+function setUpCart(){ // ----------------------------------------------------------------- takes cart items from LS and calls functions to set up cart display
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if(cart.length === 0){
+        getTotal();
+        document.querySelector('.bag-items').innerHTML = `<p id="empty">Your bag is empty...</p>`;
+    }
+    else{
+        displayCartItems(cart);
+        quantityChange();
+        getTotal();
+        removeButtons();
+    }
+}
+
+function displayCartItems(cart){ // ------------------------------------------------------ displays cart items from local storage
+    let container = document.querySelector('.bag-items');
+    container.innerHTML = '';
+
+    cart.forEach(item => {
+        let cartItem = document.createElement('div');
+        cartItem.classList.add('bag-item');
+        cartItem.innerHTML = 
+        `
+        <div class="item column">
+            <img src="${item.image}" alt="${item.name}" class="bag-image">
+            <span class="name">${item.name}</span>
+        </div>
+        <span class="price column">${convertPrice(item.price)}</span>
+        <div class="quantity column"> 
+            <input type="number" name="quantity" class="quantityInput" value="${item.quantity}">
+            <button class="btn-remove">Remove</button>
+        </div>
+    `;
+    container.append(cartItem);
+    }); 
+       
+    removeButtons();
+}
+
+function removeButtons(){ // ------------------------------------------------------------- listener for remove buttons in cart
+    let removeButtons = document.querySelectorAll('.btn-remove');
+    removeButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            loader();
+            const itemName = event.target.closest('.bag-item').querySelector('.name').innerText;
+            removeItemFromLS(itemName, event);
+        });
+    });
+}
+
+function removeItemFromLS(itemName, event){ // ------------------------------------------- removes cart item from LS to remove from display
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(cartItem => cartItem.name !== itemName);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    event.target.closest('.bag-item').remove();
+    if (cart.length === 0) {
+        document.querySelector('.bag-items').innerHTML = '<p id="empty">Your bag is empty...</p>';
+    }
+    setTimeout(setUpCart, 700);
+}
+
+function quantityChange(){ // ------------------------------------------------------------ handles quantity input change to prevent nums less than one
+    let quantities = document.querySelectorAll('.quantityInput');
+    quantities = Array.from(quantities);
+
+    quantities.forEach(input => {
+        input.addEventListener('change', (event) => {
+            let change = event.target;
+            let itemName = change.closest('.bag-item').querySelector('.name').innerText;
+
+            let newQuantity = parseInt(change.value);
+            if(isNaN(newQuantity) || newQuantity <= 0){
+                newQuantity = 1;
+                change.value = newQuantity;
+                console.log(`Invalid quantity for ${itemName}, resetting to 1.`);
+            }
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItem = cart.find(item => item.name.trim() === itemName);
+
+            if(cartItem){
+                cartItem.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+            } 
+            getTotal();
+        });
+    });
+}
+
+function getTotal(){ // ------------------------------------------------------------------ handles getting price total from cart items
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+    let totalContainer = document.querySelector('.bag-total-price');
+    cart.forEach(cartItem => {
+        let price = parseFloat(cartItem.price);
+        let quantity = cartItem.quantity;
+        total += (price * quantity);
+    });
+    totalContainer.innerText = convertPrice(total);
+}
+
+function loader(){ // -------------------------------------------------------------------- handles display of css loader when cart item is removed
+    let loader = document.querySelector('.loader');
+    let cart = document.querySelector('.cart-items')
+    cart.style.display = 'none';
+    loader.style.opacity = 1;
+    setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 800);
+}
+
+function convertPrice(price){ // --------------------------------------------------------- changes price to display euro sign after price in greek style
+    let split = String(price).split('.');
+    let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
+    if(split[0] == 0){return '0€'}
+    return split[0] + ',' + end + '€'; 
+}
+
+
+// ----------------------- //
+// ---- SEARCH FILTER ---- //
+// ----------------------- //
+
 
 function addingFilterItems(){
     const filterButton = document.querySelector('.filter-button');

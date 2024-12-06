@@ -26,6 +26,12 @@
     --color-19: #164bfc;
     --color-20: #c9cdd2;
     --color-21: #53555a;
+    --color-22: #fff;
+    --color-23: #dbd0be;
+    --color-24: #9db0ef;
+    --color-25: #6e85d3;
+    --color-26: #122f8d;
+    --color-27: rgb(173, 185, 223);
     --font-family-plain: 'Thasadith';
     --font-family-fancy: 'Ruthie';
 }
@@ -35,7 +41,7 @@ body{
 }
 
 /* ---------------- */
-/* ---- header ---- */
+/* ---- HEADER ---- */
 /* ---------------- */
 
 
@@ -123,10 +129,6 @@ body{
     width: 45px;
 }
 
-.login{
-    margin-left: 2rem;
-}
-
 .nav > img{
     height: 35px;
 }
@@ -158,6 +160,7 @@ body{
     -webkit-filter: drop-shadow(1px 1px 1px #000000c5);
     filter: drop-shadow(1px 1px 1px #000000c5);
 } 
+
 
 /* -------------- */
 /* ---- MENU ---- */
