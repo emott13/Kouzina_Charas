@@ -30,7 +30,7 @@ const menuData = {
     app: {
         names: ['Dolmades', 'Choriatiki', 'Saganaki', 'Tzatziki'],
         prices: ['6.00', '6.00', '7.00', '7.00'],
-        images: ['/Images/Appetizers/dolmades.jpg', '/Images/Appetizers/choriatiki.jpg', '/Images/Appetizers/saganaki.jpg', '/Images/Appetizers/Tzatziki.jpg'],
+        images: ['../../Images/Appetizers/dolmades.jpg', '../../Images/Appetizers/choriatiki.jpg', '../../Images/Appetizers/saganaki.jpg', '../../Images/Appetizers/Tzatziki.jpg'],
         descriptions: [
             'Rice, herbs, and seasonings wrapped in grape leaves. Served with lemon.',
             'Refreshing mix of tomato, cucumber, peppers, onion, and olives, topped with feta.',
@@ -48,7 +48,7 @@ const menuData = {
     lunch: {
         names: ['Spanakopita', 'Souvlaki', 'Kalamarakia Psita', 'Moussaka'],
         prices: ['12.50', '13.70', '13.50', '13.00'],
-        images: ['/Images/Lunch/spanakopita-copy.jpg', '/Images/Lunch/souvlaki.jpeg', '/Images/Lunch/kalamarakia.jpg', '/Images/Lunch/moussaka.jpg'],
+        images: ['../../Images/Lunch/spanakopita-copy.jpg', '../../Images/Lunch/souvlaki.jpeg', '../../Images/Lunch/kalamarakia.jpg', '../../Images/Lunch/moussaka.jpg'],
         descriptions: [
             'Flaky, golden pastry filled with a deliciously savory blend of spinach and feta.',
             'Tender, marinated pork skewers grilled to perfection, served with warm pita and tangy tzatziki.',
@@ -66,7 +66,7 @@ const menuData = {
     dinner: {
         names: ['Gemista', 'Fava', 'Pastitsio', 'Chtapodi sti Schara', 'Psari plaki'],
         prices: ['14.70', '13.50', '13.50', '14.70', '14.50'],
-        images: ['/Images/Dinner/gemista.jpg', '/Images/Dinner/fava.jpg', '/Images/dinner/Pastitsio.jpg', '/Images/Dinner/octopus.png', '/Images/Dinner/psari.jpg'],
+        images: ['../../Images/Dinner/gemista.jpg', '../../Images/Dinner/fava.jpg', '../../Images/dinner/Pastitsio.jpg', '../../Images/Dinner/octopus.png', '../../Images/Dinner/psari.jpg'],
         descriptions: [
             'Juicy tomatoes and bell peppers stuffed with herbed rice and vegetables, baked for a deliciously hearty bite.',
             'Hearty and creamy, yellow split peas drizzled with olive oil and topped with onions and capers—a smooth, savory classic.',
@@ -86,7 +86,7 @@ const menuData = {
     dessert: {
         names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
         prices: ['8.00', '9.00', '8.00'],
-        images: ['/Images/Dessert/loukoumades.jpg', '/Images/Dessert/baklava.jpg', '/Images/Dessert/ekmek.jpg'],
+        images: ['../../Images/Dessert/loukoumades.jpg', '../../Images/Dessert/baklava.jpg', '../../Images/Dessert/ekmek.jpg'],
         descriptions: [
             'Light, golden doughnuts drizzled with honey and sprinkled with cinnamon and crushed nuts—a sweet, fluffy treat to satisfy every sweet tooth.',
             'Crispy, flaky layers of phyllo pastry filled with nuts and sweetened with syrup or honey—an irresistible, melt-in-your-mouth dessert.',
@@ -103,7 +103,7 @@ const menuData = {
     drink: {
         names: ['Pink Lemonade', 'Cherry juice', 'Orange juice', 'Ellinikos Kafes'],
         prices: ['3.00', '3.00', '3.00', '3.50'],
-        images: ['/Images/Beverages/pink-lemonade.jpg', '/Images/Beverages/sour-cherry.jpg', '/Images/Beverages/orange.jpg', '/Images/Beverages/coffee.jpg'],
+        images: ['../../Images/Beverages/pink-lemonade.jpg', '../../Images/Beverages/sour-cherry.jpg', '../../Images/Beverages/orange.jpg', '../../Images/Beverages/coffee.jpg'],
         descriptions: [
             'A delightful blend of lemony zest with a hint of berry sweetness—this pink lemonade is a refreshing twist on a classic!',
             'Bold, tangy, and tart—this refreshing cherry juice bursts with vibrant flavor in every sip.',
