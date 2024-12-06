@@ -59,7 +59,7 @@ body{
     width:90%;
     height: 50%;
 }
-.undo{}
+/* .undo{} */
 .undo ion-icon:hover{
 color: white;
 }
@@ -394,6 +394,13 @@ color: white;
     width: 25%;
 }
 
+.total h2{
+    border-bottom: 2px solid black;
+    font-size: 35px;
+    text-align: center;
+    width: 40%;
+}
+
 .complete-order-button{
     width: 100%;
     height: 90%;
@@ -458,8 +465,8 @@ color: white;
     text-align: center;
 }
 
-.tip-percentages:hover{
-}
+/* .tip-percentages:hover{
+} */
 .custom-tip-display{
     display: flex;
     justify-content: space-evenly;
@@ -507,4 +514,8 @@ color: white;
     background-color: var(--color-112);
     color: white;
     transition: 200ms;
+}
+
+.hidden {
+    display: none;
 }

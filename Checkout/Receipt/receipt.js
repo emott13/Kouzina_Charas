@@ -27,7 +27,11 @@ function receipt(){
            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
            <div class="receipt-total-after-sub"><h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3></div>
+           <div class="dash">------------------------------------------------------</div>
+           
            <div class="wait-time"><h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2></div>
+            <div class="dash">------------------------------------------------------</div>
+
     </div>
     <div class="receipt-end"><p>THANK YOU FOR DINING WITH US! <br> 
     PLEASE COME AGAIN</p></div>

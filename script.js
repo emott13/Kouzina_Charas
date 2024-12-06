@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        
+        flyout();
     }
     if(pageClass.contains('cart')) setUpCart();
 
@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
     if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
     if(pageClass.contains('beverages')) displayMenuOnPage('drink');
-    flyout();
 });
 
 
@@ -163,13 +162,17 @@ function addToLS(type, item){
 function flyout(){
     let navBtn = document.querySelector('.nav');
     let flyout = document.querySelector('.header');
-    navBtn.addEventListener('click', () => {
-        flyout.style.left = '0';
-    });
+    if(navBtn && flyout){
+        navBtn.addEventListener('click', () => {
+            flyout.style.left = '0';
+        });
+    }
     let closeBtn = document.querySelector('.close');
-    closeBtn.addEventListener('click', () => {
-        flyout.style.left = '-100%'
-    })
+    if(closeBtn){
+        closeBtn.addEventListener('click', () => {
+            flyout.style.left = '-100%';
+        })
+    }
 }
 
 
@@ -245,7 +248,7 @@ function handleAddItem(event){
     let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
     let id = button.dataset.type; 
-    console.log(id)
+    console.log({name, price, image, id})
 
     let item = {
         name: name,
@@ -266,9 +269,21 @@ function addToCartInLS(item){
         return;
     }
     let add = document.querySelector('#add');
-    add.style.opacity = 1;
+    console.log('Add Element', add)
+    if (!add) {
+        console.warn('Element with ID "add" not found. Creating one dynamically.');
+        add = document.createElement('div');
+        add.id = 'add';
+        add.style.opacity = '0';
+        add.textContent = 'Item added to cart!';
+        document.body.appendChild(add);
+    }
+
+    add.style.opacity = 1; // Make the element visible
     cart.push(item);
-    localStorage.setItem('cart', JSON.stringify(cart))                             
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    
     setTimeout(() => fadeOut(add), 3000);
 }
 
@@ -466,7 +481,6 @@ function addingFilterItems(){
     const foodContainer = document.querySelector('.food-container');
 
     if(!filterButton|| !foodContainer){
-        console.error('Filter button not found or food container not found');
         return;
     }
 
@@ -533,7 +547,7 @@ function addingFilterItems(){
     
         return allData.filter(item =>
             Object.entries(filters).every(([filterCategory, filterValues]) => {
-                console.log(`Checking filter category: ${filterCategory} with values: ${filterValues}`);
+                // console.log(`Checking filter category: ${filterCategory} with values: ${filterValues}`);
                 return filterValues.some(value => item.tags.includes(value));
             })
         );
