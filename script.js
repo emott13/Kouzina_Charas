@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // addingFilterItems();
+    fixLocalStorageTags();
     initializeMenu();
     setupFilterButton();
     applyFilters();
+
     const pageClass = document.body.classList;
     if(pageClass.contains('main')){                                                     //index.html listener
         setUpMenu('app');
@@ -150,13 +151,16 @@ function setUpMenu(type){ // ---------------------------------------------------
 
 function addToLS(type, item){ // ---------------------------------------------------------- takes item and type, checks for items that have been removed by manager, and sets in local storage
     let data = JSON.parse(localStorage.getItem(type)) || [];
-    
     const baseIdentifier = item.identifiers.substring(0, 3);
     const nanKey = baseIdentifier + 'NaN';
 
     const existingItem = data.find(existing => existing.identifiers === item.identifiers || existing.identifiers === nanKey);
     if(existingItem){
         return; 
+    }
+
+    if (!Array.isArray(item.tags)) {
+        item.tags = [];
     }
 
     data.push(item);
@@ -503,6 +507,12 @@ function addingFilterItems(){
     }
 }
 
+function initializeMenu() {
+    console.log("Initializing menu...");
+    const allItems = getAllMenuItems(); // Fetch all menu items from localStorage
+    displayMenu(allItems); // Display them in the UI
+}
+
 function getAllMenuItems() {
     console.log("Fetching all menu items dynamically...");
     const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
@@ -557,30 +567,63 @@ function displayMenu(items) {
 
 function applyFilters() {
     console.log("Applying filters...");
+    fixLocalStorageTags();
     const selectedFilters = getSelectedFilters();
     console.log("Selected Filters:", selectedFilters);
 
     const filteredItems = getAllMenuItems().filter(item => {
-        console.log("Checking item:", item.name, "with tags:", item.tags);
-        return Object.keys(selectedFilters).every(key =>
-            selectedFilters[key].some(filterValue => {
-                console.log("Comparing filter value:", filterValue);
+        if (!Array.isArray(item.tags)) {
+            console.log(`Skipping item "${item.name}" because tags are not an array.`);
+            return false; // Skip this item
+        }
 
-                if (!Array.isArray(item.tags)) {
-                    console.warn(`Skipping item "${item.name}" because tags are not an array.`);
-                    return false;
-                }
+        // return Object.keys(selectedFilters).every(key =>
+        //     selectedFilters[key].some(filterValue => {
+        //         console.log("Comparing filter value:", filterValue);
                 
-                if (item.tags && Array.isArray(item.tags)) {
-                    return item.tags.some(tag => tag.toLowerCase() === filterValue.toLowerCase());
-                } 
-                return false; // Return false if no valid tags are available
-            })
+        //         return item.tags.some(tag => tag.toLowerCase() === filterValue.toLowerCase());
+        //     })
+        // );
+        return selectedFilters.meal.some(filterValue =>
+            item.tags.some(tag => tag.toLowerCase() === filterValue.toLowerCase())
         );
+
+
     });
 
     console.log("Filtered Items:", filteredItems);
     displayMenu(filteredItems);
+}
+
+function fixLocalStorageTags() {
+    const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
+    categories.forEach(category => {
+        let items = JSON.parse(localStorage.getItem(category)) || [];
+        items = items.map(item => {
+            if (!Array.isArray(item.tags)) {
+                item.tags = [];
+            }
+            return item;
+        });
+        localStorage.setItem(category, JSON.stringify(items));
+    });
+    console.log("Fixed tags for all categories.");
+}
+
+
+
+
+function setupFilterButton() {
+    const filterButton = document.querySelector('.filter-button'); // Select the filter button
+    if (filterButton) {
+        console.log("Setting up filter button...");
+        filterButton.addEventListener('click', () => {
+            console.log("Filter button clicked.");
+            applyFilters(); // Apply filters when the button is clicked
+        });
+    } else {
+        console.error("Filter button not found!");
+    }
 }
 
 
@@ -590,11 +633,27 @@ function getSelectedFilters() {
 
     const selectedFilters = {};
     filters.forEach(filter => {
-        const group = filter.name;
+        const group = filter.name; // e.g., 'meal'
         if (!selectedFilters[group]) selectedFilters[group] = [];
-        selectedFilters[group].push(filter.value);
+        selectedFilters[group].push(filter.value); // e.g., ['appetizer']
     });
 
     console.log("Selected filters object:", selectedFilters);
     return selectedFilters;
 }
+
+
+// function getSelectedFilters() {
+//     const filters = document.querySelectorAll('.filters-container input[type="checkbox"]:checked');
+//     console.log("Filters selected:", filters);
+
+//     const selectedFilters = {};
+//     filters.forEach(filter => {
+//         const group = filter.name;
+//         if (!selectedFilters[group]) selectedFilters[group] = [];
+//         selectedFilters[group].push(filter.value);
+//     });
+
+//     console.log("Selected filters object:", selectedFilters);
+//     return selectedFilters;
+// }
