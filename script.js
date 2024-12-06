@@ -76,13 +76,13 @@ const menuData = {
         ],
         identifiers: ['009', '010', '011', '012', '013'],
         tags: [
-            ['dinner', 'medium', 'vegetable'],
-            ['dinner', 'medium', 'vegetable'],
+            ['dinner', 'heavy', 'vegetable'],
+            ['dinner', 'heavy', 'vegetable'],
             ['dinner', 'medium', 'meat'],
-            ['dinner', 'medium', 'seafood'],
+            ['dinner', 'heavy', 'seafood'],
             ['dinner', 'medium', 'seafood'],
         ]
-    },
+    }, //changed a few dinner items^ to heavy based on what i've read about the items but feel free to change back if you want
     dessert: {
         names: ['Loukoumades', 'Baklava', 'Ekmek Kataifi'],
         prices: ['8.00', '9.00', '8.00'],
@@ -268,27 +268,9 @@ function addToCartInLS(item){
         alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
         return;
     }
-    let add = document.querySelector('#add');
-    console.log('Add Element', add)
-    if (!add) {
-        console.warn('Element with ID "add" not found. Creating one dynamically.');
-        add = document.createElement('div');
-        add.id = 'add';
-        add.style.opacity = '0';
-        add.textContent = 'Item added to cart!';
-        document.body.appendChild(add);
-    }
 
-    add.style.opacity = 1; // Make the element visible
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
-
-    
-    setTimeout(() => fadeOut(add), 3000);
-}
-
-function fadeOut(add){
-    add.style.opacity = 0;
 }
 
 
@@ -381,11 +363,7 @@ function quantityChange(){
             if(cartItem){
                 cartItem.quantity = newQuantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
-                console.log(`Updating quantity for ${itemName} to ${newQuantity}.`);
             } 
-            else{
-                console.error(`Item ${itemName} not found in Local Storage`)
-            }
             getTotal();
         });
     });
@@ -457,16 +435,16 @@ function hover(){
     let arrows = document.querySelectorAll('.selections li.option-arrow');
     let selection = document.querySelectorAll('.selections .selection');
     for(let i = 0; i < options.length; i++){
-        selection[i].addEventListener('mouseover', () => {
+        selection[i].addEventListener('mouseenter', () => {
             arrows[i].style.opacity = '1';
             arrows[i].style.display = 'flex';
             setTimeout(() => {
                 arrows[i].classList.add('visible');
-            }, 250);
+            }, 200);
         })
     }
     for(let i = 0; i < arrows.length; i++){
-        selection[i].addEventListener('mouseout', () => {
+        selection[i].addEventListener('mouseleave', () => {
             options[i].style.height = '240px';
             arrows[i].style.display = 'none';
             arrows[i].style.opacity = '0';
