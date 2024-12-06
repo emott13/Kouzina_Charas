@@ -3,10 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
         setItem();
     }
     if (document.body.classList.contains('manager')) {
+        let editContainer = document.querySelector('.items-edit-container');
+        editContainer.style.display = 'none';
+
         let options = document.querySelectorAll('.options')
         options.forEach(option => {
             option.addEventListener('change', showOptions);
         });
+        
         let menuContainer = document.querySelector('.menu-items-container');
         if(menuContainer){
             menuContainer.addEventListener('click', handleMenuAction);
@@ -40,6 +44,9 @@ function login(){                   // -----------------------------------------
 }
 
 function showOptions(event){                    // --------------------------------------- sets innerHTML options
+    let dash = document.querySelector(".manager-dashboard");
+    dash.style.minHeight = "700px"
+
     let value = event.target.value;
     let editOptions = document.querySelector('.edit-container');
     editOptions.innerHTML = generateOptionsHtml(value);
@@ -47,6 +54,8 @@ function showOptions(event){                    // -----------------------------
 }
 
 function generateOptionsHtml(value){
+    let otherContainer = document.querySelector('.items-edit-container');
+    otherContainer.style.display = "none";
     return `
         <h3>What would you like to ${value}?</h3>
         ${['app', 'lunch', 'dinner', 'dessert', 'drink'].map(type => `
@@ -75,6 +84,9 @@ function menuOptions(value){                    // -----------------------------
 }
 
 function checkLS(event){                    // ------------------------------------------ checks LS, calls display menu items or empty message
+    let dash = document.querySelector(".manager-dashboard");
+    dash.style.minHeight = "50px"
+    
     let item = event.target.value;
     let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
     let container = document.querySelector('.menu-items-container');
@@ -85,18 +97,26 @@ function displayMenuItems(menuItems, itemType){                 // -------------
     return menuItems.map(item => {
         return `
             <div class="op">
-                <div>
-                    <strong>Name:</strong> ${item.name} <br>
-                    <strong>Price:</strong> ${item.price} <br>
-                    <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="50" />
+                <div class="item-edit-wrapper">
+                    <div class="item-edit-info">
+                        <strong>Name:</strong> ${item.name} <br>
+                        <strong>Price:</strong> ${item.price} <br>
+                        <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="180"/>
+                    </div>
+                    <div class="item-edit-buttons">
+                        <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
+                        <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
+                    </div>
                 </div>
-                <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
-                <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
                 ${item.identifiers.length > 3 ? `                   
                     <div class="extra">
                         <p>This item is not being displayed.</p>
                         <button class="add-back" data-item="${item.name}" data-type="${itemType}">Add back to menu</button>
-                    </div>` : ''}
+                    </div>` : `
+                    <div class="extra">
+                        <p>This item is being displayed.</p>
+                    </div>`
+                }
             </div>
         `;
     }).join('');
@@ -170,30 +190,44 @@ function editItem(itemName, itemType) {
 
     console.log("Generated tag selectors:", tagSelectors); // Debugging line
 
+//     <label for="newName">Name:</label>
+//     <input type="text" id="newName" value="${item.name}"><br>
+//     <label for="newPrice">Price:</label>
+//     <input type="text" id="newPrice" value="${item.price}"><br>
+//     <label for="newImage">Image URL:</label>
+//     <input type="text" id="newImage" value="${item.image}"><br>
+
+//     <!-- Add tag selectors here -->
+//     <div class="tag-selectors-container">
+//         ${tagSelectors}
+//     </div>
+
+//     <button id="saveChanges">Save Changes</button>
+// `;
+
+// const container = document.querySelector('.items-edit-container');
+// if (container) {
+//     container.innerHTML = formHtml;
+// } else {
+//     console.error("Items edit container not found!");
+// }
+
     // Construct the full form HTML, including tag selectors
     let formHtml = `
         <h3>Edit Item: ${item.name}</h3>
-        <label for="newName">Name:</label>
-        <input type="text" id="newName" value="${item.name}"><br>
-        <label for="newPrice">Price:</label>
-        <input type="text" id="newPrice" value="${item.price}"><br>
-        <label for="newImage">Image URL:</label>
-        <input type="text" id="newImage" value="${item.image}"><br>
-
-        <!-- Add tag selectors here -->
-        <div class="tag-selectors-container">
-            ${tagSelectors}
+        <div class="edit-inputs">
+            <label for="newName">Name:</label>
+            <input type="text" id="newName" value="${item.name}"><br>
+            <label for="newPrice">Price:</label>
+            <input type="text" id="newPrice" value="${item.price}"><br>
+            <label for="newImage">Image URL:</label>
+            <input type="text" id="newImage" value="${item.image}"><br>
         </div>
-
         <button id="saveChanges">Save Changes</button>
     `;
-
-    const container = document.querySelector('.items-edit-container');
-    if (container) {
-        container.innerHTML = formHtml;
-    } else {
-        console.error("Items edit container not found!");
-    }
+    let editContainer = document.querySelector('.items-edit-container');
+    editContainer.innerHTML = formHtml;
+    editContainer.style.display = "grid"
 
     document.getElementById('saveChanges').addEventListener('click', () => {
         item.name = document.getElementById('newName').value;
@@ -242,7 +276,7 @@ function addItem() {// -------------------------------------------------- handle
             <option value="dinner">Dinner</option>
             <option value="dessert">Dessert</option>
             <option value="drink">Beverage</option>
-        </select>
+        </select> <br>
         <label for="itemName">Name:</label>
         <input type="text" id="itemName"><br>
         <label for="itemPrice">Price:</label>
@@ -258,6 +292,7 @@ function addItem() {// -------------------------------------------------- handle
         </div>
 
         <button id="addNewItem">Add Item</button>
+    </div>
     `;
 
     document.querySelector('.edit-container').innerHTML = formHtml;
