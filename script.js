@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     addingFilterItems();
     const pageClass = document.body.classList;
-    if(pageClass.contains('main')){
+    if(pageClass.contains('main')){                                                     //index.html listener
         setUpMenu('app');
         setUpMenu('lunch'); 
         setUpMenu('dinner'); 
@@ -11,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         hover();
         flyout();
     }
-    if(pageClass.contains('cart')) setUpCart();
+    if(pageClass.contains('cart')) setUpCart();                                         //cart.html listener
 
-    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
-    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
-    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
-    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
-    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
+    if(pageClass.contains('appetizers')) displayMenuOnPage('app');                      //appetizers.html listener
+    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');                         //lunch.html listener
+    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');                       //dinner.html listener
+    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');                    //dessert.html listener
+    if(pageClass.contains('beverages')) displayMenuOnPage('drink');                     //beverages.html listener
 });
 
 
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ------------------------------ //
 
 
-const menuData = {
+const menuData = { // ---------------------------------------------------------------------- menu items information
     app: {
         names: ['Dolmades', 'Choriatiki', 'Saganaki', 'Tzatziki'],
         prices: ['6.00', '6.00', '7.00', '7.00'],
@@ -121,7 +121,7 @@ const menuData = {
     }
 };
 
-function setUpMenu(type){
+function setUpMenu(type){ // -------------------------------------------------------------- called from event listener, takes menu items and sets them up to be added to local storage
     const menu = menuData[type];
     if (!menu) return;
     
@@ -138,7 +138,7 @@ function setUpMenu(type){
     });
 }
 
-function addToLS(type, item){
+function addToLS(type, item){ // ---------------------------------------------------------- takes item and type, checks for items that have been removed by manager, and sets in local storage
     let data = JSON.parse(localStorage.getItem(type)) || [];
     
     const baseIdentifier = item.identifiers.substring(0, 3);
@@ -154,12 +154,12 @@ function addToLS(type, item){
 }
 
 
-// -------------------------- //
-// ---- HOME PAGE FLYOUT ---- //
-// -------------------------- //
+// -------------------- //
+// ---- HOME PAGE  ---- //
+// -------------------- //
 
 
-function flyout(){
+function flyout(){ // -------------------------------------------------------------------- moves side menu flyout in and out onclick
     let navBtn = document.querySelector('.nav');
     let flyout = document.querySelector('.header');
     if(navBtn && flyout){
@@ -175,13 +175,70 @@ function flyout(){
     }
 }
 
+function headerScroll(){ // -------------------------------------------------------------- handles css changes for index page header on scroll
+    let header = document.querySelector('.image-section h2');
+    let menu = document.querySelector('.nav');
+    let login = document.querySelector('.admin-login');
+    let menuSelectionsContainer = document.querySelector('.menu-selections-container');
+    let icons = document.querySelector('.iconImgHeader');
+
+    window.addEventListener('scroll', () => {
+        let menuTop = menuSelectionsContainer.getBoundingClientRect().top;
+        if(menuTop <= 50){
+            header.style.height = '50px';
+            header.style.backgroundImage = 'linear-gradient(to bottom, #fff, #fff)';
+            header.style.fontSize = '40px';
+            header.style.color = '#000';
+            menu.style.color = '#000';
+            icons.style.height = '25px'
+            menu.style.top = '0.7%'
+            login.style.color = '#000';
+            login.style.top = '0'
+        }
+        else{
+            header.style.height = '100px';
+            header.style.backgroundImage = 'linear-gradient(to bottom, #000, #00000000)';
+            header.style.fontSize = '80px';
+            header.style.color = '#fff';
+            menu.style.color = '#fff';
+            icons.style.height = '30px'
+            menu.style.top = '2.5%';
+            login.style.color = '#fff';
+            login.style.top = '2.5%';
+        }
+    });
+}
+
+function hover(){ // --------------------------------------------------------------------- handles css changes on hover over menu selector options
+    let options = document.querySelectorAll('.selections li.options');
+    let arrows = document.querySelectorAll('.selections li.option-arrow');
+    let selection = document.querySelectorAll('.selections .selection');
+    for(let i = 0; i < options.length; i++){
+        selection[i].addEventListener('mouseenter', () => {
+            arrows[i].style.opacity = '1';
+            arrows[i].style.display = 'flex';
+            setTimeout(() => {
+                arrows[i].classList.add('visible');
+            }, 200);
+        })
+    }
+    for(let i = 0; i < arrows.length; i++){
+        selection[i].addEventListener('mouseleave', () => {
+            options[i].style.height = '240px';
+            arrows[i].style.display = 'none';
+            arrows[i].style.opacity = '0';
+            arrows[i].classList.remove('visible');
+        });
+    }
+}
+
 
 // ---------------------------- //
 // ---- MENU PAGES DISPLAY ---- //
 // ---------------------------- //
 
 
-function displayMenuOnPage(type){
+function displayMenuOnPage(type){ // ----------------------------------------------------- takes items from LS based on type and displays on appropriate menu page
     let container = document.querySelector('.holder');
     container.innerHTML = ''; 
     let storedItems = JSON.parse(localStorage.getItem(type)) || [];
@@ -233,22 +290,20 @@ function displayMenuOnPage(type){
 // --------------------- //
 
 
-function addItemClick(){
+function addItemClick(){ // -------------------------------------------------------------- listener for add to bag button
     let buttons = document.querySelectorAll('.addItem');
     buttons.forEach(button => {
-        console.log('button clicked')
         button.addEventListener('click', handleAddItem);
     });
 };
 
-function handleAddItem(event){
+function handleAddItem(event){ // -------------------------------------------------------- takes price and displays in greek euro format, sets up to be added to LS
     let button = event.target.closest('.addItem');
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
     let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
     let id = button.dataset.type; 
-    console.log({name, price, image, id})
 
     let item = {
         name: name,
@@ -261,7 +316,7 @@ function handleAddItem(event){
     addToCartInLS(item);
 };
  
-function addToCartInLS(item){
+function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
@@ -279,7 +334,7 @@ function addToCartInLS(item){
 // -------------- //
 
 
-function setUpCart(){
+function setUpCart(){ // ----------------------------------------------------------------- takes cart items from LS and calls functions to set up cart display
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     if(cart.length === 0){
@@ -294,7 +349,7 @@ function setUpCart(){
     }
 }
 
-function displayCartItems(cart){
+function displayCartItems(cart){ // ------------------------------------------------------ displays cart items from local storage
     let container = document.querySelector('.bag-items');
     container.innerHTML = '';
 
@@ -319,7 +374,7 @@ function displayCartItems(cart){
     removeButtons();
 }
 
-function removeButtons(){
+function removeButtons(){ // ------------------------------------------------------------- listener for remove buttons in cart
     let removeButtons = document.querySelectorAll('.btn-remove');
     removeButtons.forEach(button => {
         button.addEventListener('click', (event) => {
@@ -330,7 +385,7 @@ function removeButtons(){
     });
 }
 
-function removeItemFromLS(itemName, event){
+function removeItemFromLS(itemName, event){ // ------------------------------------------- removes cart item from LS to remove from display
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart = cart.filter(cartItem => cartItem.name !== itemName);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -341,7 +396,7 @@ function removeItemFromLS(itemName, event){
     setTimeout(setUpCart, 700);
 }
 
-function quantityChange(){
+function quantityChange(){ // ------------------------------------------------------------ handles quantity input change to prevent nums less than one
     let quantities = document.querySelectorAll('.quantityInput');
     quantities = Array.from(quantities);
 
@@ -369,7 +424,7 @@ function quantityChange(){
     });
 }
 
-function getTotal(){
+function getTotal(){ // ------------------------------------------------------------------ handles getting price total from cart items
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let total = 0;
     let totalContainer = document.querySelector('.bag-total-price');
@@ -381,7 +436,7 @@ function getTotal(){
     totalContainer.innerText = convertPrice(total);
 }
 
-function loader(){
+function loader(){ // -------------------------------------------------------------------- handles display of css loader when cart item is removed
     let loader = document.querySelector('.loader');
     let cart = document.querySelector('.cart-items')
     cart.style.display = 'none';
@@ -389,69 +444,18 @@ function loader(){
     setTimeout(() => {loader.style.opacity = 0; cart.style.display = 'flex'}, 800);
 }
 
-function convertPrice(price){
+function convertPrice(price){ // --------------------------------------------------------- changes price to display euro sign after price in greek style
     let split = String(price).split('.');
     let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
     if(split[0] == 0){return '0€'}
     return split[0] + ',' + end + '€'; 
 }
 
-function headerScroll(){
-    let header = document.querySelector('.image-section h2');
-    let menu = document.querySelector('.nav');
-    let login = document.querySelector('.admin-login');
-    let menuSelectionsContainer = document.querySelector('.menu-selections-container');
-    let icons = document.querySelector('.iconImgHeader');
 
-    window.addEventListener('scroll', () => {
-        let menuTop = menuSelectionsContainer.getBoundingClientRect().top;
-        if(menuTop <= 50){
-            header.style.height = '50px';
-            header.style.backgroundImage = 'linear-gradient(to bottom, #fff, #fff)';
-            header.style.fontSize = '40px';
-            header.style.color = '#000';
-            menu.style.color = '#000';
-            icons.style.height = '25px'
-            menu.style.top = '0.7%'
-            login.style.color = '#000';
-            login.style.top = '0'
-        }
-        else{
-            header.style.height = '100px';
-            header.style.backgroundImage = 'linear-gradient(to bottom, #000, #00000000)';
-            header.style.fontSize = '80px';
-            header.style.color = '#fff';
-            menu.style.color = '#fff';
-            icons.style.height = '30px'
-            menu.style.top = '2.5%';
-            login.style.color = '#fff';
-            login.style.top = '2.5%';
-        }
-    });
-}
+// ----------------------- //
+// ---- SEARCH FILTER ---- //
+// ----------------------- //
 
-function hover(){
-    let options = document.querySelectorAll('.selections li.options');
-    let arrows = document.querySelectorAll('.selections li.option-arrow');
-    let selection = document.querySelectorAll('.selections .selection');
-    for(let i = 0; i < options.length; i++){
-        selection[i].addEventListener('mouseenter', () => {
-            arrows[i].style.opacity = '1';
-            arrows[i].style.display = 'flex';
-            setTimeout(() => {
-                arrows[i].classList.add('visible');
-            }, 200);
-        })
-    }
-    for(let i = 0; i < arrows.length; i++){
-        selection[i].addEventListener('mouseleave', () => {
-            options[i].style.height = '240px';
-            arrows[i].style.display = 'none';
-            arrows[i].style.opacity = '0';
-            arrows[i].classList.remove('visible');
-        });
-    }
-}
 
 function addingFilterItems(){
     const filterButton = document.querySelector('.filter-button');
