@@ -313,17 +313,40 @@ function handleAddItem(event){ // ----------------------------------------------
         identifiers: id
     };
     
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    
+      let displayMessage = document.querySelector('.display-message');
+
+    setTimeout(() => {
+        displayMessage.classList.add('colorChange')
+        console.log('classList added')
+        setTimeout(() => {
+            displayMessage.classList.remove('colorChange');
+            console.log('class removed')
+            displayMessage.classList.add('visible');
+            console.log('changed')
+            setTimeout(() => {
+                displayMessage.classList.remove('visible');
+                console.log('removed')
+            }, 2700);
+        }, 1700);
+    }, 700);
+
     addToCartInLS(item);
+
 };
  
 function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
-        alert('This item already exists in your bag. Please increase the quantity in your bag to add more.')
-        return;
+        console.log(item.quantity)
+        item.quantity += 1;
+        console.log(item.quantity)
     }
-
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
 }
