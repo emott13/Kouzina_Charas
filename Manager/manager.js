@@ -101,7 +101,7 @@ function displayMenuItems(menuItems, itemType){                 // -------------
                     <div class="item-edit-info">
                         <strong>Name:</strong> ${item.name} <br>
                         <strong>Price:</strong> ${item.price} <br>
-                        <strong>Image:</strong> <img src="${item.image}" alt="${item.name}" width="180"/>
+                        <strong>Image:</strong> <img src="${getImagePath(item.image)}" alt="${item.name}" width="180"/>
                     </div>
                     <div class="item-edit-buttons">
                         <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
@@ -120,6 +120,10 @@ function displayMenuItems(menuItems, itemType){                 // -------------
             </div>
         `;
     }).join('');
+}
+
+function getImagePath(imagePath){
+    return imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
 }
 
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
