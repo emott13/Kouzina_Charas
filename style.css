@@ -464,9 +464,6 @@ li.option-arrow.visible img{
 /* ---------------- */
 
 footer{
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
     padding: 20px auto;
     height: 170px;
     background-color: var(--color-16);

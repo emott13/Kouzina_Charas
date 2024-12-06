@@ -41,7 +41,7 @@ body{
 }
 
 /* ---------------- */
-/* ---- header ---- */
+/* ---- HEADER ---- */
 /* ---------------- */
 
 
@@ -137,6 +137,29 @@ body{
     width: 29px;
     height: 30px;
 }
+
+/* ---- Add Icon styles ---- */
+
+#add{
+    position: absolute;
+    z-index: 0;
+    width: 20px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.addItem{
+    background-color: transparent;
+    border: none;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+.shadow{
+    -webkit-filter: drop-shadow(1px 1px 1px #000000c5);
+    filter: drop-shadow(1px 1px 1px #000000c5);
+} 
 
 
 /* -------------- */

@@ -272,7 +272,7 @@ function displayMenuOnPage(type){ // -------------------------------------------
                     <p class="name">${item.name}</p>
                     <div class="add-info">
                         <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                     </div>
                 </div>
                 <p class="description">${item.description}</p>
