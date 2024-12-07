@@ -11,20 +11,18 @@ body{
 .payment{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     margin: 0 auto;
-    margin-top: 6%;
-    padding: 3%;
-    border-radius: 10px;
+    background-color: var(--color-20);
     width: 700px;
-    min-height: 540px; 
-    /* background-color: antiquewhite;  */
-    background-color: var(--color-111);
+    min-height: 760px; 
 }
+
 .payment label{
     font-size: 15px;
     padding: 5px;
 }
+
 .payment input{
     width: 100%;
     padding: 0px 10px;
@@ -32,7 +30,7 @@ body{
     height: 30px;
 }
 
-.person-info{
+/* .person-info{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -43,26 +41,34 @@ body{
     box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     padding: 10px 15px;
     background-color: white;
-}
-.user{
+} */
+
+/* .user{
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 60px;
-}
+} */
+
+/* ---- back button ---- */
 
 .back-arrow-and-tip-holder{
     display: flex;
     margin: 0 auto;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     background-size: 10px;
-    width:90%;
+    width: 90%;
     height: 50%;
 }
-/* .undo{} */
-.undo ion-icon:hover{
-color: white;
+
+.undo ion-icon{
+    color: var(--color-26);
 }
+
+.undo ion-icon:hover{
+    color: var(--color-7);
+}
+
 .back-arrow-and-tip-holder button{
     width: 60px;
     background-color: transparent;
@@ -71,10 +77,10 @@ color: white;
     height: 60px;
     transition: 500ms;
 }
-.checkout-holder-back-select{
-    width: 100%;
-}
 
+/* .checkout-holder-back-select{
+    width: 100%;
+} */
 
 .tip-and-total-holder{
     display: flex;
@@ -86,53 +92,58 @@ color: white;
     background-color: brown;
 }
 
+/* ---- options buttons ---- */
 
 .button-holder{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 30vh;
-    
+    height: 300px;
 }
+
 .button-holder button{
-    background-color: rgb(97, 244, 149);
+    vertical-align: top;
+    border: 0px solid var(--color-26);
+    border-radius: 10px;
+    background-color: var(--color-26);
     font-size: 3rem;
     font-family: var(--font-family-plain);
-    border: 0px solid rgb(48, 216, 107);
-    vertical-align: top;
-    border-radius: 10px;
+    color: var(--color-13);
     box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     transition: 400ms;
 }
 
 .button-holder button:hover{
-    background-color: rgb(48, 216, 107);
-    color: white;
+    background-color: var(--color-7);
 }
 
-.pick-up{
-    width: 70%;
-    height: 30%;
-    margin: 0 auto;
-}
-.Delivery{
-    margin: 0 auto;
-    width: 70%;
-    height: 30%;
-}
-
-.credit-debit{
-    margin: 0 auto;
-    width: 70%;
-    height: 30%;
-}
+.pick-up,
+.Delivery,
+.credit-debit,
 .cash{
     margin: 0 auto;
     width: 70%;
     height: 30%;
 }
 
+/* .Delivery{
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+} */
 
+/* {
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+} */
+/* .cash{
+    margin: 0 auto;
+    width: 70%;
+    height: 30%;
+} */
+
+/* ---- address options ---- */
 
 .city-state{
     display: flex;
@@ -169,6 +180,9 @@ color: white;
     min-height: 50px;
 }
 
+
+/* ---- card display ---- */
+
 .credit-debit-display{
     display: flex;
     flex-direction: column;
@@ -177,7 +191,7 @@ color: white;
     margin-top: 2%;
     border-radius: 5px;
     width: 400px;
-    min-height: 350px;
+    height: 370px;
     padding: 10px 15px;
     background-color: white;
 }
@@ -190,33 +204,35 @@ color: white;
     width: 100%;
     height: 50px;
     border-bottom: 1px solid black;
-    /* background-color: aquamarine; */
 }
+
 .card-img-holder{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     width: 170px;
     height: 40px;
-    /* background-color: aquamarine; */
 }
+
 .card-img{
     width: 50px;
     height: 30px;
     border-radius: 3px;
-    /* background-color: antiquewhite; */
 }
+
 .card-1{
     background-image: url("CardImages/363_Visa_Credit_Card_logo-1024.webp");
     background-size: cover;
     background-position: center;
     border-radius: 6px;
 }
+
 .card-2{
     background-image: url("CardImages/mastercard.png");
     background-size: cover;
     background-position: center;
 }
+
 .card-3{
     background-image: url("CardImages/Amex-512.webp");
     background-size: cover;
@@ -224,13 +240,11 @@ color: white;
     background-position: center;
 }
 
-
 .card-number{
     display: flex;
     flex-direction: column;
     width: 100%;
     min-height: 60px;
-    /* background-color: aquamarine; */
 }
 
 .card-sect{
@@ -239,24 +253,40 @@ color: white;
     justify-content: space-between;
     min-height: 50px;
 }
+
 .card-exp{
     width: 180px;
     min-height: 50px;
     /* background-color: aquamarine; */
 }
+
 .card-cvc{
     width: 180px;
     min-height: 50px;
     /* background-color: aquamarine; */
 }
+
 .card-holder-name{
     width: 100%;
     min-height: 50px;
     /* background-color: aquamarine; */
 }
+
 .pay-button{
     height: 30px;
 }
+
+
+.error-message-container {
+    margin-top: 2px;
+    height: 20px;
+    font-family: var(--font-family-plain);
+    font-size: 15px;
+    color: red;
+    display: none;
+}
+
+/* ---- checkout button ---- */
 
 .checkout-button-holder{
     display: flex;
@@ -266,38 +296,29 @@ color: white;
     height: 50px;
     
 }
+
 .place-order{
-    width: 100%;
-    height: 90%;
-    border: 0px;
-    font-size: 26px;
-    color: black;
-    background-color: rgb(97, 244, 149);
-    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
+    width: 200px;
+    height: 60px;
+
+    border: 0px solid var(--color-26);
+    border-radius: 10px;
+    background-color: var(--color-26);
+    padding: 10px 5px;
+
+    font-size: 30px;
+    font-family: var(--font-family-plain);
+    color: var(--color-13);
+
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.2);
     cursor: pointer;
     transition: 400ms;
-}
-.place-order:hover{
-    color: white;
-    background-color: rgb(48, 216, 107);
 }
 
-.place-to-complete{
-    width: 100%;
-    height: 90%;
-    border: 0px;
-    font-size: 26px;
-    color: black;
-    background-color: rgb(97, 244, 149);
-    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
-    margin: 0 auto;
-    cursor: pointer;
-    transition: 400ms;
-}
-.place-to-complete:hover{
+.place-order:hover{
     color: white;
-    background-color: rgb(48, 216, 107);
+    background-color: var(--color-7);
 }
 
 .place-to-complete-pick-up-cash{
@@ -312,10 +333,38 @@ color: white;
     cursor: pointer;
     transition: 300ms;
 }
+
 .place-to-complete-pick-up-cash:hover{
     color: white;
     background-color: rgb(48, 216, 107);
 }
+
+/* ---- order information ---- */
+
+.order-information{
+    margin: 0 auto;
+    width: 80%;
+}
+
+.place-to-complete{
+    width: 100%;
+    height: 90%;
+    border: 0px;
+    font-size: 26px;
+    color: var(--color-13);
+    background-color: var(--color-26);
+    box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
+    margin: 0 auto;
+    cursor: pointer;
+    transition: 400ms;
+}
+
+.place-to-complete:hover{
+    color: var(--color-13);
+    background-color: var(--color-7);
+}
+
+
 
 
 .checkout{
@@ -406,8 +455,8 @@ color: white;
     height: 90%;
     border: 0px;
     font-size: 26px;
-    color: black;
-    background-color: rgb(97, 244, 149);
+    color: var(--color-13);
+    background-color: var(--color-26);
     box-shadow: 2px  2px 5px  0px rgba(0,0,0,0.2);
     margin: 0 auto;
     cursor: pointer;
@@ -419,12 +468,8 @@ color: white;
 }
 
 .complete-order-button:hover{
-    color: white;
-    background-color: rgb(48, 216, 107);
-}
-.tip-button:hover{
-    color: white;
-    background-color: rgb(48, 216, 107);
+    color: var(--color-13);
+    background-color: var(--color-7);
 }
 
 
@@ -452,7 +497,8 @@ color: white;
     height: 70px;
     cursor: pointer;
     border-radius: 20px;
-    background-color: rgb(235, 235, 235);
+    color: var(--color-13);
+    background-color: var(--color-26);
     border: 1px;
 }
 .tip-percentages h3{
@@ -502,17 +548,9 @@ color: white;
     text-align: center;
      font-size: 18.3px;
 }
-.error-message-container {
-    color: red;
-    font-family: var(--font-family-fancy);
-    /* margin-top: 5px; Space between input and error message */
-    font-size: 1.0rem; /* Adjust font size */
-    height: 20px;
-    display: none;
-}
 .selected-tip{
-    background-color: var(--color-112);
-    color: white;
+    background-color: var(--color-25);
+    color: var(--color-13);
     transition: 200ms;
 }
 
