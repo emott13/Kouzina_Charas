@@ -16,8 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
             menuContainer.addEventListener('click', handleMenuAction);
         }
     }
+
+    if (document.body.classList.contains('manager')) {
+        let menuTypes = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
+
+        // Load items for each menu type on page load
+        menuTypes.forEach(type => updateMenuItems(type));
+    }
+
     initializeTags();
 });
+
+function initializeTags() {
+    const defaultTags = {
+        cuisine: ["Italian", "Mexican", "Greek", "Indian", "Chinese"],
+        allergens: ["Gluten-Free", "Nut-Free", "Dairy-Free", "Soy-Free", "Shellfish-Free"],
+        dietary: ["Vegan", "Vegetarian", "Keto", "Paleo", "Halal"]
+    };
+
+    // Store the default tags in localStorage if they are not already set
+    if (!localStorage.getItem('tags')) {
+        localStorage.setItem('tags', JSON.stringify(defaultTags));
+    }
+}
 
 function setItem(){                 // --------------------------------------------------- sets manager username/password in local storage
     let u = 'manager1988';
@@ -91,6 +112,9 @@ function checkLS(event){                    // ---------------------------------
     let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
     let container = document.querySelector('.menu-items-container');
     container.innerHTML = menuItemsFromLS.length ? displayMenuItems(menuItemsFromLS, item) : `<p id="empty">This section is empty...</p>`;
+    
+    let selectedType = event.target.value; // Get selected menu type
+    updateMenuItems(selectedType); // Refresh the items for the selected type
 }
 
 function displayMenuItems(menuItems, itemType){                 // ---------------------- shows menu items when menu type is selected
@@ -259,6 +283,23 @@ function editItem(itemName, itemType) {
 /*--------------------------------------- */
 /*--------------ADD ITEM---------------- */
 /*------------------------------------- */
+function getIdentifier() {
+    return `id-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+}
+
+function updateMenuItems(menuType) {
+    let menuItems = JSON.parse(localStorage.getItem(menuType)) || [];
+    let container = document.querySelector('.menu-items-container');
+
+    if (!container) {
+        console.error("Menu items container not found.");
+        return;
+    }
+
+    container.innerHTML = menuItems.length
+        ? displayMenuItems(menuItems, menuType)
+        : `<p id="empty">This section is empty...</p>`;
+}
 
 function addItem() {// -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
 
