@@ -309,3 +309,41 @@
     font-weight: 600;
     color: var(--color-4);
 }
+
+.blog-input{
+    margin: 0 auto;
+    width: 300px;
+}
+
+.input-options{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 2rem;
+    font-size: 18px;
+}
+
+.input-options input,
+.input-options textarea{
+    font-size: 17px;
+    font-family: var(--font-family-plain);
+}
+
+.input-options textarea{
+    min-height: 200px;
+}
+
+#submit{
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 0;
+    width: 100px;
+    border: 1px solid var(--color-24);
+    border-radius: 25px;
+    background-color: var(--color-24);
+    padding: 8px;
+    font-family: var(--font-family-plain);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-4);
+}
