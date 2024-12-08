@@ -16,29 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             menuContainer.addEventListener('click', handleMenuAction);
         }
     }
-
-    if (document.body.classList.contains('manager')) {
-        let menuTypes = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
-
-        // Load items for each menu type on page load
-        menuTypes.forEach(type => updateMenuItems(type));
-    }
-
-    initializeTags();
 });
-
-function initializeTags() {
-    const defaultTags = {
-        cuisine: ["Italian", "Mexican", "Greek", "Indian", "Chinese"],
-        allergens: ["Gluten-Free", "Nut-Free", "Dairy-Free", "Soy-Free", "Shellfish-Free"],
-        dietary: ["Vegan", "Vegetarian", "Keto", "Paleo", "Halal"]
-    };
-
-    // Store the default tags in localStorage if they are not already set
-    if (!localStorage.getItem('tags')) {
-        localStorage.setItem('tags', JSON.stringify(defaultTags));
-    }
-}
 
 function setItem(){                 // --------------------------------------------------- sets manager username/password in local storage
     let u = 'manager1988';
@@ -112,9 +90,6 @@ function checkLS(event){                    // ---------------------------------
     let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
     let container = document.querySelector('.menu-items-container');
     container.innerHTML = menuItemsFromLS.length ? displayMenuItems(menuItemsFromLS, item) : `<p id="empty">This section is empty...</p>`;
-    
-    let selectedType = event.target.value; // Get selected menu type
-    updateMenuItems(selectedType); // Refresh the items for the selected type
 }
 
 function displayMenuItems(menuItems, itemType){                 // ---------------------- shows menu items when menu type is selected
@@ -153,17 +128,6 @@ function getImagePath(imagePath){
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
     let {dataset: {item, type}, classList } = event.target;
 
-    if (classList.contains('edit-btn')) {
-        console.log("Edit button clicked for:", item); // Confirm button type
-        editItem(item, type);
-    } else if (classList.contains('remove-btn')) {
-        console.log("Remove button clicked for:", item); // Confirm button type
-        removeItem(item, type);
-    } else if (classList.contains('add-back')) {
-        console.log("Add back button clicked for:", item); // Confirm button type
-        addBack(item, type);
-    }
-
     if(classList.contains('edit-btn')){
         editItem(item, type);
     }
@@ -175,72 +139,11 @@ function handleMenuAction(event){                   // -------------------------
     }
 }
 
-/*--------------------------------------- */
-/*--------------EDIT ITEM--------------- */
-/*------------------------------------- */
+function editItem(itemName, itemType){                  // ------------------------------ handles edit btn click to display edit inputs and allow to be saved + set in LS
+    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    let item = menuItems.find(i => i.name === itemName);
+    let tags = item.tags || []; // Retrieve existing tags or an empty array if none exist
 
-function editItem(itemName, itemType) {
-   
-    const tags = JSON.parse(localStorage.getItem('tags')); //<--------------------------------------------------------Ensure tags are properly loaded from localStorage
-
-    if (!tags || typeof tags !== 'object') {//<-----------------------------------------------------------------------Defensive check to ensure tags are an object
-        console.error("Tags are not properly initialized in localStorage.");
-        alert("Error: Tags are not properly initialized. Please refresh the page.");
-        return; //<---------------------------------------------------------------------------------------------------Prevent further execution if tags are missing or malformed
-    }
-
-    const item = JSON.parse(localStorage.getItem(itemType)).find(i => i.name === itemName); //<-----------------------Check if item.tags is defined and ensure it defaults to an empty object if undefined
-
-    if (!item) {
-        console.error("Item not found!");
-        return;
-    }
-
-   
-    item.tags = item.tags || {}; //<-----------------------------------------------------------------------------------If item.tags is undefined, initialize it as an empty object
-
-    // Generate tag selectors (dropdowns for each tag category)
-    const tagSelectors = Object.entries(tags).map(([category, options]) => {
-        // Use an empty array if item.tags[category] is undefined or not an array
-        const selectedTags = Array.isArray(item.tags[category]) ? item.tags[category] : [];
-
-        return `
-            <label for="${category}">${capitalizeFirstLetter(category)}:</label>
-            <select id="${category}">
-                ${options.map(option => `
-                    <option value="${option}" ${selectedTags.includes(option) ? 'selected' : ''}>
-                        ${option}
-                    </option>
-                `).join('')}
-            </select>
-        `;
-    }).join('<br>');
-
-    console.log("Generated tag selectors:", tagSelectors); // Debugging line
-
-//     <label for="newName">Name:</label>
-//     <input type="text" id="newName" value="${item.name}"><br>
-//     <label for="newPrice">Price:</label>
-//     <input type="text" id="newPrice" value="${item.price}"><br>
-//     <label for="newImage">Image URL:</label>
-//     <input type="text" id="newImage" value="${item.image}"><br>
-
-//     <!-- Add tag selectors here -->
-//     <div class="tag-selectors-container">
-//         ${tagSelectors}
-//     </div>
-
-//     <button id="saveChanges">Save Changes</button>
-// `;
-
-// const container = document.querySelector('.items-edit-container');
-// if (container) {
-//     container.innerHTML = formHtml;
-// } else {
-//     console.error("Items edit container not found!");
-// }
-
-    // Construct the full form HTML, including tag selectors
     let formHtml = `
         <h3>Edit Item: ${item.name}</h3>
         <div class="edit-inputs">
@@ -251,69 +154,103 @@ function editItem(itemName, itemType) {
             <label for="newImage">Image URL:</label>
             <input type="text" id="newImage" value="${item.image}"><br>
         </div>
+        <div class="tags-checkbox-container">
+            <h3>Protein</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('meat', 'Meat', tags)}
+                ${generateCheckbox('vegetable', 'Vegetable', tags)}
+                ${generateCheckbox('seafood', 'Seafood', tags)}
+                ${generateCheckbox('dairy', 'Dairy', tags)}
+            </div>
+
+            <h3>Food Type</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('light', 'Light', tags)}
+                ${generateCheckbox('medium', 'Medium', tags)}
+                ${generateCheckbox('heavy', 'Heavy', tags)}
+            </div>
+
+            <h3>Beverages</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('refresher', 'Refresher', tags)}
+                ${generateCheckbox('juice', 'Juice', tags)}
+                ${generateCheckbox('coffee', 'Coffee', tags)}
+            </div>
+        </div>
         <button id="saveChanges">Save Changes</button>
     `;
+
     let editContainer = document.querySelector('.items-edit-container');
     editContainer.innerHTML = formHtml;
-    editContainer.style.display = "grid"
+    editContainer.style.display = "grid";
 
     document.getElementById('saveChanges').addEventListener('click', () => {
+        // Update item details
         item.name = document.getElementById('newName').value;
         item.price = document.getElementById('newPrice').value;
         item.image = document.getElementById('newImage').value;
 
-        // Updating the tags
-        const updatedTags = Object.keys(tags).reduce((acc, key) => {
-            const selectedOptions = Array.from(document.getElementById(key).selectedOptions).map(option => option.value);
-            acc[key] = selectedOptions;
-            return acc;
-        }, {});
+        // Retrieve updated tags
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+        item.tags = Array.from(tagCheckboxes).map(checkbox => checkbox.value);
 
-        item.tags = updatedTags;
-
-        const menuItems = JSON.parse(localStorage.getItem(itemType));
-        const updatedMenuItems = menuItems.map(i => i.name === itemName ? item : i);
-        localStorage.setItem(itemType, JSON.stringify(updatedMenuItems));
-
+        // Save updated item to localStorage
+        localStorage.setItem(itemType, JSON.stringify(menuItems));
         alert('Item updated.');
-        updatedMenuItems(itemType);
+        updateMenuItems(itemType);
     });
 }
 
-/*--------------------------------------- */
-/*--------------ADD ITEM---------------- */
-/*------------------------------------- */
-function getIdentifier() {
-    return `id-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+function generateCheckbox(value, label, selectedTags) {
+    const isChecked = selectedTags.includes(value) ? 'checked' : ''; // Check if the tag is already in the item
+    return `<input type="checkbox" class="tag-checkbox" value="${value}" ${isChecked}><label for="${value}">${label}</label>`;
 }
 
-function updateMenuItems(menuType) {
-    let menuItems = JSON.parse(localStorage.getItem(menuType)) || [];
-    let container = document.querySelector('.menu-items-container');
 
-    if (!container) {
-        console.error("Menu items container not found.");
-        return;
+function removeItem(itemName, itemType){                    // -------------------------- handles remove btn click to remove item from menu display. stil shows in manager display with label that it is not being displayed.
+    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    let itemIndex = menuItems.findIndex(item => item.name === itemName);  
+
+    if(itemIndex !== -1){  
+        menuItems[itemIndex].identifiers += 'NaN';
+        localStorage.setItem(itemType, JSON.stringify(menuItems));
+        alert('Item removed from menu.');
+        updateMenuItems(itemType);  
     }
-
-    container.innerHTML = menuItems.length
-        ? displayMenuItems(menuItems, menuType)
-        : `<p id="empty">This section is empty...</p>`;
+    else{
+        alert('Item not found!');  
+    }
 }
 
-function addItem() {// -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
+function addBack(itemName, itemType) {                  // ------------------------------ handles addBack btn click to add back removed items that still exist in LS
+    const menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    const item = menuItems.find(item => item.name === itemName);
 
-    const tags = JSON.parse(localStorage.getItem('tags'));
+    if (item && item.identifiers.endsWith('NaN')) {
+        item.identifiers = item.identifiers.slice(0, 3);
+        localStorage.setItem(itemType, JSON.stringify(menuItems));
+        alert('Item restored.');
+        updateMenuItems(itemType);
+    }
+    else{
+        alert('This item has already been restored.');
+    }
+}
 
-    const tagSelectors = Object.entries(tags).map(([category, options]) => `
-        <label for="${category}">${capitalizeFirstLetter(category)}:</label>
-        <select id="${category}">
-            ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
-        </select>
-    `).join('<br>');
+function updateMenuItems(itemType){                 // ---------------------------------- takes itemType and displays corresponding menu items
+    let itemContainer = document.querySelector('.menu-items-container');
+    let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
+    itemContainer.innerHTML = displayMenuItems(menuItems, itemType); 
+}
 
-    let formHtml = `
-        <h3>Add New Item</h3>
+function addItem(){                 // -------------------------------------------------- handles add a new item btn, forces all fields filled, sets new item in LS
+    let dash = document.querySelector(".manager-dashboard");
+    dash.style.minHeight = "50px"
+
+    let formHtml = 
+    `
+    <div class="add-wrapper">
+        <h3>Add New Item</h3> <br>
         <label for="type">Choose a menu type:</label>
         <select name="type" id="type">
             <option value="app">Appetizer</option>
@@ -330,16 +267,33 @@ function addItem() {// -------------------------------------------------- handle
         <input type="text" id="itemImage"><br>
         <label for="itemDesc">Description:</label>
         <input type="text" id="itemDesc"><br>
-        
-        <!-- Add tag selectors here -->
-        <div class="tag-selectors-container">
-            ${tagSelectors}
-        </div>
+        <div class="tags-checkbox-container">
+                <h3>Protein</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="meat"><label for="meat">Meat</label>
+                   <input type="checkbox" class="tag-checkbox" value="vegetable"><label for="vegetable">Vegetable</label>
 
+                    <input type="checkbox" class="tag-checkbox" value="seafood"><label for="seafood">Seafood</label>
+                    <input type="checkbox" class="tag-checkbox" value="dairy"><label for="dairy">Dairy</label>
+                </div>
+
+                <h3>Food Type</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="light"><label for="light">Light</label>
+                   <input type="checkbox" class="tag-checkbox" value="medium"><label for="medium">Medium</label>
+                   <input type="checkbox" class="tag-checkbox" value="heavy"><label for="heavy">Heavy</label>   
+                </div>
+
+                <h3>Beverages</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="refresher"><label for="refresher">Refresher</label>
+                   <input type="checkbox" class="tag-checkbox" value="juice"><label for="juice">Juice</label>
+                   <input type="checkbox" class="tag-checkbox" value="coffee"><label for="coffee">Coffee</label>   
+                </div>
+        </div>
         <button id="addNewItem">Add Item</button>
     </div>
     `;
-
     document.querySelector('.edit-container').innerHTML = formHtml;
     document.querySelector('.menu-items-container').innerHTML = '';
 
@@ -350,33 +304,50 @@ function addItem() {// -------------------------------------------------- handle
         let description = document.querySelector('#itemDesc').value;
         let type = document.querySelector('#type').value;
 
-        // Collect selected tags
-        const selectedTags = Object.keys(tags).reduce((acc, key) => {
-            const selectedOptions = Array.from(document.getElementById(key).selectedOptions).map(option => option.value);
-            acc[key] = selectedOptions;
-            return acc;
-        }, {});
+        const categoryTag = {
+            app: 'appetizer',
+            lunch: 'lunch',
+            dinner: 'dinner',
+            dessert: 'dessert',
+            drink: 'beverage'
+        }[type]
 
-        if (!name || !price || !image || !description) {
-            alert("All fields are required!");
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+        const tags = Array.from(tagCheckboxes).map(checkbox => checkbox.value);
+
+        if(categoryTag){
+            tags.push(categoryTag);
+        }
+
+        if(!name || !price || !image || !description || tags.length === 0){
+            alert("All fields are required, and at least one tag must be selected!");
             return;
         }
 
         const newItem = {
-            name, 
-            price, 
-            image, 
-            description,
-            tags: selectedTags, // Attach selected tags
-            identifiers: getIdentifier(), // Generate a unique identifier
-            quantity: 1
+            name, price, image, description,
+            identifiers: getIdentifier(),
+            quantity: 1,
+            tags: tags// -----------------------------------------------------------------assign the slected tags
         };
 
         let menuItems = JSON.parse(localStorage.getItem(type)) || [];
         menuItems.push(newItem);
         localStorage.setItem(type, JSON.stringify(menuItems));
 
+        console.log('New item being saved:', newItem);
+        console.log('Saving item:', newItem);
+        console.log('Items in localStorage:', JSON.parse(localStorage.getItem(type)));
         alert('New item added!');
         updateMenuItems(type);
     });
+}
+
+function getIdentifier(){                   // ----------------------------------------- compares existing number part identifiers and sets new unique id for new menu item, pads the beginning with extra 0s like preexisting items.
+    const allItems = ['app', 'lunch', 'dinner', 'dessert', 'drink']
+        .map(type => JSON.parse(localStorage.getItem(type)) || [])
+        .flat();
+    const currentId = new Set(allItems.map(item => item.identifiers));
+    let largest = Math.max(...[...currentId].map(id => parseInt(id, 10) || 0)) + 1;
+    return String(largest).padStart(3, '0');
 }

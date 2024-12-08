@@ -49,9 +49,9 @@ const menuData = { // ----------------------------------------------------------
         identifiers: ['001', '002', '003', '004'],
         tags: [
             ['appetizer', 'light', 'vegetables'],
-            ['appetizer', 'light', 'cheese'],
-            ['appetizer', 'medium', 'cheese'],
-            ['appetizer', 'light', 'yogurt'],
+            ['appetizer', 'light', 'dairy'],
+            ['appetizer', 'medium', 'dairy'],
+            ['appetizer', 'light', 'dairy'],
         ]
     },
     lunch: {
@@ -142,7 +142,7 @@ function setUpMenu(type){ // ---------------------------------------------------
             description: menu.descriptions[i],
             quantity: 1,
             identifiers: menu.identifiers[i],
-            tag: menu.tags[i]
+            tags: menu.tags[i]
         };
         addToLS(type, item);
     });
@@ -253,42 +253,29 @@ function displayMenuOnPage(type){ // -------------------------------------------
     container.innerHTML = ''; 
     let storedItems = JSON.parse(localStorage.getItem(type)) || [];
 
-    let validIdentifiers = new Set(); 
+    storedItems = storedItems.filter(item => !item.identifiers.endsWith('NaN'));// -------------Exclude items with identifiers ending in "NaN"
+
+    if (storedItems.length === 0) {
+        container.innerHTML = '<p>No items available in this category.</p>';
+        return;
+    }
 
     storedItems.forEach(item => {
-        let id = item.identifiers;
-        if(!isNaN(id) && id.length === 3){
-            let baseId = id.substring(0, 3); 
-            let counterpartExists = storedItems.some(otherItem => 
-                otherItem.identifiers === baseId + 'NaN'
-            );
-
-            if(!counterpartExists){
-                validIdentifiers.add(baseId);
-                validIdentifiers.add(baseId + 'NaN');
-            }
-        }
-    });
-
-    storedItems.forEach(item => {
-        let id = item.identifiers;
-
-        if(validIdentifiers.has(id)){
-            let menuItem = document.createElement('div');
-            menuItem.classList.add('menu-item');
-            menuItem.innerHTML = `
-                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-info">
-                    <p class="name">${item.name}</p>
-                    <div class="add-info">
-                        <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
-                    </div>
+        let menuItem = document.createElement('div');
+        menuItem.classList.add('menu-item');
+        menuItem.innerHTML = `
+            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+            <div class="item-info">
+                <p class="name">${item.name}</p>
+                <div class="add-info">
+                    <p class="price">${convertPrice(item.price)}</p>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
-                <p class="description">${item.description}</p>
-            `;
-            container.append(menuItem);
-        }
+            </div>
+            <p class="description">${item.description}</p>
+        `;
+        container.append(menuItem);
+        
     });
 
     addItemClick();
@@ -326,9 +313,9 @@ function handleAddItem(event){ // ----------------------------------------------
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
-      });
+        });
     
-      let displayMessage = document.querySelector('.display-message');
+        let displayMessage = document.querySelector('.display-message');
 
     setTimeout(() => {
         displayMessage.classList.add('colorChange')
@@ -348,14 +335,14 @@ function handleAddItem(event){ // ----------------------------------------------
     addToCartInLS(item);
 
 };
- 
+    
 function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
-        console.log(item.quantity)
-        item.quantity += 1;
-        console.log(item.quantity)
+        // console.log(item.quantity)
+        // item.quantity += 1;
+        // console.log(item.quantity)
     }
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -403,7 +390,7 @@ function displayCartItems(cart){ // --------------------------------------------
     `;
     container.append(cartItem);
     }); 
-       
+        
     removeButtons();
 }
 
@@ -515,14 +502,25 @@ function getAllMenuItems() {
     return categories.flatMap(category => {
         const items = JSON.parse(localStorage.getItem(category)) || [];
         console.log(`Items from ${category}:`, items);
-        return items.map(item => ({
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            description: item.description,
-            identifiers: item.identifiers,
-            tags: item.tags
-        }));
+        return items
+            .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
+            .map(item => {
+                console.log('Processing item:', item);
+                const tags = Array.isArray(item.tags)
+                    ? item.tags
+                    : Array.isArray(item.tag)
+                    ? item.tag
+                    : [];
+                console.log('Tags for item:', item.name, tags); 
+                return {
+                    name: item.name,
+                    price: item.price,
+                    image: item.image,
+                    description: item.description,
+                    identifiers: item.identifiers,
+                    tags: tags
+                };
+        });
     });
 }
 
@@ -530,7 +528,6 @@ function displayMenu(items) {
     console.log("Displaying menu items:", items);
     const foodContainer = document.querySelector('.food-container');
     if (!foodContainer) {
-        console.error("food-container not found in the DOM!");
         return;  // Exit if food-container is not found
     }
 
@@ -566,21 +563,21 @@ function applyFilters() {
     const selectedFilters = getSelectedFilters();
     console.log("Selected Filters:", selectedFilters);
 
-    const filteredItems = getAllMenuItems().filter(item => {
-        console.log("Checking item:", item.name, "with tags:", item.tags);
-        return Object.keys(selectedFilters).every(key =>
-            selectedFilters[key].some(filterValue => {
-                console.log("Comparing filter value:", filterValue);
+    const filteredItems = getAllMenuItems()
+        .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
+        .filter(item => {
+            console.log("Checking item:", item.name, "with tags:", item.tags);
+            return Object.keys(selectedFilters).every(key =>
+                selectedFilters[key].some(filterValue => {
+                    console.log("Comparing filter value:", filterValue);
 
-                if (!Array.isArray(item.tags)) {
-                    console.warn(`Skipping item "${item.name}" because tags are not an array.`);
-                    return false;
-                }
-                
-                if (item.tags && Array.isArray(item.tags)) {
-                    return item.tags.some(tag => tag.toLowerCase() === filterValue.toLowerCase());
-                } 
-                return false; // Return false if no valid tags are available
+                    if (!Array.isArray(item.tags)) {
+                        console.warn(`Skipping item "${item.name}" because tags are not an array.`);
+                        return false;
+                    }
+
+                    // Check for valid tags and perform the comparison
+                    return item.tags.some(tag => typeof tag === 'string' && tag.toLowerCase() === filterValue.toLowerCase());
             })
         );
     });
@@ -588,6 +585,7 @@ function applyFilters() {
     console.log("Filtered Items:", filteredItems);
     displayMenu(filteredItems);
 }
+
 
 function setupFilterButton() {
     const filterButton = document.querySelector('.filter-button'); // Select the filter button

@@ -850,19 +850,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 if(this.querySelector('h3')){//takes the percent symbol out of the percentage and uses the number
                     tipPercentage = parseInt(this.querySelector('h3').textContent.replace('%',''));
                     CustomTipDisplay.style.display = 'none';
-                } else if(this.textContent === 'Custom Tip'){
+                } else if(this.textContent === 'Custom Tip') {
                     let customTip = parseFloat(prompt('Enter custom tip amount:'));
-                    if(!isNaN(customTip)){
-                        updateTotalWithTip(customTip);
-                        CustomTipDisplay.textContent = `Custom Tip: ${convertPrice(customTip)}`
-                        CustomTipDisplay.style.display = 'block';
-
-                        localStorage.setItem('customTip', customTip);;
-                        return;
-                    } else{
-                        alert('please enter a valid number');
+                    
+                    // Check if the custom tip is negative or invalid
+                    if (isNaN(customTip) || customTip < 0) {
+                        alert('Please enter a valid positive number for the tip.');
                         return;
                     }
+    
+                    updateTotalWithTip(customTip);
+                    CustomTipDisplay.textContent = `Custom Tip: ${convertPrice(customTip)}`;
+                    CustomTipDisplay.style.display = 'block';
+    
+                    localStorage.setItem('customTip', customTip);
+                    return;
+                    
                 } else if(this.textContent === 'No Tip'){
                     CustomTipDisplay.style.display = 'none';
                     localStorage.removeItem('customTip');
