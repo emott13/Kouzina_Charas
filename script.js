@@ -12,16 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        
+        flyout();
     }
     if(pageClass.contains('cart')) setUpCart();                                         //cart.html listener
-
-    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
-    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
-    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
-    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
-    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
-    flyout();
     if(pageClass.contains('appetizers')) displayMenuOnPage('app');                      //appetizers.html listener
     if(pageClass.contains('lunch')) displayMenuOnPage('lunch');                         //lunch.html listener
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');                       //dinner.html listener
