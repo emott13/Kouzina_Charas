@@ -12,13 +12,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&family=Bonheur+Royale&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ruthie&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <script>
-        if(!localStorage.getItem('cart')){
-            localStorage.removeItem('receipt');
-            localStorage.removeItem('orderData');
-            window.location.href = '../Cart/cart.html';
-        }
+        (function(){                                                    //the function syntax used here is an IIFE, which executes the code immediately after it is defined.
+            const receiptExists = localStorage.getItem('receipt');
+            if (receiptExists && !localStorage.getItem('cart')) {
+                localStorage.removeItem('receipt');
+                localStorage.removeItem('orderData');
+                window.location.href = '../Cart/cart.html';
+            }
+        })();
     </script>
+
     <script src="checkout.js" defer></script>
 </head>
 <body>

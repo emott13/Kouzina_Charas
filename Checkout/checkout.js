@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     handlePaymentOptionSelection();
     setupCardFormSubmission();
     setupCompleteOrderButtons();
-
 });
 
 const state = {
