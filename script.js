@@ -546,14 +546,14 @@ function displayMenu(items) {
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
         `;
         
         foodContainer.appendChild(menuItem);
-        console.log(getImagePath(item.image))
+        console.log('image path:', getImagePath(item.image))
     });
     
 
