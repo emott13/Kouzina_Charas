@@ -4,14 +4,15 @@
     box-sizing: border-box;
 }
 
-body{
-    background-color: var(--color-111);
-}
+/* body div{
+    min-width: 378px;
+} */
 
 .receipt{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
     margin: 3rem auto;
     padding: 1.2%;
     border: 1px solid rgba(0, 0, 0, 0.141);
@@ -29,7 +30,6 @@ body{
     font-size: 1.28rem;
     font-family: var(--font-family-plain);
     width: 100%;
-    height: 15vh;
     /* background-color: var(--color-4);  */
 }
 .receipt-body{
@@ -61,6 +61,12 @@ body{
     /* background-color: var(--color-4);  */
 }
 
+.receipt-order-details{
+    /* display: flex; */
+    margin: 0.5rem 0;
+    width: 300px;
+}
+
 .receipt-items{
     margin: 0 auto;
     display: flex;
@@ -86,7 +92,6 @@ body{
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
-    height: 2vh;
     /* background-color: rgb(204, 216, 212); */
     /* background-color: var(--color-4);  */
 }
