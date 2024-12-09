@@ -30,12 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let creditDebitButton = document.createElement("button");
         creditDebitButton.classList.add("credit-debit");
         creditDebitButton.textContent = "Credit/Debit";
-        creditDebitButton.style.margin = "auto";
 
         let cashButton = document.createElement("button");
         cashButton.classList.add("cash");
         cashButton.textContent = "Cash";
-        cashButton.style.margin = "auto";
 
         buttonHolderDisplay.appendChild(creditDebitButton);
         buttonHolderDisplay.appendChild(cashButton);
@@ -248,7 +246,8 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonHolderDisplay.style.display = "none";
 
         const paymentDisplay = document.createElement("div");
-        paymentDisplay.classList.add(".payment");
+
+        paymentDisplay.classList.add("credit-payment");
         paymentDisplay.innerHTML = `
             <div class="credit-debit-display">
                 <div class="title">
@@ -329,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const currentYear = new Date().getFullYear() % 100;
         const currentMonth = new Date().getMonth() + 1;
-
+      
         let isValid = true;
 
         function displayError(errorContainer,message){
@@ -342,14 +341,18 @@ document.addEventListener("DOMContentLoaded", function () {
            errorContainer.style.display = "none";
         }
 
-        if(cardNumber.value.length < 13 || cardNumber.value.length > 19){
-            displayError(cardNumberError, "Card number must be 13-19 digits.");
+        if(cardNumber.value.length < 15 || cardNumber.value.length > 16){
+            displayError(cardNumberError, "Card number must be 15-16 digits.");
+
+        //if(cardNumber.value.length < 13 || cardNumber.value.length > 19){
+            //displayError(cardNumberError, "Card number must be 13-19 digits.");
+  
             isValid = false;
         }
         else{
             clearError(cardNumberError);
         }
-
+      
         const [month, year] = cardExpiry.value.split('/').map(Number);
         if (
             isNaN(month) || isNaN(year) || 
@@ -412,6 +415,15 @@ document.addEventListener("DOMContentLoaded", function () {
         input.value = input.value.replace(/\D/g, ''); // remove non-numeric characters
     }
 
+    function adjustSpacing(e){
+        if(e.value.length == 15){
+            return e.value.toString().replace(/^(\d{4})(\d{6})(\d{5})$/, '$1 $2 $3');
+        }
+        if(e.value.length == 16){
+            return e.value.toString().replace(/(\d{4})(?=\d)/g, '$1 ')
+        }
+    }
+
    function validateAndClearError(input, errorContainer, validationFn) {
         if (!input) { // Check if input is null
             console.error("Input element not found for validation");
@@ -469,30 +481,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add input restrictions
     cardNumber.addEventListener("input", (e) => {
-        enforceNumberInput(e);
-        limitInput(e, 19);
+        // enforceNumberInput(e);
+        limitInput(e, 16);
+        adjustSpacing(e);
     });
+
+    // cardNumber.addEventListener("")
 
     cardExpiry.addEventListener("input", (e) => {
-        let value = e.target.value.replace(/\D/g, ''); //<-------------------------------Remove non-numeric characters
-        if (value.length > 4) value = value.slice(0, 4); //<-------------------------------Limit to 4 digits
+        limitInput(e, 5);
+      
+        //enforceNumberInput(e);
+        //limitInput(e, 19);
+    //});
+
+   //cardExpiry.addEventListener("input", (e) => {
+        //let value = e.target.value.replace(/\D/g, ''); //<-------------------------------Remove non-numeric characters
+       // if (value.length > 4) value = value.slice(0, 4); //<-------------------------------Limit to 4 digits
 
         // Format as MM/YY
-        if (value.length >= 3) {
-            value = `${value.slice(0, 2)}/${value.slice(2)}`;
-        }
+        //if (value.length >= 3) {
+            //value = `${value.slice(0, 2)}/${value.slice(2)}`;
+       // }
 
-        e.target.value = value; // Update input value
-    });
+       // e.target.value = value; // Update input value
+    //});
 
-    cardExpiry.addEventListener("blur", (e) => {
-        if (!validateCardExpiry()) {
-            cardExpiryError.textContent = "Enter valid expiration date.";
-            cardExpiryError.style.display = 'block';
-        } else {
-            cardExpiryError.textContent = "";
-            cardExpiryError.style.display = 'none';
-        }
+    //cardExpiry.addEventListener("blur", (e) => {
+        //if (!validateCardExpiry()) {
+            //cardExpiryError.textContent = "Enter valid expiration date.";
+            //cardExpiryError.style.display = 'block';
+        //} else {
+           // cardExpiryError.textContent = "";
+           // cardExpiryError.style.display = 'none';
+       // }
     });
 
     cardCVC.addEventListener("input", (e) => {
@@ -517,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showUserInfo() {
         const userInfo = document.createElement("div");
-        userInfo.classList.add(".payment");
+        userInfo.classList.add("order-information");
         userInfo.innerHTML = `
             <div class="person-info">
                 <div class="name-of-order">
@@ -721,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
             input.value = input.value.replace(/[^a-zA-Z\s]/g, '');//<----------------------- remove non letters
 
         }
-
+      
         function limitInput(event, maxLength){
             const input = event.target;
             input.value = input.value.slice(0, maxLength); //restrict length
@@ -765,7 +787,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </div>
         <div class="checkout-button-holder complete-button-holder">
-             <a href="/Checkout/Receipt/receipt.html"><button class="complete-order-button">Place Order</button></a>
+            <a href="Receipt/receipt.html"><button class="complete-order-button">Place Order</button></a>
         </div>`;
         
         checkoutContainerDisplay.innerHTML = '';
@@ -815,6 +837,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+        cart.forEach(item =>{
+            let itemDiv = document.createElement("div");
+            itemDiv.classList.add('items');
+            itemDiv.innerHTML = `
+                <p>${item.quantity || 1}x</p>
+                <p>${item.name}</p>
+                <p>${convertPrice(item.price)}</p>
+            `;
+            checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+        });
+
+        const totalPrice = cart.reduce((sum, item) => {
+            const quantity = item.quantity || 1;
+            const price = parseFloat(item.price);
+            if(isNaN(price)){
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                return sum;
+            }
+            return sum + (price * quantity);
+        }, 0);
+
+        let totalContainer = document.querySelector(".total-container");
+        totalContainer.innerHTML = `
+        <div class="total">
+            <h3>Total:</h3>
+            <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
+        </div>
+        `;
+        console.log(cart);
+    }
    
     function addTip() {
         let totalDisplay = document.querySelector('.total-container .total h2');

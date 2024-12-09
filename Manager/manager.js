@@ -55,6 +55,25 @@ function showOptions(event){                    // -----------------------------
 function generateOptionsHtml(value){
     let otherContainer = document.querySelector('.items-edit-container');
     otherContainer.style.display = "none";
+
+    if(value == 'blog'){
+    return `
+            <h3>Create your plog post:</h3>
+            <form class="blog-input" action="manager.js" method="post">
+                <div class="input-options">
+                    <label for="title">Enter post title:</label>
+                    <input type="text" name="title" id="title">
+
+                    <label for="photo">Enter post image url:</label>
+                    <input type="text" name="photo" id="photo">
+
+                    <label for="text">Enter post content:</label>
+                    <textarea name="text" id="text"></textarea>
+                </div>
+                <input type="submit" id="submit"></input>
+            </form>`
+    }
+    else{
     return `
         <h3>What would you like to ${value}?</h3>
         ${['app', 'lunch', 'dinner', 'dessert', 'drink'].map(type => `
@@ -64,21 +83,28 @@ function generateOptionsHtml(value){
             </div>
         `).join('')}
     `;
+    }
 }
 
 function capitalizeFirstLetter(string){
-    return string.charAt(0).toUpperCase() + string.slice(1);
+ string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function menuOptions(value){                    // -------------------------------------- sets listeners for menu section radio button or calls addItem
     let itemType = value;
-    if (value === 'change'){
+    if(value === 'change'){
         document.querySelectorAll('.menu-sections').forEach(option => {
             option.addEventListener('change', (event) => checkLS(event, itemType));
         });
     }
-    else{
+    else if(value === 'add'){
         addItem();
+    }
+    else{
+        let form = document.querySelector('form')
+        if(form){
+            form.addEventListener('submit', getFormData)
+        }
     }
 }
 
@@ -93,8 +119,8 @@ function checkLS(event){                    // ---------------------------------
 }
 
 function displayMenuItems(menuItems, itemType){                 // ---------------------- shows menu items when menu type is selected
-    return menuItems.map(item => {
-        return `
+ menuItems.map(item => {
+     `
             <div class="op">
                 <div class="item-edit-wrapper">
                     <div class="item-edit-info">
@@ -122,7 +148,7 @@ function displayMenuItems(menuItems, itemType){                 // -------------
 }
 
 function getImagePath(imagePath){
-    return imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
+ imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
 }
 
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
@@ -359,5 +385,30 @@ function getIdentifier(){                   // ---------------------------------
         .flat();
     const currentId = new Set(allItems.map(item => item.identifiers));
     let largest = Math.max(...[...currentId].map(id => parseInt(id, 10) || 0)) + 1;
-    return String(largest).padStart(3, '0');
+ String(largest).padStart(3, '0');
+}
+
+function getFormData(event){
+    event.preventDefault();
+    let form = document.querySelector('form');
+    let formData = new FormData(form); // -------------------------------------------------------------- sets up key/value pairs with the data
+    let date = getDate();
+    let item = {
+        title: formData.get('title'),
+        image: formData.get('photo'),
+        date: date,
+        content: formData.get('text')
+    };
+    console.log(item)
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.push(item);
+    localStorage.setItem('posts', JSON.stringify(posts));
+    console.log('end')
+}
+
+function getDate(){
+    let today = new Date();
+    let date = { year: 'numeric', month: 'long', day: 'numeric' };
+    let formattedDate = today.toLocaleDateString('en-US', date);
+    return formattedDate;
 }
