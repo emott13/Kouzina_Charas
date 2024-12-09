@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ------------------------------ //
 
 
-const menuData = { // ---------------------------------------------------------------------- menu items information
+let menuData = { // ---------------------------------------------------------------------- menu items information
     app: {
         names: ['Dolmades', 'Choriatiki', 'Saganaki', 'Tzatziki'],
         prices: ['6.00', '6.00', '7.00', '7.00'],
