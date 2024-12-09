@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     receipt();
 });
 
 function receipt() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('receipt')) || [];
     const customTip = parseFloat(localStorage.getItem('customTip')) || 0;
     const orderData = getOrderData(); // Retrieve order details from local storage
     const receiptItems = document.createElement('div');

@@ -75,6 +75,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    margin-top: 2rem;
     width: 100%;
     min-height: 18vh;
     /* background-color: rgb(204, 216, 212); */

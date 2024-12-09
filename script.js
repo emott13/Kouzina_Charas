@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyFilters();
     const pageClass = document.body.classList;
     if(pageClass.contains('main')){                                                     //index.html listener
+        localStorage.removeItem('receipt');
+        localStorage.removeItem('orderData');
         setUpMenu('app');
         setUpMenu('lunch'); 
         setUpMenu('dinner'); 
