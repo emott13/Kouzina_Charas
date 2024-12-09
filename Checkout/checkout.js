@@ -8,14 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCompleteOrderButtons();
 });
 
-
-
-
 const state = {
-    isDelivery: false, // Determines if the user chose delivery or pickup
-    selectedPayment: null, // 'cash' or 'card'
-    orderType: null, // 'Pickup' or 'Delivery'
+    isDelivery: false,                                                      // Determines if the user chose delivery or pickup
+    selectedPayment: null,                                                  // 'cash' or 'card'
+    orderType: null,                                                        // 'Pickup' or 'Delivery'
 };
+
+let tipAmount = 0;
 
 const forms = {
     pickup: document.getElementById("pickup-form"),
@@ -28,14 +27,14 @@ const sections = {
     summary: document.getElementById("summary"),
 };
 
-function initializePage() {
+function initializePage() {                                                 // starts with payment information hidden
     sections.paymentOptions.hidden = true;
     sections.summary.hidden = true;
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let container = document.querySelector('.order-info-basic');
 
-    cart.forEach(item => {
+    cart.forEach(item => {                                                  // displays each item in cart
         let items = document.createElement('div');
         items.classList.add('item');
         items.innerHTML = 
@@ -49,30 +48,29 @@ function initializePage() {
     }); 
 }
 
-function convertPrice(price){ // --------------------------------------------------------- changes price to display euro sign after price in greek style
+function convertPrice(price){                                               // changes price to display euro sign after price in greek style
     let split = String(price).split('.');
     let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
     if(split[0] == 0){return '0€'}
     return split[0] + ',' + end + '€'; 
 }
 
-function itemTotal(price, quantity){
-    total = price * quantity;
+function itemTotal(price, quantity){                                        // calculates price
+    total = parseFloat(price * quantity);
     return convertPrice(total);
 }
 
-// toggle visibility of elements by setting the hidden attribute
-function toggleVisibility(visibleElements, hiddenElements) {
-    visibleElements.forEach((element) => (element.hidden = false));
+
+function toggleVisibility(visibleElements, hiddenElements) {                // handles visibility of input forms
+    visibleElements.forEach((element) => (element.hidden = false));         // toggle visibility of elements by setting the hidden attribute
     hiddenElements.forEach((element) => (element.hidden = true));
 
-    // resets paymentOptions styles if hidden
-    if(sections.paymentOptions.hidden){
+    if(sections.paymentOptions.hidden){                                     // resets styles if paymentOptions hidden
         sections.paymentOptions.style.display = '';
         sections.paymentOptions.style.justifyContent = '';
         sections.paymentOptions.style.gap = '';
     }
-    if(sections.summary.hidden){
+    if(sections.summary.hidden){                                            // resets styles if summary paymentOptions hidden
         sections.summary.style.display = '';
         sections.summary.style.flexDirection = '';
         sections.summary.style.alignItems = '';
@@ -87,20 +85,14 @@ function populateSummary(form) {
     const orderTypeElement = document.getElementById("summary-order-type");
     const paymentMethodElement = document.getElementById("summary-payment-method");
 
-    // Clear existing content
-    summaryContainer.innerHTML = "";
-
-    // Set order type
-    state.orderType = state.isDelivery ? "Delivery" : "Pickup";
+    summaryContainer.innerHTML = "";                                                        // clears existing content
+    state.orderType = state.isDelivery ? "Delivery" : "Pickup";                             // sets order type
     orderTypeElement.textContent = `Order Type: ${state.orderType}`;
 
-
-    // Set payment method
-    const paymentMethod = state.selectedPayment === "cash" ? "Cash" : "Card";
+    const paymentMethod = state.selectedPayment === "cash" ? "Cash" : "Card";               // Set payment method
     paymentMethodElement.textContent = `Payment Method: ${paymentMethod}`;
 
-    // Extract and display input values from the selected form
-    Array.from(form.elements).forEach((input) => {
+    Array.from(form.elements).forEach((input) => {                                          // Extracts and displays input values from the selected form
         if (input.tagName === "INPUT" && input.type !== "submit") {
             const item = document.createElement("p");
             item.textContent = `${input.previousElementSibling.textContent} ${input.value}`;
@@ -110,14 +102,13 @@ function populateSummary(form) {
 }
 
 
-function validatePickupForm(){
+function validatePickupForm(){                                                              // Validates nae and phone inputs
     let name = document.getElementById("pickup-name").value.trim();
     let phone = document.getElementById("pickup-phone").value.trim();
     return name && phone.match(/^\d{10}$/);
 }
 
-// Validate the delivery form
-function validateDeliveryForm() {
+function validateDeliveryForm(){                                                            // Validates the delivery form
     let name = document.getElementById("delivery-name").value.trim();
     let address = document.getElementById("delivery-street").value.trim();
     let city = document.getElementById("delivery-city").value.trim();
@@ -125,8 +116,7 @@ function validateDeliveryForm() {
     return name && address && city && phone.match(/^\d{10}$/);
 }
 
-// Handle form submission
-function setupFormEvent(form, validationFn) {
+function setupFormEvent(form, validationFn){                                                // Sets up form
     form.addEventListener("submit", function (event){
         event.preventDefault();
         if(validationFn()){
@@ -134,56 +124,71 @@ function setupFormEvent(form, validationFn) {
             sections.paymentOptions.style.display = 'flex';
             sections.paymentOptions.style.justifyContent = 'space-evenly';
             sections.paymentOptions.style.gap = '4rem';
-
         }
     });
 }
 
-// Handle payment option selection
 function handlePaymentOptionSelection() {
-    document.getElementById("cash-payment").addEventListener("click", function () {
-        state.selectedPayment = "cash";
-        let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
-        populateSummary(activeForm);
-        saveOrderData(activeForm); // Save data when cash is selected
-        toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
-    });
-    
     document.getElementById("card-payment").addEventListener("click", function () {
         state.selectedPayment = "card";
         toggleVisibility([forms.card], [sections.summary, sections.paymentOptions]);
+
+        let ten = (getTotal() * 0.1).toFixed(2);
+        let fifteen = (getTotal() * 0.15).toFixed(2);
+        let twenty = (getTotal() * 0.2).toFixed(2);
+        document.querySelector('.tip').innerHTML = `
+            <input type="radio" name="tip" class="tipPercent" value="0">No tip</input>
+            <input type="radio" name="tip" class="tipPercent" value="${ten}">10%: ${ten}</input>
+            <input type="radio" name="tip" class="tipPercent" value="${fifteen}">15%: ${fifteen}</input>
+            <input type="radio" name="tip" class="tipPercent" value="${twenty}">20%: ${twenty}</input>
+            <div>
+                <label for="custom-tip">Custom tip:</label>
+                <input type="number" name="custom-tip">
+            </div>`;
+
+        const tipPercentInputs = document.querySelectorAll('.tipPercent');
+        tipPercentInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                if (input.checked) {
+                    tipAmount = Math.floor(input.value * 100) || 0;                               // Use the selected tip percent
+                }
+            });
+        });
+
+        const customTipInput = document.querySelector('[name="custom-tip"]');
+        customTipInput.addEventListener('input', () => {                                        // Handle custom tip input
+            const customTipValue = customTipInput.value * 100 || 0;
+            if (customTipValue > 0) {
+                tipAmount = customTipValue;                                                     // Prioritize custom tip over selected tip
+                console.log("Custom Tip Amount:", tipAmount);
+            }
+        });
     });
 }
 
 function setupCardFormSubmission() {
     forms.card.addEventListener("submit", function (event) {
         event.preventDefault();
-        let cardNumber = document.getElementById("card-number").value.trim();
+        let cardNumber = document.getElementById("card-number").value.trim();               // Validate and process the card details
         let expiryDate = document.getElementById("expiry-date").value.trim();
         let cvc = document.getElementById("cvc").value.trim();
         let cardHolder = document.getElementById("card-holder").value.trim();
-    
-        if (cardNumber && expiryDate && cvc && cardHolder) {
+        let tip = tipAmount;
+
+        if (cardNumber && expiryDate && cvc && cardHolder && tip) {
             let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
             populateSummary(activeForm);
-    
-            // Add card-specific data
-            const orderData = new Map();
-            orderData.set("cardNumber", cardNumber.slice(-4)); // Store last 4 digits only
-            orderData.set("cardHolder", cardHolder);
-    
-            // Save data
-            saveOrderData(activeForm);
-    
+            console.log(activeForm, cardNumber);
+            saveOrderData(activeForm, cardNumber);
             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
-        }
-      else{
+        } else {
             alert("Please fill out all fields correctly.");
         }
     });
 }
 
-function setupCompleteOrderButtons() {
+
+function setupCompleteOrderButtons(){                                                       // Loads receipt
     document.querySelectorAll('.complete').forEach(function (button) {
         button.addEventListener('click', function () {
             window.location.href = "Receipt/receipt.html";
@@ -191,33 +196,39 @@ function setupCompleteOrderButtons() {
     });
 }
 
-function setupOptionSelectionListeners() {
-    document.getElementById("pick-up").addEventListener("click", function () {
+function setupOptionSelectionListeners(){
+    document.getElementById("pick-up").addEventListener("click",  () => {
+        localStorage.removeItem('orderData');
         state.isDelivery = false;
         toggleVisibility([forms.pickup], [forms.delivery, sections.paymentOptions, forms.card, sections.summary]);
     });
 
-    document.getElementById("delivery").addEventListener("click", function () {
+    document.getElementById("delivery").addEventListener("click", () => {
+        localStorage.removeItem('orderData');
         state.isDelivery = true;
         toggleVisibility([forms.delivery], [forms.pickup, sections.paymentOptions, forms.card, sections.summary]);
     });
 }
 
-function saveOrderData(form) {
+function saveOrderData(form, cardNumber) {
     const orderData = new Map();
 
     orderData.set("orderType", state.isDelivery ? "Delivery" : "Pickup");
     orderData.set("paymentMethod", state.selectedPayment === "cash" ? "Cash" : "Card");
+    console.log(cardNumber)
+    orderData.set("cardNumber", cardNumber ? cardNumber : '');
 
     Array.from(form.elements).forEach((input) => {
         if (input.tagName === "INPUT" && input.type !== "submit") {
             const key = input.name || input.id; // Use 'name' or 'id' as the key
             const value = input.value.trim();
-
-            if (key === "card-number") {
+            console.log(value)
+            if (key === "cardNumber") {
+                console.log(key)
                 orderData.set(key, value.slice(-4)); // Store only the last 4 digits
             } else {
                 orderData.set(key, value);
+                console.log(key)
             }
         }
     });
@@ -228,23 +239,33 @@ function saveOrderData(form) {
     console.log("Order data saved to local storage:", orderData);
 }
 
-function getOrderData() {
-    const serializedOrderData = localStorage.getItem("orderData");
-    if (serializedOrderData) {
-        const orderData = new Map(Object.entries(JSON.parse(serializedOrderData)));
-        console.log("Retrieved order data:", orderData);
-        return orderData;
-    }
-    return null;
-}
+// function getOrderData() {
+//     const serializedOrderData = localStorage.getItem("orderData");
+//     if (serializedOrderData) {
+//         const orderData = new Map(Object.entries(JSON.parse(serializedOrderData)));
+//         console.log("Retrieved order data:", orderData);
+//         return orderData;
+//     }
+//     return null;
+// }
 
-const savedOrderData = getOrderData();
-if (savedOrderData) {
-    console.log(`Order Type: ${savedOrderData.get("orderType")}`);
-    console.log(`Payment Method: ${savedOrderData.get("paymentMethod")}`);
-    console.log(`Phone: ${savedOrderData.get("pickup-phone") || savedOrderData.get("delivery-phone")}`);
-}
+// const savedOrderData = getOrderData();
+// if (savedOrderData){
+//     console.log(`Order Type: ${savedOrderData.get("orderType")}`);
+//     console.log(`Payment Method: ${savedOrderData.get("paymentMethod")}`);
+//     console.log(`Phone: ${savedOrderData.get("pickup-phone") || savedOrderData.get("delivery-phone")}`);
+// }
 
+function getTotal(){ // ------------------------------------------------------------------ handles getting price total from cart items
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let total = 0;
+    cart.forEach(cartItem => {
+        let price = parseFloat(cartItem.price);
+        let quantity = cartItem.quantity;
+        total += (price * quantity);
+    });
+    return total;
+}
 
 // document.addEventListener('DOMContentLoaded', function () {
 //     // Select initial elements

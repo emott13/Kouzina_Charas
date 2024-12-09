@@ -12,6 +12,7 @@ function receipt() {
     const receiptContainerDisplay = document.querySelector(".receipt");
 
     const d = new Date();
+
     receiptItems.innerHTML = `
         <div class="receipt-title"><p>
             ---------------------------------------------<br>
@@ -26,21 +27,21 @@ function receipt() {
             ${orderData?.get("orderType") === "Delivery" ? `
             <p>Delivery Address: ${orderData?.get("delivery-street") || ""}, ${orderData?.get("delivery-city") || ""}</p>` : ""}
             ${orderData?.get("paymentMethod") === "Card" ? `
-            <p>Card Ending In: **** ${orderData?.get("card-number") || "N/A"}</p>` : ""}
+            <p>Card Ending In: ****${orderData?.get("cardNumber").slice(-4) || "N/A"}</p>` : ""}
             <p>Phone Number: ${orderData?.get("pickup-phone") || orderData?.get("delivery-phone") || "N/A"}</p>
         </div>
         <div class="receipt-item-cata">
-            <p>Qt</p><p>Item</p><p>AMT.(€)</p>
+            <p>Qt</p><p>Item</p><p>AMT(€)</p>
         </div>
         <div class="receipt-item-cata" style="height: 1vh;">
             <p style="line-height: 3px;">----------------------------------------------------------</p>
         </div>
         <div class="receipt-body"></div>
         <div class="receipt-total">
-            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
-            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
+            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))} €</p></div>
+            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))} €</p></div>
             <div class="receipt-total-after-sub">
-                <h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3>
+                <h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))} €</h3>
             </div>
 
             <div class="dash">------------------------------------------------------</div>
@@ -95,7 +96,8 @@ function time(){
 
 function waitTime(){                                                          //<------------------------------------will be used for all the checkout diplay function delivery and pickup times
     const startTime = new Date();
-    startTime.setMinutes(startTime.getMinutes() + 35);
+
+    startTime.setMinutes(startTime.getMinutes() + getMinuteAmount());
 
     const endTime = new Date(startTime);
     endTime.setMinutes(endTime.getMinutes() + 5);
@@ -117,9 +119,43 @@ function waitTime(){                                                          //
 function convertPrice(price){
     let split = String(price).split('.');
     let end = split[1] ? String(split[1]).padEnd(2, '0') : '00'
-    if(split[0] == 0){return '0€'}
-    return split[0] + ',' + end + '€'; 
+    if(split[0] == 0){return '0'}
+    return split[0] + ',' + end; 
 }
+
+function getMinuteAmount() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    if (!Array.isArray(cart)) {
+        console.error("Cart data is not in the expected format.");
+        return 0; // Fallback if cart is not an array
+    }
+
+    let appCount = 0, lunCount = 0, dinCount = 0, desCount = 0, driCount = 0;
+
+    cart.forEach(item => {
+        if (!item.tags) return; // Skip items without tags
+        let getTags = Array.isArray(item.tags) ? item.tags : item.tags.split(',');
+
+        const quantity = item.quantity || 1; // Default to 1 if quantity is missing
+        if (getTags.includes('appetizer')) appCount += quantity;
+        if (getTags.includes('lunch')) lunCount += quantity;
+        if (getTags.includes('dinner')) dinCount += quantity;
+        if (getTags.includes('dessert')) desCount += quantity;
+        if (getTags.includes('drink')) driCount += quantity;
+    });
+
+    let total = 0;
+    total += appCount * 2;
+    total += lunCount * 3;
+    total += dinCount * 4;
+    total += desCount * 2;
+    total += driCount * 1;
+
+    console.log(`Total wait time (minutes): ${total}`);
+    return total;
+}
+
 //document.addEventListener('DOMContentLoaded', () => {
 
     //     receipt();
