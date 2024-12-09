@@ -1,9 +1,10 @@
+if(!localStorage.getItem('cart')){
+    localStorage.removeItem('receipt');
+    localStorage.removeItem('orderData');
+    window.location.href = '../Cart/cart.html';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    if(!localStorage.getItem('cart')){
-        window.location.href = '../Cart/cart.html';
-        localStorage.removeItem('receipt');
-        localStorage.removeItem('orderData');
-    }
     initializePage();
     setupOptionSelectionListeners();
     setupFormEvent(forms.pickup, validatePickupForm);
