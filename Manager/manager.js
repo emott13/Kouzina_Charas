@@ -147,9 +147,11 @@ function displayMenuItems(menuItems, itemType){                 // -------------
     }).join('');
 }
 
-function getImagePath(imagePath){
- imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
+function getImagePath(imagePath) {
+    if (!imagePath) return ''; // or return a default image path if preferred
+    return imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
 }
+
 
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
     let {dataset: {item, type}, classList } = event.target;
@@ -362,7 +364,7 @@ function addItem(){                 // -----------------------------------------
 
         const newItem = {
             name, price, image, description,
-            identifiers: getIdentifier(),
+            identifiers: getIdentifier() || '000', // Ensure a default value if `getIdentifier()` returns `undefined`
             quantity: 1,
             tags: tags// -----------------------------------------------------------------assign the slected tags
         };

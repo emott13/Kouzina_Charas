@@ -335,16 +335,17 @@ function handleAddItem(event){ // ----------------------------------------------
     addToCartInLS(item);
 
 };
-    
+
 function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
-    if(existingItem){
-        // console.log(item.quantity)
-        // item.quantity += 1;
-        // console.log(item.quantity)
+    if(existingItem){// ------------------------------------------------------------------ working update cart with quantity changing
+        // Optionally, you can increase the quantity here if needed
+        existingItem.quantity += 1;
+    }else{
+        cart.push(item);
     }
-    cart.push(item);
+    
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
