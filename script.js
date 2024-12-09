@@ -12,16 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        
+        flyout();
     }
     if(pageClass.contains('cart')) setUpCart();                                         //cart.html listener
-
-    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
-    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
-    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
-    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
-    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
-    flyout();
     if(pageClass.contains('appetizers')) displayMenuOnPage('app');                      //appetizers.html listener
     if(pageClass.contains('lunch')) displayMenuOnPage('lunch');                         //lunch.html listener
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');                       //dinner.html listener
@@ -340,9 +333,21 @@ function addToCartInLS(item){ // -----------------------------------------------
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
-        // console.log(item.quantity)
-        // item.quantity += 1;
-        // console.log(item.quantity)
+
+        // let newQuantity = cartItem.quantity + 1;
+            
+        //     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        //     let cartItem = cart.find(item => item.name.trim() === itemName);
+
+        //     if(cartItem){
+        //         cartItem.quantity = newQuantity;
+        //         localStorage.setItem('cart', JSON.stringify(cart));
+        //     } 
+        //     getTotal();
+        console.log(existingItem)
+        console.log(item.quantity)
+        existingItem.quantity += 1;
+        console.log(item.quantity)
     }
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
