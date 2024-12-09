@@ -154,6 +154,16 @@ function editItem(itemName, itemType){                  // ---------------------
             <label for="newImage">Image URL:</label>
             <input type="text" id="newImage" value="${item.image}"><br>
         </div>
+
+        <div class="tags-checkbox-container">
+            <h3>Meal</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('appetizer', 'Appetizer', tags)}
+                ${generateCheckbox('lunch', 'Lunch', tags)}
+                ${generateCheckbox('dinner', 'Dinner', tags)}
+                ${generateCheckbox('dessert', 'Dessert', tags)}
+            </div>
+
         <div class="tags-checkbox-container">
             <h3>Protein</h3>
             <div class="tags-checkbox">
