@@ -542,7 +542,7 @@ function displayMenu(items) {
         const menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
         menuItem.innerHTML = `
-            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+            <div class="item-image"><img src="${getImagePath(item.image)}" alt="${item.name}"></div>
             <div class="item-info">
                 <p class="name">${item.name}</p>
                 <div class="add-info">
