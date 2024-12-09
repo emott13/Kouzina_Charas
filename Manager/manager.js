@@ -128,7 +128,7 @@ function generateOptionsHtml(value){
 }
 
 function capitalizeFirstLetter(string){
-    string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function menuOptions(value){                    // -------------------------------------- sets listeners for menu section radio button or calls addItem
@@ -160,42 +160,45 @@ function checkLS(event){                    // ---------------------------------
     dash.style.minHeight = "50px"
     
     let item = event.target.value;
+    console.log(item)
     let menuItemsFromLS = JSON.parse(localStorage.getItem(item)) || [];
+    console.log(menuItemsFromLS)
     let container = document.querySelector('.menu-items-container');
-    container.innerHTML = menuItemsFromLS.length ? displayMenuItems(menuItemsFromLS, item) : `<p id="empty">This section is empty...</p>`;
+    container.innerHTML = menuItemsFromLS.length > 0 ? displayMenuItems(menuItemsFromLS, item) : `<p id="empty">This section is empty...</p>`;
+    console.log(displayMenuItems(menuItemsFromLS, item))
 }
 
 function displayMenuItems(menuItems, itemType){                 // ---------------------- shows menu items when menu type is selected
- menuItems.map(item => {
-     `
-            <div class="op">
-                <div class="item-edit-wrapper">
-                    <div class="item-edit-info">
-                        <strong>Name:</strong> ${item.name} <br>
-                        <strong>Price:</strong> ${item.price} <br>
-                        <strong>Image:</strong> <img src="${getImagePath(item.image)}" alt="${item.name}" width="180"/>
+    return menuItems.map(item => { 
+        return `
+                <div class="op">
+                    <div class="item-edit-wrapper">
+                        <div class="item-edit-info">
+                            <strong>Name:</strong> ${item.name} <br>
+                            <strong>Price:</strong> ${item.price} <br>
+                            <strong>Image:</strong> <img src="${getImagePath(item.image)}" alt="${item.name}" width="180"/>
+                        </div>
+                        <div class="item-edit-buttons">
+                            <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
+                            <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
+                        </div>
                     </div>
-                    <div class="item-edit-buttons">
-                        <button class="edit-btn" data-item="${item.name}" data-type="${itemType}">Edit</button>
-                        <button class="remove-btn" data-item="${item.name}" data-type="${itemType}">Remove</button>
-                    </div>
+                    ${item.identifiers.length > 3 ? `                   
+                        <div class="extra">
+                            <p>This item is not being displayed.</p>
+                            <button class="add-back" data-item="${item.name}" data-type="${itemType}">Add back to menu</button>
+                        </div>` : `
+                        <div class="extra">
+                            <p>This item is being displayed.</p>
+                        </div>`
+                    }
                 </div>
-                ${item.identifiers.length > 3 ? `                   
-                    <div class="extra">
-                        <p>This item is not being displayed.</p>
-                        <button class="add-back" data-item="${item.name}" data-type="${itemType}">Add back to menu</button>
-                    </div>` : `
-                    <div class="extra">
-                        <p>This item is being displayed.</p>
-                    </div>`
-                }
-            </div>
         `;
     }).join('');
 }
 
 function getImagePath(imagePath){
-    imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
+    return imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
 }
 
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
