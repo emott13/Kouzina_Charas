@@ -501,7 +501,7 @@ function getAllMenuItems() {
     const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
     return categories.flatMap(category => {
         const items = JSON.parse(localStorage.getItem(category)) || [];
-        console.log(`Items from ${category}:`, items);
+        // console.log(`Items from ${category}:`, items);
         return items
             .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
             .map(item => {
@@ -525,7 +525,7 @@ function getAllMenuItems() {
 }
 
 function displayMenu(items) {
-    console.log("Displaying menu items:", items);
+    // console.log("Displaying menu items:", items);
     const foodContainer = document.querySelector('.food-container');
     if (!foodContainer) {
         return;  // Exit if food-container is not found
@@ -537,7 +537,6 @@ function displayMenu(items) {
         foodContainer.innerHTML = '<p>No items match your filter</p>';
         return;
     }
-
     items.forEach(item => {
         const menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
@@ -552,9 +551,11 @@ function displayMenu(items) {
             </div>
             <p class="description">${item.description}</p>
         `;
-        console.log(getImagePath(item.image))
+        
         foodContainer.appendChild(menuItem);
+        console.log(getImagePath(item.image))
     });
+    
 
     addItemClick();
 }
@@ -567,13 +568,13 @@ function applyFilters() {
     const filteredItems = getAllMenuItems()
         .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
         .filter(item => {
-            console.log("Checking item:", item.name, "with tags:", item.tags);
+            // console.log("Checking item:", item.name, "with tags:", item.tags);
             return Object.keys(selectedFilters).every(key =>
                 selectedFilters[key].some(filterValue => {
-                    console.log("Comparing filter value:", filterValue);
+                    // console.log("Comparing filter value:", filterValue);
 
                     if (!Array.isArray(item.tags)) {
-                        console.warn(`Skipping item "${item.name}" because tags are not an array.`);
+                        // console.warn(`Skipping item "${item.name}" because tags are not an array.`);
                         return false;
                     }
 
@@ -591,9 +592,9 @@ function applyFilters() {
 function setupFilterButton() {
     const filterButton = document.querySelector('.filter-button'); // Select the filter button
     if (filterButton) {
-        console.log("Setting up filter button...");
+        // console.log("Setting up filter button...");
         filterButton.addEventListener('click', () => {
-            console.log("Filter button clicked.");
+            // console.log("Filter button clicked.");
             applyFilters(); // Apply filters when the button is clicked
         });
     } else {
@@ -604,7 +605,7 @@ function setupFilterButton() {
 
 function getSelectedFilters() {
     const filters = document.querySelectorAll('.filters-container input[type="checkbox"]:checked');
-    console.log("Filters selected:", filters);
+    // console.log("Filters selected:", filters);
 
     const selectedFilters = {};
     filters.forEach(filter => {
@@ -613,7 +614,7 @@ function getSelectedFilters() {
         selectedFilters[group].push(filter.value);
     });
 
-    console.log("Selected filters object:", selectedFilters);
+    // console.log("Selected filters object:", selectedFilters);
     return selectedFilters;
 }
 
