@@ -16,7 +16,7 @@ function receipt() {
         <div class="receipt-title"><p>
             ---------------------------------------------<br>
             Kouzina Charas<br>
-            Address <br>
+            Thiseos 367, Kallithea 176 74 <br>
             ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}<br>
             ---------------------------------------------</p>
         </div>
@@ -45,7 +45,7 @@ function receipt() {
 
             <div class="dash">------------------------------------------------------</div>
             <div class="wait-time">
-                <h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2>
+                <h2>${orderData?.get("orderType") || "N/A"} Time:<br> ${waitTime()}</h2>
             </div>
             <div class="dash">------------------------------------------------------</div>
         </div>
