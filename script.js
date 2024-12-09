@@ -546,7 +546,7 @@ function displayMenu(items) {
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../images/icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}"> <img src="images/icons/add-outline.svg" alt="" class="icon-image-add"></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
@@ -619,8 +619,9 @@ function getSelectedFilters() {
 }
 
 function getImagePath(imagePath) {
-    return imagePath.startsWith('../../') ? imagePath.slice(6) : imagePath;
+      // Ensure the path starts from the correct base folder
+      if (imagePath.startsWith('../../Images/')) {
+        return imagePath.slice(6); // Remove '../../' to make it relative from the root
+    }
+    return imagePath; // Return path as is if no change is needed
 }
-console.log(getImagePath('../../Images/Appetizers/dolmades.jpg')); 
-
-console.log(getImagePath('Images/Appetizers/dolmades.jpg'));
