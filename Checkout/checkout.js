@@ -8,13 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCompleteOrderButtons();
 });
 
-
-
-
 const state = {
     isDelivery: false, // Determines if the user chose delivery or pickup
     selectedPayment: null, // 'cash' or 'card'
     orderType: null, // 'Pickup' or 'Delivery'
+    cardNumber: null
 };
 
 const forms = {
@@ -166,14 +164,14 @@ function setupCardFormSubmission() {
         if (cardNumber && expiryDate && cvc && cardHolder) {
             let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
             populateSummary(activeForm);
-    
             // Add card-specific data
             const orderData = new Map();
             orderData.set("cardNumber", cardNumber.slice(-4)); // Store last 4 digits only
             orderData.set("cardHolder", cardHolder);
-    
+            console.log(orderData)
             // Save data
-            saveOrderData(activeForm);
+    console.log(activeForm)
+            saveOrderData(activeForm, cardNumber);
     
             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
         }
@@ -203,18 +201,19 @@ function setupOptionSelectionListeners() {
     });
 }
 
-function saveOrderData(form) {
+function saveOrderData(form, cardNumber) {
     const orderData = new Map();
 
     orderData.set("orderType", state.isDelivery ? "Delivery" : "Pickup");
     orderData.set("paymentMethod", state.selectedPayment === "cash" ? "Cash" : "Card");
+    orderData.set("cardNumber", cardNumber != null ? cardNumber : '');
 
     Array.from(form.elements).forEach((input) => {
         if (input.tagName === "INPUT" && input.type !== "submit") {
             const key = input.name || input.id; // Use 'name' or 'id' as the key
             const value = input.value.trim();
 
-            if (key === "card-number") {
+            if (key === "cardNumber") {
                 orderData.set(key, value.slice(-4)); // Store only the last 4 digits
             } else {
                 orderData.set(key, value);
