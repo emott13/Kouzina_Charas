@@ -537,6 +537,7 @@ function displayMenu(items) {
         foodContainer.innerHTML = '<p>No items match your filter</p>';
         return;
     }
+    
     items.forEach(item => {
         const menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
@@ -546,7 +547,7 @@ function displayMenu(items) {
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem shadow" data-type="${item.identifiers}"> <img src="images/icons/add-outline.svg" alt="" class="icon-image-add"></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
@@ -621,7 +622,7 @@ function getSelectedFilters() {
 function getImagePath(imagePath) {
       // Ensure the path starts from the correct base folder
       if (imagePath.startsWith('../../Images/')) {
-        return imagePath.slice(6); // Remove '../../' to make it relative from the root
+        return imagePath.slice(3); // Remove '../../' to make it relative from the root
     }
     return imagePath; // Return path as is if no change is needed
 }
