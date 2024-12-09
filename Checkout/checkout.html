@@ -14,14 +14,16 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <script>
-        (function(){                                                    //the function syntax used here is an IIFE, which executes the code immediately after it is defined.
-            const receiptExists = localStorage.getItem('receipt');
-            if (receiptExists && !localStorage.getItem('cart')) {
-                localStorage.removeItem('receipt');
-                localStorage.removeItem('orderData');
-                window.location.href = '../Cart/cart.html';
+        window.addEventListener('pageshow', (event) => {                        // checks if page loaded from bfcache or full reload
+            if (event.persisted){                                                    
+                const receiptExists = localStorage.getItem('receipt');
+                if (receiptExists && !localStorage.getItem('cart')) {
+                    localStorage.removeItem('receipt');
+                    localStorage.removeItem('orderData');
+                    window.location.href = '../Cart/cart.html';
+                }
             }
-        })();
+        });
     </script>
 
     <script src="checkout.js" defer></script>
