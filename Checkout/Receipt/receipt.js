@@ -3,51 +3,66 @@ document.addEventListener('DOMContentLoaded', () => {
     receipt();
 });
 
-function receipt(){
+function receipt() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const customTip = parseFloat(localStorage.getItem('customTip')) || 0;
-    let receiptItems = document.createElement('div');
-    receiptItems.classList.add(".receipt");
+    const orderData = getOrderData(); // Retrieve order details from local storage
+    const receiptItems = document.createElement('div');
+    receiptItems.classList.add("receipt-holder");
     const receiptContainerDisplay = document.querySelector(".receipt");
 
     const d = new Date();
     receiptItems.innerHTML = `
-   
-    <div class="receipt-title"><p>
-        ---------------------------------------------<br>
-        Kouzina Charas<br>
-        Address <br>
-        ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}  <br>
-        ---------------------------------------------</p></div>
-    <div class="receipt-item-cata"><p>Qt</p><p>item</p><p>AMT.(€)</p></div>
-     <div class="receipt-item-cata" style="height: 1vh;"><p style="line-height: 3px;">----------------------------------------------------------</p></div>
-    <div class="receipt-body">
-    </div>
-    <div class="receipt-total">
-           <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
-           <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
-           <div class="receipt-total-after-sub"><h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3></div>
-           <div class="dash">------------------------------------------------------</div>
-           
-           <div class="wait-time"><h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2></div>
+        <div class="receipt-title"><p>
+            ---------------------------------------------<br>
+            Kouzina Charas<br>
+            Address <br>
+            ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}<br>
+            ---------------------------------------------</p>
+        </div>
+        <div class="receipt-order-details">
+            <p>Order Type: ${orderData?.get("orderType") || "N/A"}</p>
+            <p>Payment Method: ${orderData?.get("paymentMethod") || "N/A"}</p>
+            ${orderData?.get("orderType") === "Delivery" ? `
+            <p>Delivery Address: ${orderData?.get("delivery-street") || ""}, ${orderData?.get("delivery-city") || ""}</p>` : ""}
+            ${orderData?.get("paymentMethod") === "Card" ? `
+            <p>Card Ending In: **** ${orderData?.get("card-number") || "N/A"}</p>` : ""}
+            <p>Phone Number: ${orderData?.get("pickup-phone") || orderData?.get("delivery-phone") || "N/A"}</p>
+        </div>
+        <div class="receipt-item-cata">
+            <p>Qt</p><p>Item</p><p>AMT.(€)</p>
+        </div>
+        <div class="receipt-item-cata" style="height: 1vh;">
+            <p style="line-height: 3px;">----------------------------------------------------------</p>
+        </div>
+        <div class="receipt-body"></div>
+        <div class="receipt-total">
+            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
+            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
+            <div class="receipt-total-after-sub">
+                <h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3>
+            </div>
             <div class="dash">------------------------------------------------------</div>
-
-    </div>
-    <div class="receipt-end"><p>THANK YOU FOR DINING WITH US! <br> 
-    PLEASE COME AGAIN</p></div>
-
+            <div class="wait-time">
+                <h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2>
+            </div>
+            <div class="dash">------------------------------------------------------</div>
+        </div>
+        <div class="receipt-end">
+            <p>THANK YOU FOR DINING WITH US!<br>PLEASE COME AGAIN</p>
+        </div>
     `;
-    
+
     receiptContainerDisplay.innerHTML = '';
     receiptContainerDisplay.appendChild(receiptItems);
 
-    if(cart.length === 0){
+    if (cart.length === 0) {
         receiptContainerDisplay.innerHTML = `<p>Cart is empty</p>`;
         return;
     }
 
-    cart.forEach(item =>{
-        let itemDiv = document.createElement("div");
+    cart.forEach(item => {
+        const itemDiv = document.createElement("div");
         itemDiv.classList.add('receipt-items');
         itemDiv.innerHTML = `
             <p>${item.quantity || 1}x</p>
@@ -57,6 +72,15 @@ function receipt(){
         receiptItems.querySelector('.receipt-body').appendChild(itemDiv);
     });
 }
+
+function getOrderData() {
+    const serializedOrderData = localStorage.getItem("orderData");
+    if (serializedOrderData) {
+        return new Map(Object.entries(JSON.parse(serializedOrderData)));
+    }
+    return null;
+}
+
 
 function time(){
     var d = new Date();
