@@ -412,7 +412,7 @@ function addItem(){                 // -----------------------------------------
 
         const newItem = {
             name, price, image, description,
-            identifiers: getIdentifier(),
+            identifiers: getIdentifier() || '000', // Ensure a default value if `getIdentifier()` returns `undefined`
             quantity: 1,
             tags: tags// -----------------------------------------------------------------assign the slected tags
         };
