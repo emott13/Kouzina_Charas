@@ -16,7 +16,7 @@ function receipt() {
         <div class="receipt-title"><p>
             ---------------------------------------------<br>
             Kouzina Charas<br>
-            Address <br>
+            Thiseos 367, Kallithea 176 74 <br>
             ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}<br>
             ---------------------------------------------</p>
         </div>
@@ -43,28 +43,9 @@ function receipt() {
                 <h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3>
             </div>
 
-
-//     <div class="receipt-title"><p>
-//         ---------------------------------------------<br>
-//         Kouzina Charas<br>
-//         Address <br>
-//         ${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} at ${time()}  <br>
-//         ---------------------------------------------</p></div>
-//     <div class="receipt-item-cata"><p>Qt</p><p>item</p><p>AMT.(€)</p></div>
-//      <div class="receipt-item-cata" style="height: 1vh;"><p style="line-height: 3px;">----------------------------------------------------------</p></div>
-//     <div class="receipt-body">
-//     </div>
-//     <div class="receipt-total">
-//            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))}</p></div>
-//            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))}</p></div>
-//            <div class="receipt-total-after-sub"><h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))}</h3></div>
-//            <div class="dash">------------------------------------------------------</div>
-           
-//            <div class="wait-time"><h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2></div>
-
             <div class="dash">------------------------------------------------------</div>
             <div class="wait-time">
-                <h2>Pick Up/Delivery Time:<br> ${waitTime()}</h2>
+                <h2>${orderData?.get("orderType") || "N/A"} Time:<br> ${waitTime()}</h2>
             </div>
             <div class="dash">------------------------------------------------------</div>
         </div>
