@@ -542,12 +542,12 @@ function displayMenu(items) {
         const menuItem = document.createElement('div');
         menuItem.classList.add('menu-item');
         menuItem.innerHTML = `
-            <div class="item-image"><img src="${getImagePath(item.image)}" alt="${item.name}"></div>
+            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
             <div class="item-info">
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
