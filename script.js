@@ -480,9 +480,9 @@ function convertPrice(price){ // -----------------------------------------------
 function addingFilterItems(){
     const filterButton = document.querySelector('.filter-button');
     if (filterButton) {
-        console.log("Setting up filter button...");
+        // console.log("Setting up filter button...");
         filterButton.addEventListener('click', () => {
-            console.log("Filter button clicked.");
+            // console.log("Filter button clicked.");
             applyFilters();
         });
     } else {
@@ -491,13 +491,13 @@ function addingFilterItems(){
 }
 
 function initializeMenu() {
-    console.log("Initializing menu...");
+    // console.log("Initializing menu...");
     const allItems = getAllMenuItems(); // Fetch all menu items from localStorage
     displayMenu(allItems); // Display them in the UI
 }
 
 function getAllMenuItems() {
-    console.log("Fetching all menu items dynamically...");
+    // console.log("Fetching all menu items dynamically...");
     const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
     return categories.flatMap(category => {
         const items = JSON.parse(localStorage.getItem(category)) || [];
@@ -505,13 +505,13 @@ function getAllMenuItems() {
         return items
             .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
             .map(item => {
-                console.log('Processing item:', item);
+                // console.log('Processing item:', item);
                 const tags = Array.isArray(item.tags)
                     ? item.tags
                     : Array.isArray(item.tag)
                     ? item.tag
                     : [];
-                console.log('Tags for item:', item.name, tags); 
+                // console.log('Tags for item:', item.name, tags); 
                 return {
                     name: item.name,
                     price: item.price,
@@ -546,7 +546,7 @@ function displayMenu(items) {
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../images/icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
@@ -561,9 +561,9 @@ function displayMenu(items) {
 }
 
 function applyFilters() {
-    console.log("Applying filters...");
+    // console.log("Applying filters...");
     const selectedFilters = getSelectedFilters();
-    console.log("Selected Filters:", selectedFilters);
+    // console.log("Selected Filters:", selectedFilters);
 
     const filteredItems = getAllMenuItems()
         .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
@@ -584,7 +584,7 @@ function applyFilters() {
         );
     });
 
-    console.log("Filtered Items:", filteredItems);
+    // console.log("Filtered Items:", filteredItems);
     displayMenu(filteredItems);
 }
 
@@ -618,6 +618,9 @@ function getSelectedFilters() {
     return selectedFilters;
 }
 
-function getImagePath(imagePath){
-    imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
-   }
+function getImagePath(imagePath) {
+    return imagePath.startsWith('../../') ? imagePath.slice(6) : imagePath;
+}
+console.log(getImagePath('../../Images/Appetizers/dolmades.jpg')); 
+
+console.log(getImagePath('Images/Appetizers/dolmades.jpg'));
