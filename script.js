@@ -552,6 +552,7 @@ function displayMenu(items) {
             </div>
             <p class="description">${item.description}</p>
         `;
+        console.log(getImagePath(item.image))
         foodContainer.appendChild(menuItem);
     });
 
