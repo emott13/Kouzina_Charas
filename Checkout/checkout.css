@@ -511,8 +511,8 @@ body{
     text-align: center;
 }
 
-/* .tip-percentages:hover{
-} */
+.tip-percentages:hover{
+}
 .custom-tip-display{
     display: flex;
     justify-content: space-evenly;
@@ -552,8 +552,4 @@ body{
     background-color: var(--color-25);
     color: var(--color-13);
     transition: 200ms;
-}
-
-.hidden {
-    display: none;
 }

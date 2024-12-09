@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonHolderDisplay.style.display = "none";
 
         const paymentDisplay = document.createElement("div");
+
         paymentDisplay.classList.add("credit-payment");
         paymentDisplay.innerHTML = `
             <div class="credit-debit-display">
@@ -325,6 +326,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const cardHolderNameError = PaymentDisplay.querySelector(".card-holder-name-error");
         const zipCodeError = PaymentDisplay.querySelector(".zip-error");
 
+        const currentYear = new Date().getFullYear() % 100;
+        const currentMonth = new Date().getMonth() + 1;
+      
         let isValid = true;
 
         function displayError(errorContainer,message){
@@ -339,18 +343,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if(cardNumber.value.length < 15 || cardNumber.value.length > 16){
             displayError(cardNumberError, "Card number must be 15-16 digits.");
+
+        //if(cardNumber.value.length < 13 || cardNumber.value.length > 19){
+            //displayError(cardNumberError, "Card number must be 13-19 digits.");
+  
             isValid = false;
         }
         else{
             clearError(cardNumberError);
         }
-        
-        if (!/^(\d{2}\/\d{2})$/.test(cardExpiry.value)) {
-            displayError(cardExpiryError, "Expiry MM/YY format.");
+      
+        const [month, year] = cardExpiry.value.split('/').map(Number);
+        if (
+            isNaN(month) || isNaN(year) || 
+            month < 1 || month > 12 || 
+            year < currentYear || 
+            (year === currentYear && month < currentMonth)
+        ) {
+            cardExpiryError.textContent = "Enter valid expiration date.";
+            cardExpiryError.style.display = 'block';
             isValid = false;
-        }
-        else{
-            clearError(cardExpiryError);
+        } else {
+            cardExpiryError.textContent = "";
+            cardExpiryError.style.display = 'none';
         }
         
         if(cardCVC.value.length < 3 || cardCVC.value.length > 4){
@@ -428,11 +443,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
    function validateCardNumber() {
-        return cardNumber.value.length >= 15 && cardNumber.value.length <= 15;
+        return cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
     }
 
     function validateCardExpiry() {
-        return /^(\d{2}\/\d{2})$/.test(cardExpiry.value);
+        const currentYear = new Date().getFullYear() % 100;
+        const currentMonth = new Date().getMonth() + 1;
+
+        const [month, year] = cardExpiry.value.split('/').map(Number);
+        if(
+            isNaN(month) || isNaN(year) ||
+            month < 1 || month > 12 ||
+            year < currentYear ||
+            (year === currentYear && month < currentMonth)
+        ){
+            return false;//invalid
+        }
+        else{
+            return true;//valid
+        }
     }
 
     function validateCardCVC() {
@@ -461,6 +490,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     cardExpiry.addEventListener("input", (e) => {
         limitInput(e, 5);
+      
+        //enforceNumberInput(e);
+        //limitInput(e, 19);
+    //});
+
+   //cardExpiry.addEventListener("input", (e) => {
+        //let value = e.target.value.replace(/\D/g, ''); //<-------------------------------Remove non-numeric characters
+       // if (value.length > 4) value = value.slice(0, 4); //<-------------------------------Limit to 4 digits
+
+        // Format as MM/YY
+        //if (value.length >= 3) {
+            //value = `${value.slice(0, 2)}/${value.slice(2)}`;
+       // }
+
+       // e.target.value = value; // Update input value
+    //});
+
+    //cardExpiry.addEventListener("blur", (e) => {
+        //if (!validateCardExpiry()) {
+            //cardExpiryError.textContent = "Enter valid expiration date.";
+            //cardExpiryError.style.display = 'block';
+        //} else {
+           // cardExpiryError.textContent = "";
+           // cardExpiryError.style.display = 'none';
+       // }
     });
 
     cardCVC.addEventListener("input", (e) => {
@@ -469,8 +523,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     cardHolderName.addEventListener("input", (e) => {
-        limitInput(e, 50);
-    })
+       const value = e.target.value;
+       e.target.value = value.replace(/[^a-zA-Z\s'-]/g, '');//<-------------------------------will remove none letters 
+    });
+
+    cardHolderName.addEventListener("blur", (e) => {
+        const value = e.target.value.trim();
+    });
 
     zipCode.addEventListener("input", (e) => {
         enforceNumberInput(e);
@@ -635,7 +694,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     
         // Validate only fields that exist
-        if (NameOfOrder) validateField(NameOfOrder, NameOfOrderError, (value) => value !== "", "Please enter name of order");
+        if (NameOfOrder) validateField(NameOfOrder, NameOfOrderError, (value) => /^[a-zA-Z\s]+$/.test(value), "Please enter name of order");
         if (phoneNumber) validateField(phoneNumber, phoneNumberError, (value) => /^\d{10}$/.test(value), "Phone number must be 10 digits");
         if (streetAddress) validateField(streetAddress, streetAddressError, (value) => value !== "", "Street address cannot be empty");
         if (city) validateField(city, cityError, (value) => value !== "", "City cannot be empty");
@@ -649,7 +708,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function enforceInputLimitsPersonalInformation(userInformation){
         const inputConfig = {
-            ".name-of-order input": {limit : 50},
+            ".name-of-order input": {limit : 50, enforceLettersOnly: true},
             ".phone-number input": {limit : 10, enforceNumbers : true},
             ".address input": {limit : 100},
             ".city input": {limit : 50},
@@ -669,6 +728,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }else{
                     input.addEventListener("input", (e) =>{
                         if(config.enforceNumbers){enforceNumberInput(e)}
+                        if(config.enforceLettersOnly){enforceLettersOnly(e);}
                         if(config.limit){limitInput(e, config.limit)};
                         validatePersonalInfo(userInformation); 
                     })
@@ -678,6 +738,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
+        function enforceLettersOnly(event){
+            const input = event.target;
+            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');//<----------------------- remove non letters
+
+        }
+      
         function limitInput(event, maxLength){
             const input = event.target;
             input.value = input.value.slice(0, maxLength); //restrict length
@@ -768,55 +834,90 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         `;
         console.log(cart);
+
+    }
+
+        cart.forEach(item =>{
+            let itemDiv = document.createElement("div");
+            itemDiv.classList.add('items');
+            itemDiv.innerHTML = `
+                <p>${item.quantity || 1}x</p>
+                <p>${item.name}</p>
+                <p>${convertPrice(item.price)}</p>
+            `;
+            checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+        });
+
+        const totalPrice = cart.reduce((sum, item) => {
+            const quantity = item.quantity || 1;
+            const price = parseFloat(item.price);
+            if(isNaN(price)){
+                console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+                return sum;
+            }
+            return sum + (price * quantity);
+        }, 0);
+
+        let totalContainer = document.querySelector(".total-container");
+        totalContainer.innerHTML = `
+        <div class="total">
+            <h3>Total:</h3>
+            <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
+        </div>
+        `;
+        console.log(cart);
     }
    
-function addTip() {
-    let totalDisplay = document.querySelector('.total-container .total h2');
-    let totalValue = parseFloat(totalDisplay.textContent.replace('€','')) || 0;
-    let CustomTipDisplay = document.querySelector('.custom-tip-display .tip-input');
+    function addTip() {
+        let totalDisplay = document.querySelector('.total-container .total h2');
+        let totalValue = parseFloat(totalDisplay.textContent.replace('€','')) || 0;
+        let CustomTipDisplay = document.querySelector('.custom-tip-display .tip-input');
 
-    let tip10 = (totalValue * 0.10).toFixed(2);
-    let tip15 = (totalValue * 0.15).toFixed(2);
-    let tip20 = (totalValue * 0.20).toFixed(2);
+        let tip10 = (totalValue * 0.10).toFixed(2);
+        let tip15 = (totalValue * 0.15).toFixed(2);
+        let tip20 = (totalValue * 0.20).toFixed(2);
 
-    let tipDisplay1 = document.querySelector('.amount1')
-    let tipDisplay2 = document.querySelector('.amount2')
-    let tipDisplay3 = document.querySelector('.amount3')
+        let tipDisplay1 = document.querySelector('.amount1')
+        let tipDisplay2 = document.querySelector('.amount2')
+        let tipDisplay3 = document.querySelector('.amount3')
 
-    if(tipDisplay1){ tipDisplay1.textContent = `${convertPrice(tip10)}`; } 
-    if(tipDisplay2){ tipDisplay2.textContent = `${convertPrice(tip15)}`; }
-    if(tipDisplay3){ tipDisplay3.textContent = `${convertPrice(tip20)}`; }
+        if(tipDisplay1){ tipDisplay1.textContent = `${convertPrice(tip10)}`; } 
+        if(tipDisplay2){ tipDisplay2.textContent = `${convertPrice(tip15)}`; }
+        if(tipDisplay3){ tipDisplay3.textContent = `${convertPrice(tip20)}`; }
 
-    const tipButtons = document.querySelectorAll('.tip-percentages');
+        const tipButtons = document.querySelectorAll('.tip-percentages');
 
-    const removeSelectedClass = () =>{
-         tipButtons.forEach(button => button.classList.remove('selected-tip'));
-    }
+        const removeSelectedClass = () =>{
+            tipButtons.forEach(button => button.classList.remove('selected-tip'));
+        }
 
-    tipButtons.forEach(button =>{
-        button.addEventListener('click', function (){
+        tipButtons.forEach(button =>{
+            button.addEventListener('click', function (){
 
-            removeSelectedClass();
-            this.classList.add('selected-tip');
+                removeSelectedClass();
+                this.classList.add('selected-tip');
 
             let tipPercentage = 0;
             
-            if(this.querySelector('h3')){//takes the percent symbol out of the percentage and uses the number
-                tipPercentage = parseInt(this.querySelector('h3').textContent.replace('%',''));
-                CustomTipDisplay.style.display = 'none';
-            } else if(this.textContent === 'Custom Tip'){
-                let customTip = parseFloat(prompt('Enter custom tip amount:'));
-                if(!isNaN(customTip)){
+                if(this.querySelector('h3')){//takes the percent symbol out of the percentage and uses the number
+                    tipPercentage = parseInt(this.querySelector('h3').textContent.replace('%',''));
+                    CustomTipDisplay.style.display = 'none';
+                } else if(this.textContent === 'Custom Tip') {
+                    let customTip = parseFloat(prompt('Enter custom tip amount:'));
+                    
+                    // Check if the custom tip is negative or invalid
+                    if (isNaN(customTip) || customTip < 0) {
+                        alert('Please enter a valid positive number for the tip.');
+                        return;
+                    }
+    
                     updateTotalWithTip(customTip);
-                    CustomTipDisplay.textContent = `Custom Tip: ${convertPrice(customTip)}`
+                    CustomTipDisplay.textContent = `Custom Tip: ${convertPrice(customTip)}`;
                     CustomTipDisplay.style.display = 'block';
-
-                localStorage.setItem('customTip', customTip);;
+    
+                    localStorage.setItem('customTip', customTip);
                     return;
-                } else{
-                    alert('please enter a valid number');
-                    return;
-                }
+                    
                 } else if(this.textContent === 'No Tip'){
                     CustomTipDisplay.style.display = 'none';
                     localStorage.removeItem('customTip');
@@ -824,8 +925,8 @@ function addTip() {
                  const tipAmount = totalValue * (tipPercentage/100);
                  localStorage.setItem('customTip', tipAmount.toFixed(2)); 
                  updateTotalWithTip(tipAmount);
+            });
         });
-    });
     
     function updateTotalWithTip(tipAmount){
         const newTotal = totalValue + tipAmount;
@@ -834,7 +935,7 @@ function addTip() {
 }
     
 
-function displayDeliveryCash(){
+    function displayDeliveryCash(){
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         let checkoutItems = document.createElement('div');
         checkoutItems.classList.add(".payment");
@@ -1001,58 +1102,3 @@ function displayDeliveryCash(){
     }
 
 });
-
-
-
-
-// added stuff based on tutor's recommendations. have to troubleshoot payment and address forms not showing, and fix css
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     let pickUpButton = document.querySelector(".pick-up");
-//     let deliveryButton = document.querySelector(".delivery");
-//     let undoButton = document.querySelector(".undo");
-//     let paymentOptions = document.getElementById("payment-options");
-//     let pickUpForm = document.getElementById("pickup-form");
-//     let deliveryForm = document.getElementById("delivery-form");
-
-//     let toggleVisibility = (element, show) => {
-//         if (show) {
-//             element.classList.remove("hidden");
-//         } else {
-//             element.classList.add("hidden");
-//         }
-//     };
-
-//     pickUpButton.addEventListener("click", () => {
-//         pickUpButton.classList.add("selected");
-//         deliveryButton.classList.remove("selected");
-//         toggleVisibility(paymentOptions, true);
-//         toggleVisibility(pickUpForm, false);
-//         toggleVisibility(deliveryForm, false);
-//     });
-
-//     deliveryButton.addEventListener("click", () => {
-//         deliveryButton.classList.add("selected");
-//         pickUpButton.classList.remove("selected");
-//         toggleVisibility(paymentOptions, true);
-//         toggleVisibility(pickUpForm, false);
-//         toggleVisibility(deliveryForm, false);
-//     });
-
-//     paymentOptions.addEventListener("click", (e) => {
-//         if (e.target.classList.contains("cash")) {
-//             toggleVisibility(paymentOptions, false);
-//             if (pickUpButton.classList.contains("selected")) {
-//                 toggleVisibility(pickUpForm, true);
-//             } else if (deliveryButton.classList.contains("selected")) {
-//                 toggleVisibility(deliveryForm, true);
-//             }
-//         }
-//     });
-
-//     undoButton.addEventListener("click", () => {
-//         toggleVisibility(paymentOptions, false);
-//         toggleVisibility(pickUpForm, false);
-//         toggleVisibility(deliveryForm, false);
-//     });
-// });

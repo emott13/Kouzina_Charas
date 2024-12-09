@@ -12,7 +12,7 @@ function receipt(){
 
     const d = new Date();
     receiptItems.innerHTML = `
-   
+
     <div class="receipt-title"><p>
         ---------------------------------------------<br>
         Kouzina Charas<br>

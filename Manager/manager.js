@@ -168,8 +168,9 @@ function handleMenuAction(event){                   // -------------------------
 function editItem(itemName, itemType){                  // ------------------------------ handles edit btn click to display edit inputs and allow to be saved + set in LS
     let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
     let item = menuItems.find(i => i.name === itemName);
-    let formHtml = 
-    `
+    let tags = item.tags || []; // Retrieve existing tags or an empty array if none exist
+
+    let formHtml = `
         <h3>Edit Item: ${item.name}</h3>
         <div class="edit-inputs">
             <label for="newName">Name:</label>
@@ -179,22 +180,58 @@ function editItem(itemName, itemType){                  // ---------------------
             <label for="newImage">Image URL:</label>
             <input type="text" id="newImage" value="${item.image}"><br>
         </div>
+        <div class="tags-checkbox-container">
+            <h3>Protein</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('meat', 'Meat', tags)}
+                ${generateCheckbox('vegetable', 'Vegetable', tags)}
+                ${generateCheckbox('seafood', 'Seafood', tags)}
+                ${generateCheckbox('dairy', 'Dairy', tags)}
+            </div>
+
+            <h3>Food Type</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('light', 'Light', tags)}
+                ${generateCheckbox('medium', 'Medium', tags)}
+                ${generateCheckbox('heavy', 'Heavy', tags)}
+            </div>
+
+            <h3>Beverages</h3>
+            <div class="tags-checkbox">
+                ${generateCheckbox('refresher', 'Refresher', tags)}
+                ${generateCheckbox('juice', 'Juice', tags)}
+                ${generateCheckbox('coffee', 'Coffee', tags)}
+            </div>
+        </div>
         <button id="saveChanges">Save Changes</button>
     `;
+
     let editContainer = document.querySelector('.items-edit-container');
     editContainer.innerHTML = formHtml;
-    editContainer.style.display = "grid"
+    editContainer.style.display = "grid";
 
     document.getElementById('saveChanges').addEventListener('click', () => {
+        // Update item details
         item.name = document.getElementById('newName').value;
         item.price = document.getElementById('newPrice').value;
         item.image = document.getElementById('newImage').value;
 
+        // Retrieve updated tags
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+        item.tags = Array.from(tagCheckboxes).map(checkbox => checkbox.value);
+
+        // Save updated item to localStorage
         localStorage.setItem(itemType, JSON.stringify(menuItems));
         alert('Item updated.');
         updateMenuItems(itemType);
     });
 }
+
+function generateCheckbox(value, label, selectedTags) {
+    const isChecked = selectedTags.includes(value) ? 'checked' : ''; // Check if the tag is already in the item
+    return `<input type="checkbox" class="tag-checkbox" value="${value}" ${isChecked}><label for="${value}">${label}</label>`;
+}
+
 
 function removeItem(itemName, itemType){                    // -------------------------- handles remove btn click to remove item from menu display. stil shows in manager display with label that it is not being displayed.
     let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
@@ -256,21 +293,29 @@ function addItem(){                 // -----------------------------------------
         <input type="text" id="itemImage"><br>
         <label for="itemDesc">Description:</label>
         <input type="text" id="itemDesc"><br>
-        <div class="tags-checkbox">
-            <input type="checkbox" name="dairy"></input>
-            <label for="dairy">Dairy</label>
-            <input type="checkbox" name="meat"></input>
-            <label for="meat">Meat</label>
-            <input type="checkbox" name="vegetarian"></input>
-            <label for="vegetarian">Vegetarian</label>
-            <input type="checkbox" name="seafood"></input>
-            <label for="seafood">Seafood</label>
-            <input type="checkbox" name="light"></input>
-            <label for="light">Light</label>
-            <input type="checkbox" name="medium"></input>
-            <label for="medium">Medium</label>
-            <input type="checkbox" name="heavy"></input>
-            <label for="heavy">Heavy</label>
+        <div class="tags-checkbox-container">
+                <h3>Protein</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="meat"><label for="meat">Meat</label>
+                   <input type="checkbox" class="tag-checkbox" value="vegetable"><label for="vegetable">Vegetable</label>
+
+                    <input type="checkbox" class="tag-checkbox" value="seafood"><label for="seafood">Seafood</label>
+                    <input type="checkbox" class="tag-checkbox" value="dairy"><label for="dairy">Dairy</label>
+                </div>
+
+                <h3>Food Type</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="light"><label for="light">Light</label>
+                   <input type="checkbox" class="tag-checkbox" value="medium"><label for="medium">Medium</label>
+                   <input type="checkbox" class="tag-checkbox" value="heavy"><label for="heavy">Heavy</label>   
+                </div>
+
+                <h3>Beverages</h3>
+                <div class="tags-checkbox">
+                   <input type="checkbox" class="tag-checkbox" value="refresher"><label for="refresher">Refresher</label>
+                   <input type="checkbox" class="tag-checkbox" value="juice"><label for="juice">Juice</label>
+                   <input type="checkbox" class="tag-checkbox" value="coffee"><label for="coffee">Coffee</label>   
+                </div>
         </div>
         <button id="addNewItem">Add Item</button>
     </div>
@@ -285,21 +330,40 @@ function addItem(){                 // -----------------------------------------
         let description = document.querySelector('#itemDesc').value;
         let type = document.querySelector('#type').value;
 
-        if(!name || !price || !image || !description){
-            alert("All fields are required!");
-        ;
+        const categoryTag = {
+            app: 'appetizer',
+            lunch: 'lunch',
+            dinner: 'dinner',
+            dessert: 'dessert',
+            drink: 'beverage'
+        }[type]
+
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox:checked');
+        const tags = Array.from(tagCheckboxes).map(checkbox => checkbox.value);
+
+        if(categoryTag){
+            tags.push(categoryTag);
+        }
+
+        if(!name || !price || !image || !description || tags.length === 0){
+            alert("All fields are required, and at least one tag must be selected!");
+            return;
         }
 
         const newItem = {
             name, price, image, description,
             identifiers: getIdentifier(),
-            quantity: 1
+            quantity: 1,
+            tags: tags// -----------------------------------------------------------------assign the slected tags
         };
 
         let menuItems = JSON.parse(localStorage.getItem(type)) || [];
         menuItems.push(newItem);
         localStorage.setItem(type, JSON.stringify(menuItems));
 
+        console.log('New item being saved:', newItem);
+        console.log('Saving item:', newItem);
+        console.log('Items in localStorage:', JSON.parse(localStorage.getItem(type)));
         alert('New item added!');
         updateMenuItems(type);
     });

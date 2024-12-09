@@ -4,47 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search/Filter</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/Menu/menu.css">
-    <link rel="stylesheet" href="/Search/search.css">
+    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <link rel="stylesheet" href="../Menu/menu.css">
+    <link rel="stylesheet" href="../Search/search.css">
 </head>
 <body>
+    
+    <header class="image-section">
+        <a href="../../index.html" class="home"><img src="../../Flat_Icons/restaurant-white.png" alt="home" class="flatIcon"></a>
+        <h2>Kouzína Charás</h2>
+        <a href="../../Cart/cart.html" class="bag"><img src="../../Flat_Icons/shopping-white.png" alt="bag" class="flatIcon"></a>
+        <p class="display-message">The item has been added to your bag <ion-icon name="add-outline" class="display-message-icon"></ion-icon></p>
+    </header>
+
     <section class="search">
 
         <div class="search-container">
-            <div class="filter-button-holder"><button class="filter-button"><img src="/Search/Icons/3844440_filter_filters_icon.svg" alt=""></button></div>
+            <div class="filter-button-holder">
+                <button class="filter-button">
+                    <img src="/Search/Icons/3844440_filter_filters_icon.svg" alt="">
+                </button>
+            </div>
             <div class="filters-container">
-                <label>MEAL</label>
-                <label>FOOD TYPE</label>
-                <label>PROTEIN</label>
-                <label>DAIRY</label>
-                <label>BEVERAGE</label>
-
-                <label><input type="checkbox" name="meal" value="appetizer">Appetizer</label>
-                <label><input type="checkbox" name="foodType" value="light">Light</label>
-                <label><input type="checkbox" name="protein" value="meat">Meat</label>
-                <label><input type="checkbox" name="dairy" value="fried_cheese">Fried Cheese</label>
-                <label><input type="checkbox" name="beverage" value="refresher">Refresher</label>
-
-                <label><input type="checkbox" name="meal" value="lunch">Lunch</label>
-                <label><input type="checkbox" name="foodType" value="medium">Medium</label>
-                <label><input type="checkbox" name="protein" value="seafood">SeaFood</label>
-                <label><input type="checkbox" name="dairy" value="fresh_cheese">Fresh Cheese</label>
-                <label><input type="checkbox" name="beverage" value="juice">Juice</label>
-
-                <label><input type="checkbox" name="meal" value="dinner">Dinner</label>
-                <label><input type="checkbox" name="foodType" value="heavy">Heavy</label>
-                <label><input type="checkbox" name="protein" value="vegetables">Vegetables</label>
-                <label><input type="checkbox" name="dairy" value="yogurt">Yogurt</label>
-                <label><input type="checkbox" name="beverage" value="coffee">coffee</label>
-
-                <label><input type="checkbox" name="meal" value="dessert">Dessert</label>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div class="filter-group">
+                    <label>MEAL</label>
+                    <label><input type="checkbox" name="meal" value="appetizer">Appetizer</label>
+                    <label><input type="checkbox" name="meal" value="lunch">Lunch</label>
+                    <label><input type="checkbox" name="meal" value="dinner">Dinner</label>
+                    <label><input type="checkbox" name="meal" value="dessert">Dessert</label>
+                </div>
+                <div class="filter-group">
+                    <label>FOOD TYPE</label>
+                    <label><input type="checkbox" name="foodType" value="light">Light</label>
+                    <label><input type="checkbox" name="foodType" value="medium">Medium</label>
+                    <label><input type="checkbox" name="foodType" value="heavy">Heavy</label>
+                </div>
+                <div class="filter-group">
+                    <label>PROTEIN</label>
+                    <label><input type="checkbox" name="protein" value="meat">Meat</label>
+                    <label><input type="checkbox" name="protein" value="seafood">SeaFood</label>
+                    <label><input type="checkbox" name="protein" value="vegetables">Vegetables</label>
+                    <label><input type="checkbox" name="protein" value="dairy">Dairy</label>
+                </div>
+                <div class="filter-group">
+                    <label>BEVERAGE</label>
+                    <label><input type="checkbox" name="beverage" value="refresher">Refresher</label>
+                    <label><input type="checkbox" name="beverage" value="juice">Juice</label>
+                    <label><input type="checkbox" name="beverage" value="coffee">Coffee</label>
+                </div>
             </div>
         </div>
+        
+        
+        
+        
         
             <div class="food-container">
                 
