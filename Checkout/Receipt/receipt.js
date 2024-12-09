@@ -3,15 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function receipt() {
-    const cart = JSON.parse(localStorage.getItem('receipt')) || [];
-    const customTip = parseFloat(localStorage.getItem('customTip')) || 0;
+    let cart = JSON.parse(localStorage.getItem('receipt')) || [];
     const orderData = getOrderData(); // Retrieve order details from local storage
+    const customTip = orderData?.get("tip") || "0";
     const receiptItems = document.createElement('div');
     receiptItems.classList.add("receipt-holder");
     const receiptContainerDisplay = document.querySelector(".receipt");
 
     const d = new Date();
-
+    let subtotal = Number(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2));
+    let tip = Number((customTip * 0.01).toFixed(2))
     receiptItems.innerHTML = `
         <div class="receipt-title"><p>
             ---------------------------------------------<br>
@@ -37,10 +38,10 @@ function receipt() {
         </div>
         <div class="receipt-body"></div>
         <div class="receipt-total">
-            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2))} €</p></div>
-            <div class="subtotal"><p>Tip:</p><p>${convertPrice(customTip.toFixed(2))} €</p></div>
+            <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(subtotal)} €</p></div>
+            <div class="subtotal"><p>Tip:</p><p>${convertPrice(tip)}€</p></div>
             <div class="receipt-total-after-sub">
-                <h3>Total:</h3><h3>${convertPrice((cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0) + customTip).toFixed(2))} €</h3>
+                <h3>Total:</h3><h3>${convertPrice(subtotal + tip)} €</h3>
             </div>
 
             <div class="dash">------------------------------------------------------</div>
@@ -123,12 +124,12 @@ function convertPrice(price){
 }
 
 function getMinuteAmount() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('receipt')) || [];
     
-    if (!Array.isArray(cart)) {
-        console.error("Cart data is not in the expected format.");
-        return 0; // Fallback if cart is not an array
-    }
+    // if (!Array.isArray(cart)) {
+    //     console.error("Cart data is not in the expected format.");
+    //     return 0; // Fallback if cart is not an array
+    // }
 
     let appCount = 0, lunCount = 0, dinCount = 0, desCount = 0, driCount = 0;
 

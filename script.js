@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // addingFilterItems();
+    addingFilterItems();
     initializeMenu();
     setupFilterButton();
     applyFilters();

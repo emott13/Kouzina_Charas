@@ -201,7 +201,7 @@ function setupCardFormSubmission() {
             let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
             populateSummary(activeForm);
             console.log(activeForm, cardNumber);
-            saveOrderData(activeForm, cardNumber);
+            saveOrderData(activeForm, cardNumber, tip);
             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
         } else {
             alert("Please fill out all fields correctly.");
@@ -244,13 +244,13 @@ function setupOptionSelectionListeners(){
     });
 }
 
-function saveOrderData(form, cardNumber) {
+function saveOrderData(form, cardNumber, tip) {
     const orderData = new Map();
 
     orderData.set("orderType", state.isDelivery ? "Delivery" : "Pickup");
     orderData.set("paymentMethod", state.selectedPayment === "cash" ? "Cash" : "Card");
-    console.log(cardNumber)
     orderData.set("cardNumber", cardNumber ? cardNumber : '');
+    orderData.set('tip', tip ? tip : '0');
 
     Array.from(form.elements).forEach((input) => {
         if (input.tagName === "INPUT" && input.type !== "submit") {
