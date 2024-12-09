@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+    if(!localStorage.getItem('cart')){
+        window.location.href = '../Cart/cart.html';
+        localStorage.removeItem('receipt');
+        localStorage.removeItem('orderData');
+    }
     initializePage();
     setupOptionSelectionListeners();
     setupFormEvent(forms.pickup, validatePickupForm);
@@ -6,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     handlePaymentOptionSelection();
     setupCardFormSubmission();
     setupCompleteOrderButtons();
+
 });
 
 const state = {
@@ -20,6 +26,7 @@ const forms = {
     pickup: document.getElementById("pickup-form"),
     delivery: document.getElementById("delivery-form"),
     card: document.getElementById("card-form"),
+    cash: document.getElementById("cash-form")
 };
 
 const sections = {
@@ -76,7 +83,13 @@ function toggleVisibility(visibleElements, hiddenElements) {                // h
         sections.summary.style.alignItems = '';
         sections.summary.style.width = '';
         sections.summary.style.minHeight = '';
-
+    }
+    if(!sections.summary.hidden){
+        sections.summary.style.display = 'flex';
+        sections.summary.style.flexDirection = 'column';
+        sections.summary.style.alignItems = 'start';
+        sections.summary.style.width = '500px';
+        sections.summary.style.minHeight = '100px'; 
     }
 }
 
@@ -129,7 +142,7 @@ function setupFormEvent(form, validationFn){                                    
 }
 
 function handlePaymentOptionSelection() {
-    document.getElementById("card-payment").addEventListener("click", function () {
+    document.getElementById("card-payment").addEventListener("click", () => {
         state.selectedPayment = "card";
         toggleVisibility([forms.card], [sections.summary, sections.paymentOptions]);
 
@@ -164,10 +177,19 @@ function handlePaymentOptionSelection() {
             }
         });
     });
+    document.getElementById("cash-payment").addEventListener("click", () =>{
+        state.selectedPayment = 'cash';
+        // toggleVisibility([forms.cash], [sections.summary, sections.paymentOptions]);
+        let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
+        populateSummary(activeForm);
+        console.log(activeForm);
+        saveOrderData(activeForm);
+        toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
+    })
 }
 
 function setupCardFormSubmission() {
-    forms.card.addEventListener("submit", function (event) {
+    forms.card.addEventListener("submit", event => {
         event.preventDefault();
         let cardNumber = document.getElementById("card-number").value.trim();               // Validate and process the card details
         let expiryDate = document.getElementById("expiry-date").value.trim();
@@ -185,12 +207,24 @@ function setupCardFormSubmission() {
             alert("Please fill out all fields correctly.");
         }
     });
+
+    forms.cash.addEventListener("submit", event => {
+        event.preventDefault();
+        let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
+        populateSummary(activeForm);
+        toggleVisibility([sections.summary], [forms.cash, sections.paymentOptions])
+    })
 }
+
+// function displaySummary(){
+
+// }
 
 
 function setupCompleteOrderButtons(){                                                       // Loads receipt
     document.querySelectorAll('.complete').forEach(function (button) {
         button.addEventListener('click', function () {
+            renameCartToReceipt()
             window.location.href = "Receipt/receipt.html";
         });
     });
@@ -265,6 +299,23 @@ function getTotal(){ // --------------------------------------------------------
         total += (price * quantity);
     });
     return total;
+}
+
+function renameCartToReceipt(){
+    // Retrieve the current cart data from local storage
+    const cartData = localStorage.getItem('cart');
+    
+    if (cartData !== null) {
+        // Save the data under the new key 'receipt'
+        localStorage.setItem('receipt', cartData);
+        
+        // Remove the old key 'cart'
+        localStorage.removeItem('cart');
+        
+        console.log("Renamed 'cart' to 'receipt' in local storage.");
+    } else {
+        console.log("No 'cart' key found in local storage.");
+    }
 }
 
 // document.addEventListener('DOMContentLoaded', function () {
