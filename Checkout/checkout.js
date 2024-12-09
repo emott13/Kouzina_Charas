@@ -1,9 +1,3 @@
-if(!localStorage.getItem('cart')){
-    localStorage.removeItem('receipt');
-    localStorage.removeItem('orderData');
-    window.location.href = '../Cart/cart.html';
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     initializePage();
     setupOptionSelectionListeners();
