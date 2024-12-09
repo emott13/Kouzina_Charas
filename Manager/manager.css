@@ -353,4 +353,11 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--color-4);
+    transition: 200ms;
+}
+
+#submit:hover{
+    background-color: var(--color-4);
+    color: var(--color-24);
+    cursor: pointer;
 }
