@@ -1,132 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     const state = {
-//         isDelivery: false,
-//         selectedPayment: null, // 'cash' or 'card'
-//     };
-
-//     const forms = {
-//         pickup: document.getElementById("pickup-form"),
-//         delivery: document.getElementById("delivery-form"),
-//         card: document.getElementById("card-form"),
-//     };
-
-//     const sections = {
-//         paymentOptions: document.getElementById("payment-options"),
-//         summary: document.getElementById("summary"),
-//     };
-
-//     // Ensure all sections are hidden on page load
-//     sections.paymentOptions.hidden = true;
-//     sections.summary.hidden = true;
-
-//     // /**
-//     //  * Toggles visibility of elements by setting their hidden attribute.
-//     //  * @param {HTMLElement[]} visibleElements - Elements to show.
-//     //  * @param {HTMLElement[]} hiddenElements - Elements to hide.
-//     //  */
-//     const toggleVisibility = (visibleElements, hiddenElements) => {
-//         visibleElements.forEach((element) => (element.hidden = false));
-//         hiddenElements.forEach((element) => (element.hidden = true));
-//         if(sections.paymentOptions.hidden == true){
-//             sections.paymentOptions.style.display = '';
-//             sections.paymentOptions.style.justifyContent = '';
-//             sections.paymentOptions.style.gap = '';
-//         }
-//     };
-
-//     // Event listener for pickup button
-//     document.getElementById("pick-up").addEventListener("click", () => {
-//         state.isDelivery = false;
-//         toggleVisibility([forms.pickup], [forms.delivery, sections.paymentOptions, forms.card, sections.summary]);
-//     });
-
-//     // Event listener for delivery button
-//     document.getElementById("delivery").addEventListener("click", () => {
-//         state.isDelivery = true;
-//         toggleVisibility([forms.delivery], [forms.pickup, sections.paymentOptions, forms.card, sections.summary]);
-//     });
-
-//     // Setup form submission logic
-//     const setupFormEvent = (form, handler) => {
-//         form.addEventListener("submit", (event) => {
-//             event.preventDefault();
-//             if (handler()) {
-//                 toggleVisibility([sections.paymentOptions], [forms.pickup, forms.delivery]);
-//                 sections.paymentOptions.style.display = 'flex';
-//                 sections.paymentOptions.style.justifyContent = 'space-evenly';
-//                 sections.paymentOptions.style.gap = '4rem';
-//             }
-//         });
-//     };
-
-//     setupFormEvent(forms.pickup, () => {
-//         const name = document.getElementById("pickup-name").value.trim();
-//         const phone = document.getElementById("pickup-phone").value.trim();
-//         return name && phone.match(/^\d{10}$/);
-//     });
-
-//     setupFormEvent(forms.delivery, () => {
-//         const name = document.getElementById("delivery-name").value.trim();
-//         const address = document.getElementById("delivery-street").value.trim();
-//         const city = document.getElementById("delivery-city").value.trim();
-//         const phone = document.getElementById("delivery-phone").value.trim();
-//         return name && address && city && phone.match(/^\d{10}$/);
-//     });
-
-//     // Payment option buttons
-//     document.getElementById("cash-payment").addEventListener("click", () => {
-//         state.selectedPayment = "cash";
-//         const activeForm = state.isDelivery ? forms.delivery : forms.pickup;
-//         populateSummary(activeForm);
-//         toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
-//     });
-
-//     document.getElementById("card-payment").addEventListener("click", () => {
-//         state.selectedPayment = "card";
-//         toggleVisibility([forms.card], [sections.summary, sections.paymentOptions]);
-//     });
-
-//     // Credit card form submission
-//     forms.card.addEventListener("submit", (event) => {
-//         event.preventDefault();
-//         const cardNumber = document.getElementById("card-number").value.trim();
-//         const expiryDate = document.getElementById("expiry-date").value.trim();
-//         const cvc = document.getElementById("cvc").value.trim();
-//         const cardHolder = document.getElementById("card-holder").value.trim();
-
-//         if(cardNumber && expiryDate && cvc && cardHolder) {
-//             const activeForm = state.isDelivery ? forms.delivery : forms.pickup;
-//             populateSummary(activeForm);
-//             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
-//         }
-//         else{
-//             alert("Please fill out all fields correctly.");
-//         }
-//     });
-
-//     // Populate summary function
-//     const populateSummary = (form) => {
-//         const summaryContainer = document.getElementById("summary-container");
-//         summaryContainer.innerHTML = "";
-
-//         // Extract input values from the selected form
-//         Array.from(form.elements).forEach((input) => {
-//             if (input.tagName === "INPUT" && input.type !== "submit") {
-//                 const item = document.createElement("p");
-//                 item.textContent = `${input.previousElementSibling.textContent}: ${input.value}`;
-//                 summaryContainer.appendChild(item);
-//             }
-//         });
-//     };
-
-//     document.querySelectorAll('.complete').forEach(button => {
-//         button.addEventListener('click', () => {
-//             window.location.href = "Receipt/receipt.html";
-//         })
-//     })
-// });
-
-
 document.addEventListener("DOMContentLoaded", () => {
     initializePage();
     setupOptionSelectionListeners();
@@ -139,14 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// State management
+
 const state = {
     isDelivery: false, // Determines if the user chose delivery or pickup
     selectedPayment: null, // 'cash' or 'card'
     orderType: null, // 'Pickup' or 'Delivery'
 };
 
-// Forms and sections
 const forms = {
     pickup: document.getElementById("pickup-form"),
     delivery: document.getElementById("delivery-form"),
@@ -158,7 +28,6 @@ const sections = {
     summary: document.getElementById("summary"),
 };
 
-// Initialize page by hiding certain sections
 function initializePage() {
     sections.paymentOptions.hidden = true;
     sections.summary.hidden = true;
@@ -192,12 +61,12 @@ function itemTotal(price, quantity){
     return convertPrice(total);
 }
 
-// Toggle visibility of elements by setting the hidden attribute
+// toggle visibility of elements by setting the hidden attribute
 function toggleVisibility(visibleElements, hiddenElements) {
     visibleElements.forEach((element) => (element.hidden = false));
     hiddenElements.forEach((element) => (element.hidden = true));
 
-    // Reset paymentOptions styles if hidden
+    // resets paymentOptions styles if hidden
     if(sections.paymentOptions.hidden){
         sections.paymentOptions.style.display = '';
         sections.paymentOptions.style.justifyContent = '';
@@ -209,6 +78,7 @@ function toggleVisibility(visibleElements, hiddenElements) {
         sections.summary.style.alignItems = '';
         sections.summary.style.width = '';
         sections.summary.style.minHeight = '';
+
     }
 }
 
@@ -224,6 +94,7 @@ function populateSummary(form) {
     state.orderType = state.isDelivery ? "Delivery" : "Pickup";
     orderTypeElement.textContent = `Order Type: ${state.orderType}`;
 
+
     // Set payment method
     const paymentMethod = state.selectedPayment === "cash" ? "Cash" : "Card";
     paymentMethodElement.textContent = `Payment Method: ${paymentMethod}`;
@@ -238,19 +109,19 @@ function populateSummary(form) {
     });
 }
 
-// Validate the pickup form
-function validatePickupForm() {
-    const name = document.getElementById("pickup-name").value.trim();
-    const phone = document.getElementById("pickup-phone").value.trim();
+
+function validatePickupForm(){
+    let name = document.getElementById("pickup-name").value.trim();
+    let phone = document.getElementById("pickup-phone").value.trim();
     return name && phone.match(/^\d{10}$/);
 }
 
 // Validate the delivery form
 function validateDeliveryForm() {
-    const name = document.getElementById("delivery-name").value.trim();
-    const address = document.getElementById("delivery-street").value.trim();
-    const city = document.getElementById("delivery-city").value.trim();
-    const phone = document.getElementById("delivery-phone").value.trim();
+    let name = document.getElementById("delivery-name").value.trim();
+    let address = document.getElementById("delivery-street").value.trim();
+    let city = document.getElementById("delivery-city").value.trim();
+    let phone = document.getElementById("delivery-phone").value.trim();
     return name && address && city && phone.match(/^\d{10}$/);
 }
 
@@ -263,6 +134,7 @@ function setupFormEvent(form, validationFn) {
             sections.paymentOptions.style.display = 'flex';
             sections.paymentOptions.style.justifyContent = 'space-evenly';
             sections.paymentOptions.style.gap = '4rem';
+
         }
     });
 }
@@ -271,7 +143,7 @@ function setupFormEvent(form, validationFn) {
 function handlePaymentOptionSelection() {
     document.getElementById("cash-payment").addEventListener("click", function () {
         state.selectedPayment = "cash";
-        const activeForm = state.isDelivery ? forms.delivery : forms.pickup;
+        let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
         populateSummary(activeForm);
         saveOrderData(activeForm); // Save data when cash is selected
         toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
@@ -283,17 +155,16 @@ function handlePaymentOptionSelection() {
     });
 }
 
-// Handle credit card form submission
 function setupCardFormSubmission() {
     forms.card.addEventListener("submit", function (event) {
         event.preventDefault();
-        const cardNumber = document.getElementById("card-number").value.trim();
-        const expiryDate = document.getElementById("expiry-date").value.trim();
-        const cvc = document.getElementById("cvc").value.trim();
-        const cardHolder = document.getElementById("card-holder").value.trim();
+        let cardNumber = document.getElementById("card-number").value.trim();
+        let expiryDate = document.getElementById("expiry-date").value.trim();
+        let cvc = document.getElementById("cvc").value.trim();
+        let cardHolder = document.getElementById("card-holder").value.trim();
     
         if (cardNumber && expiryDate && cvc && cardHolder) {
-            const activeForm = state.isDelivery ? forms.delivery : forms.pickup;
+            let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
             populateSummary(activeForm);
     
             // Add card-specific data
@@ -305,13 +176,13 @@ function setupCardFormSubmission() {
             saveOrderData(activeForm);
     
             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
-        } else {
+        }
+      else{
             alert("Please fill out all fields correctly.");
         }
     });
 }
 
-// Handle navigation to receipt page
 function setupCompleteOrderButtons() {
     document.querySelectorAll('.complete').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -320,7 +191,6 @@ function setupCompleteOrderButtons() {
     });
 }
 
-// Add event listeners for pickup and delivery buttons
 function setupOptionSelectionListeners() {
     document.getElementById("pick-up").addEventListener("click", function () {
         state.isDelivery = false;
@@ -336,17 +206,14 @@ function setupOptionSelectionListeners() {
 function saveOrderData(form) {
     const orderData = new Map();
 
-    // Order type and payment method
     orderData.set("orderType", state.isDelivery ? "Delivery" : "Pickup");
     orderData.set("paymentMethod", state.selectedPayment === "cash" ? "Cash" : "Card");
 
-    // User input fields
     Array.from(form.elements).forEach((input) => {
         if (input.tagName === "INPUT" && input.type !== "submit") {
             const key = input.name || input.id; // Use 'name' or 'id' as the key
             const value = input.value.trim();
 
-            // Save the last 4 digits of the card number if applicable
             if (key === "card-number") {
                 orderData.set(key, value.slice(-4)); // Store only the last 4 digits
             } else {
@@ -355,7 +222,6 @@ function saveOrderData(form) {
         }
     });
 
-    // Convert Map to JSON and save to local storage
     const serializedOrderData = JSON.stringify(Object.fromEntries(orderData));
     localStorage.setItem("orderData", serializedOrderData);
 
@@ -372,7 +238,6 @@ function getOrderData() {
     return null;
 }
 
-// Example usage
 const savedOrderData = getOrderData();
 if (savedOrderData) {
     console.log(`Order Type: ${savedOrderData.get("orderType")}`);
@@ -435,6 +300,27 @@ if (savedOrderData) {
 //         });
 //     }
 //     PaymentButtonListener();
+//    function validateCardNumber() {
+//         return cardNumber.value.length >= 13 && cardNumber.value.length <= 19;
+//     }
+
+//     function validateCardExpiry() {
+//         const currentYear = new Date().getFullYear() % 100;
+//         const currentMonth = new Date().getMonth() + 1;
+
+//         const [month, year] = cardExpiry.value.split('/').map(Number);
+//         if(
+//             isNaN(month) || isNaN(year) ||
+//             month < 1 || month > 12 ||
+//             year < currentYear ||
+//             (year === currentYear && month < currentMonth)
+//         ){
+//             return false;//invalid
+//         }
+//         else{
+//             return true;//valid
+//         }
+//     }
 
 //     function PaymentButtonListener(){
 //     pickUpButton.addEventListener('click', () => showPaymentOptions(false));
@@ -453,6 +339,34 @@ if (savedOrderData) {
 //         pickUpButton.style.display = initialState.pickUpDisplay;
 //         deliveryButton.style.display = initialState.deliveryDisplay;
 
+//     cardExpiry.addEventListener("input", (e) => {
+//         limitInput(e, 5);
+      
+        //enforceNumberInput(e);
+        //limitInput(e, 19);
+    //});
+
+   //cardExpiry.addEventListener("input", (e) => {
+        //let value = e.target.value.replace(/\D/g, ''); //<-------------------------------Remove non-numeric characters
+       // if (value.length > 4) value = value.slice(0, 4); //<-------------------------------Limit to 4 digits
+
+        // Format as MM/YY
+        //if (value.length >= 3) {
+            //value = `${value.slice(0, 2)}/${value.slice(2)}`;
+       // }
+
+       // e.target.value = value; // Update input value
+    //});
+
+    //cardExpiry.addEventListener("blur", (e) => {
+        //if (!validateCardExpiry()) {
+            //cardExpiryError.textContent = "Enter valid expiration date.";
+            //cardExpiryError.style.display = 'block';
+        //} else {
+           // cardExpiryError.textContent = "";
+           // cardExpiryError.style.display = 'none';
+       // }
+//     });
 
 //         initialButtonHolderDisplay = document.querySelector('.button-holder');
 //         pickUpButton = document.querySelector('.pick-up');
@@ -462,6 +376,14 @@ if (savedOrderData) {
 //         PaymentButtonListener();
 //         undoButton.addEventListener('click', UndoAction);
 //     }
+//     cardHolderName.addEventListener("input", (e) => {
+//        const value = e.target.value;
+//        e.target.value = value.replace(/[^a-zA-Z\s'-]/g, '');//<-------------------------------will remove none letters 
+//     });
+
+//     cardHolderName.addEventListener("blur", (e) => {
+//         const value = e.target.value.trim();
+//     });
 
 //     undoButton.addEventListener('click', UndoAction);
    
@@ -1024,6 +946,13 @@ if (savedOrderData) {
 //         if (city) validateField(city, cityError, (value) => value !== '', 'City cannot be empty');
 //         if (state) validateField(state, stateError, (value) => value !== '', 'Please select a state');
 //         if (zipCode) validateField(zipCode, zipCodeError, (value) => /^\d{5}$/.test(value), 'ZIP code must be 5 digits');
+//         // Validate only fields that exist
+//         if (NameOfOrder) validateField(NameOfOrder, NameOfOrderError, (value) => /^[a-zA-Z\s]+$/.test(value), "Please enter name of order");
+//         if (phoneNumber) validateField(phoneNumber, phoneNumberError, (value) => /^\d{10}$/.test(value), "Phone number must be 10 digits");
+//         if (streetAddress) validateField(streetAddress, streetAddressError, (value) => value !== "", "Street address cannot be empty");
+//         if (city) validateField(city, cityError, (value) => value !== "", "City cannot be empty");
+//         if (state) validateField(state, stateError, (value) => value !== "", "Please select a state");
+//         if (zipCode) validateField(zipCode, zipCodeError, (value) => /^\d{5}$/.test(value), "ZIP code must be 5 digits");
     
 //         console.log('Validation Result: ', isValid);
 //         return isValid;
@@ -1061,6 +990,48 @@ if (savedOrderData) {
 //             }
 //         }
 
+//         function limitInput(event, maxLength){
+//             const input = event.target;
+//             input.value = input.value.slice(0, maxLength); //restrict length
+//         }
+//     function enforceInputLimitsPersonalInformation(userInformation){
+//         const inputConfig = {
+//             ".name-of-order input": {limit : 50, enforceLettersOnly: true},
+//             ".phone-number input": {limit : 10, enforceNumbers : true},
+//             ".address input": {limit : 100},
+//             ".city input": {limit : 50},
+//             ".state select": {isDropdown : true},
+//             ".zip input": {limit : 5, enforceNumbers : true}
+//         }
+
+//         for(const [selector, config] of Object.entries(inputConfig)){
+//             const input = userInformation.querySelector(selector);
+
+//             if(input){
+//                 if(config.isDropdown){
+//                     input.addEventListener("change", (e) =>{
+//                         console.log(`${selector} changed:`, e.target.value);
+//                         validatePersonalInfo(userInformation); 
+//                     })
+//                 }else{
+//                     input.addEventListener("input", (e) =>{
+//                         if(config.enforceNumbers){enforceNumberInput(e)}
+//                         if(config.enforceLettersOnly){enforceLettersOnly(e);}
+//                         if(config.limit){limitInput(e, config.limit)};
+//                         validatePersonalInfo(userInformation); 
+//                     })
+//                 }
+//             }else{
+//                 console.warn(`input not found for selector: ${selector}`)
+//             }
+//         }
+
+//         function enforceLettersOnly(event){
+//             const input = event.target;
+//             input.value = input.value.replace(/[^a-zA-Z\s]/g, '');//<----------------------- remove non letters
+
+//         }
+      
 //         function limitInput(event, maxLength){
 //             const input = event.target;
 //             input.value = input.value.slice(0, maxLength); //restrict length
@@ -1181,6 +1152,86 @@ if (savedOrderData) {
 
 //             removeSelectedClass();
 //             this.classList.add('selected-tip');
+//         const totalPrice = cart.reduce((sum, item) => {
+//             const quantity = item.quantity || 1;
+//             const price = parseFloat(item.price);
+//             if(isNaN(price)){
+//                 console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+//                 return sum;
+//             }
+//             return sum + (price * quantity);
+//         }, 0);
+
+//         let totalContainer = document.querySelector(".total-container");
+//         totalContainer.innerHTML = `
+//         <div class="total">
+//             <h3>Total:</h3>
+//             <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
+//         </div>
+//         `;
+//         console.log(cart);
+
+//     }
+
+//         cart.forEach(item =>{
+//             let itemDiv = document.createElement("div");
+//             itemDiv.classList.add('items');
+//             itemDiv.innerHTML = `
+//                 <p>${item.quantity || 1}x</p>
+//                 <p>${item.name}</p>
+//                 <p>${convertPrice(item.price)}</p>
+//             `;
+//             checkoutItems.querySelector('.items-of-checkout').appendChild(itemDiv);
+//         });
+
+//         const totalPrice = cart.reduce((sum, item) => {
+//             const quantity = item.quantity || 1;
+//             const price = parseFloat(item.price);
+//             if(isNaN(price)){
+//                 console.error(`skipping invalid price for item: ${item.name}. Price value:`, item.price);
+//                 return sum;
+//             }
+//             return sum + (price * quantity);
+//         }, 0);
+
+//         let totalContainer = document.querySelector(".total-container");
+//         totalContainer.innerHTML = `
+//         <div class="total">
+//             <h3>Total:</h3>
+//             <h2>${convertPrice(totalPrice.toFixed(2))}</h2>
+//         </div>
+//         `;
+//         console.log(cart);
+//     }
+   
+//     function addTip() {
+//         let totalDisplay = document.querySelector('.total-container .total h2');
+//         let totalValue = parseFloat(totalDisplay.textContent.replace('€','')) || 0;
+//         let CustomTipDisplay = document.querySelector('.custom-tip-display .tip-input');
+
+//         let tip10 = (totalValue * 0.10).toFixed(2);
+//         let tip15 = (totalValue * 0.15).toFixed(2);
+//         let tip20 = (totalValue * 0.20).toFixed(2);
+
+//         let tipDisplay1 = document.querySelector('.amount1')
+//         let tipDisplay2 = document.querySelector('.amount2')
+//         let tipDisplay3 = document.querySelector('.amount3')
+
+//         if(tipDisplay1){ tipDisplay1.textContent = `${convertPrice(tip10)}`; } 
+//         if(tipDisplay2){ tipDisplay2.textContent = `${convertPrice(tip15)}`; }
+//         if(tipDisplay3){ tipDisplay3.textContent = `${convertPrice(tip20)}`; }
+
+//         const tipButtons = document.querySelectorAll('.tip-percentages');
+
+//         const removeSelectedClass = () =>{
+//             tipButtons.forEach(button => button.classList.remove('selected-tip'));
+//         }
+
+//         tipButtons.forEach(button =>{
+//             button.addEventListener('click', function (){
+
+//                 removeSelectedClass();
+//                 this.classList.add('selected-tip');
 
 //             let tipPercentage = 0;
             
@@ -1209,6 +1260,7 @@ if (savedOrderData) {
 //                  updateTotalWithTip(tipAmount);
 //         });
 //     });
+
     
 //     function updateTotalWithTip(tipAmount){
 //         const newTotal = totalValue + tipAmount;
@@ -1237,6 +1289,7 @@ if (savedOrderData) {
 //             </div>
 //         </div>
 //         `;
+
         
 //         checkoutContainerDisplay.innerHTML = '';
 //         checkoutContainerDisplay.appendChild(checkoutItems);
@@ -1439,3 +1492,4 @@ if (savedOrderData) {
 //         toggleVisibility(deliveryForm, false);
 //     });
 // });
+

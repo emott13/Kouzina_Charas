@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    addingFilterItems();
+    // addingFilterItems();
+    initializeMenu();
+    setupFilterButton();
+    applyFilters();
     const pageClass = document.body.classList;
     if(pageClass.contains('main')){                                                     //index.html listener
         setUpMenu('app');
@@ -9,10 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
         setUpMenu('drink');
         headerScroll();
         hover();
-        flyout();
+        
     }
     if(pageClass.contains('cart')) setUpCart();                                         //cart.html listener
 
+    if(pageClass.contains('appetizers')) displayMenuOnPage('app');
+    if(pageClass.contains('lunch')) displayMenuOnPage('lunch');
+    if(pageClass.contains('dinner')) displayMenuOnPage('dinner');
+    if(pageClass.contains('desserts')) displayMenuOnPage('dessert');
+    if(pageClass.contains('beverages')) displayMenuOnPage('drink');
+    flyout();
     if(pageClass.contains('appetizers')) displayMenuOnPage('app');                      //appetizers.html listener
     if(pageClass.contains('lunch')) displayMenuOnPage('lunch');                         //lunch.html listener
     if(pageClass.contains('dinner')) displayMenuOnPage('dinner');                       //dinner.html listener
@@ -40,9 +49,9 @@ let menuData = { // ------------------------------------------------------------
         identifiers: ['001', '002', '003', '004'],
         tags: [
             ['appetizer', 'light', 'vegetables'],
-            ['appetizer', 'light', 'vegetables'],
-            ['appetizer', 'medium', 'fried_cheese'],
-            ['appetizer', 'light', 'yogurt'],
+            ['appetizer', 'light', 'dairy'],
+            ['appetizer', 'medium', 'dairy'],
+            ['appetizer', 'light', 'dairy'],
         ]
     },
     lunch: {
@@ -132,7 +141,8 @@ function setUpMenu(type){ // ---------------------------------------------------
             image: menu.images[i],
             description: menu.descriptions[i],
             quantity: 1,
-            identifiers: menu.identifiers[i]
+            identifiers: menu.identifiers[i],
+            tags: menu.tags[i]
         };
         addToLS(type, item);
     });
@@ -243,42 +253,29 @@ function displayMenuOnPage(type){ // -------------------------------------------
     container.innerHTML = ''; 
     let storedItems = JSON.parse(localStorage.getItem(type)) || [];
 
-    let validIdentifiers = new Set(); 
+    storedItems = storedItems.filter(item => !item.identifiers.endsWith('NaN'));// -------------Exclude items with identifiers ending in "NaN"
+
+    if (storedItems.length === 0) {
+        container.innerHTML = '<p>No items available in this category.</p>';
+        return;
+    }
 
     storedItems.forEach(item => {
-        let id = item.identifiers;
-        if(!isNaN(id) && id.length === 3){
-            let baseId = id.substring(0, 3); 
-            let counterpartExists = storedItems.some(otherItem => 
-                otherItem.identifiers === baseId + 'NaN'
-            );
-
-            if(!counterpartExists){
-                validIdentifiers.add(baseId);
-                validIdentifiers.add(baseId + 'NaN');
-            }
-        }
-    });
-
-    storedItems.forEach(item => {
-        let id = item.identifiers;
-
-        if(validIdentifiers.has(id)){
-            let menuItem = document.createElement('div');
-            menuItem.classList.add('menu-item');
-            menuItem.innerHTML = `
-                <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-info">
-                    <p class="name">${item.name}</p>
-                    <div class="add-info">
-                        <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
-                    </div>
+        let menuItem = document.createElement('div');
+        menuItem.classList.add('menu-item');
+        menuItem.innerHTML = `
+            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
+            <div class="item-info">
+                <p class="name">${item.name}</p>
+                <div class="add-info">
+                    <p class="price">${convertPrice(item.price)}</p>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
-                <p class="description">${item.description}</p>
-            `;
-            container.append(menuItem);
-        }
+            </div>
+            <p class="description">${item.description}</p>
+        `;
+        container.append(menuItem);
+        
     });
 
     addItemClick();
@@ -316,9 +313,9 @@ function handleAddItem(event){ // ----------------------------------------------
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
-      });
+        });
     
-      let displayMessage = document.querySelector('.display-message');
+        let displayMessage = document.querySelector('.display-message');
 
     setTimeout(() => {
         displayMessage.classList.add('colorChange')
@@ -338,14 +335,14 @@ function handleAddItem(event){ // ----------------------------------------------
     addToCartInLS(item);
 
 };
- 
+    
 function addToCartInLS(item){ // --------------------------------------------------------- takes cart item and adds to LS 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];                      
     const existingItem = cart.find(cartItem => cartItem.identifiers === item.identifiers);
     if(existingItem){
-        console.log(item.quantity)
-        item.quantity += 1;
-        console.log(item.quantity)
+        // console.log(item.quantity)
+        // item.quantity += 1;
+        // console.log(item.quantity)
     }
     cart.push(item);
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -393,7 +390,7 @@ function displayCartItems(cart){ // --------------------------------------------
     `;
     container.append(cartItem);
     }); 
-       
+        
     removeButtons();
 }
 
@@ -482,81 +479,150 @@ function convertPrice(price){ // -----------------------------------------------
 
 function addingFilterItems(){
     const filterButton = document.querySelector('.filter-button');
-    const filters = document.querySelectorAll('.filters-container input[type="checkbox"]');
-    const foodContainer = document.querySelector('.food-container');
+    if (filterButton) {
+        // console.log("Setting up filter button...");
+        filterButton.addEventListener('click', () => {
+            // console.log("Filter button clicked.");
+            applyFilters();
+        });
+    } else {
+        console.error("Filter button not found!");
+    }
+}
 
-    if(!filterButton|| !foodContainer){
+function initializeMenu() {
+    // console.log("Initializing menu...");
+    const allItems = getAllMenuItems(); // Fetch all menu items from localStorage
+    displayMenu(allItems); // Display them in the UI
+}
+
+function getAllMenuItems() {
+    // console.log("Fetching all menu items dynamically...");
+    const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
+    return categories.flatMap(category => {
+        const items = JSON.parse(localStorage.getItem(category)) || [];
+        // console.log(`Items from ${category}:`, items);
+        return items
+            .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
+            .map(item => {
+                // console.log('Processing item:', item);
+                const tags = Array.isArray(item.tags)
+                    ? item.tags
+                    : Array.isArray(item.tag)
+                    ? item.tag
+                    : [];
+                // console.log('Tags for item:', item.name, tags); 
+                return {
+                    name: item.name,
+                    price: item.price,
+                    image: item.image,
+                    description: item.description,
+                    identifiers: item.identifiers,
+                    tags: tags
+                };
+        });
+    });
+}
+
+function displayMenu(items) {
+    // console.log("Displaying menu items:", items);
+    const foodContainer = document.querySelector('.food-container');
+    if (!foodContainer) {
+        return;  // Exit if food-container is not found
+    }
+
+    foodContainer.innerHTML = ''; // Clear existing items
+
+    if (items.length === 0) {
+        foodContainer.innerHTML = '<p>No items match your filter</p>';
         return;
     }
-
-    console.log('Filter button initialized');
-    filterButton.addEventListener('click', () => {
-        console.log("hello")
-        const selectedFilters = getSelectedFilters();
-        console.log('Selected Filters:',selectedFilters);
-
-        const filteredData = filterMenuData(selectedFilters);
-        console.log('Filtered Data:', filteredData);
-
-        displayFilteredData(filteredData);
-        
-    })
-
-    function getSelectedFilters(){
-        const selectedFilters = {};
-        filters.forEach(filter => {
-            if(filter.checked){
-                const group = filter.name; // group name ('meal', 'foodtype')
-                if(!selectedFilters[group]){ selectedFilters[group] = []}
-                    selectedFilters[group].push(filter.value); // add value to corresponding group
-            }
-        });
-        return selectedFilters;
-    }
-
-    function displayFilteredData(data){
-        foodContainer.innerHTML = ''; // clear existing items
-        if(data.length === 0){
-            foodContainer.innerHTML = '<p>No items match your filter</p>';
-            return;
-        }
-        data.forEach(item => {
-            const menuItem = document.createElement('div');
-            menuItem.classList.add('menu-item');
-            menuItem.innerHTML = `
-            <div class="item-image"><img src="${item.image}" alt="${item.name}"></div>
-                <div class="item-info">
-                    <p class="name">${item.name}</p>
-                    <div class="add-info">
-                        <p class="price">${convertPrice(item.price)}</p>
-                        <button class="addItem shadow" data-type="${item.identifiers}"><img src="/Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
-                    </div>
-                </div>
-                <p class="description">${item.description}</p>
-            `;
-            foodContainer.appendChild(menuItem);
-        })
-    }
-
-    function filterMenuData(filters){
-        const allData = Object.values(menuData).flatMap(category => 
-            category.names.map((name, i) => ({
-                name,
-                price: category.prices[i],
-                description: category.descriptions[i],
-                image: category.images[i],
-                identifiers: category.identifiers[i],
-                tags: category.tags ? category.tags[i] : []
-            }))
-        );
     
-        return allData.filter(item =>
-            Object.entries(filters).every(([filterCategory, filterValues]) => {
-                // console.log(`Checking filter category: ${filterCategory} with values: ${filterValues}`);
-                return filterValues.some(value => item.tags.includes(value));
+    items.forEach(item => {
+        const menuItem = document.createElement('div');
+        menuItem.classList.add('menu-item');
+        menuItem.innerHTML = `
+            <div class="item-image"><img src="${getImagePath(item.image)}" alt="${item.name}"></div>
+            <div class="item-info">
+                <p class="name">${item.name}</p>
+                <div class="add-info">
+                    <p class="price">${convertPrice(item.price)}</p>
+                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                </div>
+            </div>
+            <p class="description">${item.description}</p>
+        `;
+        
+        foodContainer.appendChild(menuItem);
+        console.log('image path:', getImagePath(item.image))
+    });
+    
+
+    addItemClick();
+}
+
+function applyFilters() {
+    // console.log("Applying filters...");
+    const selectedFilters = getSelectedFilters();
+    // console.log("Selected Filters:", selectedFilters);
+
+    const filteredItems = getAllMenuItems()
+        .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
+        .filter(item => {
+            // console.log("Checking item:", item.name, "with tags:", item.tags);
+            return Object.keys(selectedFilters).every(key =>
+                selectedFilters[key].some(filterValue => {
+                    // console.log("Comparing filter value:", filterValue);
+
+                    if (!Array.isArray(item.tags)) {
+                        // console.warn(`Skipping item "${item.name}" because tags are not an array.`);
+                        return false;
+                    }
+
+                    // Check for valid tags and perform the comparison
+                    return item.tags.some(tag => typeof tag === 'string' && tag.toLowerCase() === filterValue.toLowerCase());
             })
         );
+    });
+
+    // console.log("Filtered Items:", filteredItems);
+    displayMenu(filteredItems);
+}
+
+
+function setupFilterButton() {
+    const filterButton = document.querySelector('.filter-button'); // Select the filter button
+    if (filterButton) {
+        // console.log("Setting up filter button...");
+        filterButton.addEventListener('click', () => {
+            // console.log("Filter button clicked.");
+            applyFilters(); // Apply filters when the button is clicked
+        });
+    } else {
+        console.error("Filter button not found!");
     }
 }
 
 
+function getSelectedFilters() {
+    const filters = document.querySelectorAll('.filters-container input[type="checkbox"]:checked');
+    // console.log("Filters selected:", filters);
+
+    const selectedFilters = {};
+    filters.forEach(filter => {
+        const group = filter.name;
+        if (!selectedFilters[group]) selectedFilters[group] = [];
+        selectedFilters[group].push(filter.value);
+    });
+
+    // console.log("Selected filters object:", selectedFilters);
+    return selectedFilters;
+}
+
+function getImagePath(imagePath) {
+      // Ensure the path starts from the correct base folder
+      if (imagePath.startsWith('../../Images/')) {
+        return imagePath.slice(3); // Remove '../../' to make it relative from the root
+    }
+    return imagePath; // Return path as is if no change is needed
+}
