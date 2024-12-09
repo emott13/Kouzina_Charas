@@ -73,21 +73,62 @@ function generateOptionsHtml(value){
                 <input type="submit" id="submit"></input>
             </form>`
     }
-    else{
-    return `
-        <h3>What would you like to ${value}?</h3>
-        ${['app', 'lunch', 'dinner', 'dessert', 'drink'].map(type => `
-            <div class="op">
-                <input type="radio" name="menu-sections" class="menu-sections" value="${type}" id="${type}">
-                <label for="${type}">${capitalizeFirstLetter(type)}</label>
+    else if(value == 'discount'){
+        return `
+        <h3>Create your discount:</h3>
+        <form class="discount-input" action="manager.js" method="post">
+            <div class="input-options">
+                <label for="code">Enter discount code:</label>
+                <input type="text" name="code" id="code">
+
+                <label for="amount">Enter discount amount:</label>
+                <input type="number" name="amount" id="amount"></input>
+
+                <div class="discount-type">
+                    <input type="radio" name="discount" id="percent" value="percent"></input>
+                    <label for="percent">Percent</label>
+                    <input type="radio" name="discount" id="amount" value="euro"></input>
+                    <label for="amount">Euro amount</label>
+                </div>
+
+                <div class="discount-menu">
+                    <h5>Works for:</h5>
+                    <input type="checkbox" name="app" id="app" value="app"></input>
+                    <label for="app">Appetizers</label>
+                    <input type="checkbox" name="lunch" id="lunch" value="lunch"></input>
+                    <label for="lunch">Lunch</label>
+                    <input type="checkbox" name="dinner" id="dinner" value="dinner"></input>
+                    <label for="dinner">Dinner</label>
+                    <input type="checkbox" name="dessert" id="dessert" value="dessert"></input>
+                    <label for="dessert">Desserts</label>
+                    <input type="checkbox" name="drink" id="drink" value="drink"></input>
+                    <label for="drink">Beverages</label>
+                </div>
+
+                <label for="dateStart">Choose starting date: (inclusive)</label>
+                <input type="date" name="dateStart" id="dateStart" value="start"></input>
+
+                <label for="dateEnd">Choose ending date: (inclusive)</label>
+                <input type="date" name="dateEnd" id="dateEnd" value="end"></input>
             </div>
-        `).join('')}
-    `;
+            <input type="submit" id="submit-discount"></input>
+        </form>`
+    }
+    else{
+        return `
+            <h3>What would you like to ${value}?</h3>
+            ${['app', 'lunch', 'dinner', 'dessert', 'drink'].map(type => `
+                <div class="op">
+                    <input type="radio" name="menu-sections" class="menu-sections" value="${type}" id="${type}">
+                    <label for="${type}">${capitalizeFirstLetter(type)}</label>
+                </div>
+            `).join('')}
+        `;
     }
 }
 
 function capitalizeFirstLetter(string){
- string.charAt(0).toUpperCase() + string.slice(1);
+    string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function menuOptions(value){                    // -------------------------------------- sets listeners for menu section radio button or calls addItem
@@ -100,8 +141,14 @@ function menuOptions(value){                    // -----------------------------
     else if(value === 'add'){
         addItem();
     }
+    else if(value == 'discount'){
+        let form = document.querySelector('form.discount-input')
+        if(form){
+            form.addEventListener('submit', getDiscountData)
+        }
+    }
     else{
-        let form = document.querySelector('form')
+        let form = document.querySelector('form.blog-input')
         if(form){
             form.addEventListener('submit', getFormData)
         }
@@ -148,7 +195,7 @@ function displayMenuItems(menuItems, itemType){                 // -------------
 }
 
 function getImagePath(imagePath){
- imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
+    imagePath.startsWith('../../') ? imagePath.slice(3) : imagePath;
 }
 
 function handleMenuAction(event){                   // ---------------------------------- sorts call from listener and calls function
@@ -390,7 +437,7 @@ function getIdentifier(){                   // ---------------------------------
 
 function getFormData(event){
     event.preventDefault();
-    let form = document.querySelector('form');
+    let form = document.querySelector('form.blog-input');
     let formData = new FormData(form); // -------------------------------------------------------------- sets up key/value pairs with the data
     let date = getDate();
     let item = {
@@ -411,4 +458,40 @@ function getDate(){
     let date = { year: 'numeric', month: 'long', day: 'numeric' };
     let formattedDate = today.toLocaleDateString('en-US', date);
     return formattedDate;
+}
+
+function getDiscountData(event) {
+    event.preventDefault();
+
+    let form = document.querySelector('form.discount-input');
+    let formData = new FormData(form);
+
+    let app = formData.has('app');
+    let lunch = formData.has('lunch');
+    let dinner = formData.has('dinner');
+    let dessert = formData.has('dessert');
+    let drink = formData.has('drink');
+
+    let item = {
+        code: formData.get('code'),
+        amount: formData.get('amount'),
+        type: formData.get('discount'),
+        start: formData.get('dateStart'),
+        end: formData.get('dateEnd'),
+        app: app,
+        lunch: lunch,
+        dinner: dinner,
+        dessert: dessert,
+        drink: drink
+    };
+
+    let discounts = JSON.parse(localStorage.getItem('discount')) || [];
+    let existingDiscount = discounts.find(discount => discount.code === item.code);
+
+    if (existingDiscount) {
+        alert(`A discount with the code "${item.code}" already exists.`);
+        return;
+    }
+    discounts.push(item);
+    localStorage.setItem('discount', JSON.stringify(discounts));
 }
