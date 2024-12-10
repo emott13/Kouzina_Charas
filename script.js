@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // addingFilterItems();
+    addingFilterItems();
     initializeMenu();
     setupFilterButton();
     applyFilters();
     const pageClass = document.body.classList;
     if(pageClass.contains('main')){                                                     //index.html listener
+        localStorage.removeItem('receipt');
+        localStorage.removeItem('orderData');
         setUpMenu('app');
         setUpMenu('lunch'); 
         setUpMenu('dinner'); 
@@ -262,7 +264,7 @@ function displayMenuOnPage(type){ // -------------------------------------------
                 <p class="name">${item.name}</p>
                 <div class="add-info">
                     <p class="price">${convertPrice(item.price)}</p>
-                    <button class="addItem shadow" data-type="${item.identifiers}"><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
+                    <button class="addItem shadow" data-type="${item.identifiers}" data-tags=${item.tags}><img src="../../Ion_Icons/add-outline.svg" alt="" class='icon-image-add'></button>
                 </div>
             </div>
             <p class="description">${item.description}</p>
@@ -293,14 +295,17 @@ function handleAddItem(event){ // ----------------------------------------------
     let name = menuItem.querySelector('.name').innerText;
     let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
     let image = menuItem.querySelector('img').src;
-    let id = button.dataset.type; 
+    let id = button.dataset.type;
+    let tags = button.dataset.tags;
+    console.log(tags)
 
     let item = {
         name: name,
         price: price,
         image: image,
         quantity: 1,
-        identifiers: id
+        identifiers: id,
+        tags: tags
     };
     
     window.scrollTo({
