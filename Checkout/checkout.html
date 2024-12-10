@@ -20,6 +20,7 @@
                 if (receiptExists && !localStorage.getItem('cart')) {
                     localStorage.removeItem('receipt');
                     localStorage.removeItem('orderData');
+                    localStorage.removeItem('validDiscount');
                     window.location.href = '../Cart/cart.html';
                 }
             }
@@ -40,7 +41,7 @@
 </header>
 
 <main class="payment background">
-    <section id="order-summary-basic">
+    <section id="order-summary-basic" style="min-height: 255px;">
         <h2>Order Summary</h2>
         <div class="order-info-basic">
             <div class="item">
@@ -50,6 +51,13 @@
                 <span><strong>Total:</strong></span>
             </div>
         </div>
+        <div class="discount-container">
+            <label for="discount">Enter discount code:</label>
+            <input type="text" name="discount" id="discount">
+            <p id="discountError" style="color: #e60d0d;" hidden>Discount code is invalid.</p>
+            <p id="discountTrue" style="color: #207625;" hidden>Discount code applied!</p>
+        </div>
+
     </section>
 
     <section id="checkout-options">
@@ -64,11 +72,11 @@
             <div class="field-info">
                 <div class="field">
                     <label for="pickup-name">Name:</label>
-                    <input id="pickup-name" name="pickup-name" type="text" placeholder="John Doe" required>
+                    <input id="pickup-name" name="pickup-name" type="text" placeholder="John Doe" maxlength="25" required>
                 </div>
                 <div class="field">
                     <label for="pickup-phone">Phone:</label>
-                    <input id="pickup-phone" name="pickup-phone" type="tel" pattern="[0-9]{10}" placeholder="(123) 456-7890" required>
+                    <input id="pickup-phone" name="pickup-phone" type="tel" maxlength="10" onkeyup="this.value=this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')" placeholder="(123) 456-7890" required>
                 </div>
             </div>
             <button type="submit">Next</button>
@@ -81,21 +89,21 @@
             <div class="field-info">
                 <div class="field">
                     <label for="delivery-name">Name:</label>
-                    <input id="delivery-name" name="delivery-name" type="text" placeholder="John Doe" required>   
+                    <input id="delivery-name" name="delivery-name" type="text" maxlength="25" placeholder="John Doe" onblur="this.value=this.value.replace(/^([a-zA-Z]{2,15})\s*([a-zA-Z]{2,15})$/, '$1 $2')" required>   
                 </div>
                 <div class="field">
                     <label for="delivery-street">Street & Number:</label>
-                    <input id="delivery-street" name="delivery-street" type="text" placeholder="Thiseos 367" required>
+                    <input id="delivery-street" name="delivery-street" type="text" maxlength="20" placeholder="Thiseos 367" onblur="this.value=this.value.replace(/^([a-zA-Z]{1,15})\s*(\d{1,4})$/, '$1 $2')" required>
                 </div>
                 
                 <div class="field">
                     <label for="delivery-city">City & Postal Code:</label>
-                    <input id="delivery-city" name="delivery-city" type="text" placeholder="Kallithea 176 74" required>
+                    <input id="delivery-city" name="delivery-city" type="text" maxlength="21" onkeyup="this.value=this.value.replace(/^([a-zA-Z]{1,15})\s*(\d{3})(\d{2})$/, '$1 $2 $3')" placeholder="Kallithea 176 74" required>
                 </div>
                 
                 <div class="field">
                     <label for="delivery-phone">Phone:</label>
-                    <input id="delivery-phone" name="delivery-phone" type="tel" pattern="[0-9]{10}" placeholder="(123) 456-7890" required>
+                    <input id="delivery-phone" name="delivery-phone" type="tel" maxlength="10" onkeyup="this.value=this.value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')" placeholder="(123) 456-7890" required>
                 </div>
                 
             </div>
@@ -125,13 +133,13 @@
         <fieldset>
             <legend>Credit Card Information</legend>
             <label for="card-number">Card Number</label>
-            <input id="card-number" type="text" placeholder="1234 5678 9012 3456" maxlength="19" required>
+            <input id="card-number" type="text" placeholder="1234 5678 9012 3456" maxlength="16" onblur="validateCardInput()">
             <label for="expiry-date">Expiry Date</label>
-            <input id="expiry-date" type="text" placeholder="MM/YY" maxlength="5" required>
+            <input id="expiry-date" type="text" placeholder="MM/YY" maxlength="4" onblur="validateExpiration()" required>
             <label for="cvc">CVC</label>
             <input id="cvc" type="text" placeholder="123" maxlength="4" required>
-            <label for="card-holder">Card Holder Name</label>
-            <input id="card-holder" type="text" placeholder="John Doe" required>
+            <label for="card-holder" >Card Holder Name</label>
+            <input id="card-holder" type="text" maxlength="25" placeholder="John Doe" onblur="this.value=this.value.replace(/^([a-zA-Z]{1,15})\s*([a-zA-Z]{1,15})$/, '$1 $2')" required>
             <div class="tip">
             </div>
             <button type="submit">View Order Summary</button>

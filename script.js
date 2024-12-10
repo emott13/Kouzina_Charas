@@ -297,7 +297,7 @@ function handleAddItem(event){ // ----------------------------------------------
     let image = menuItem.querySelector('img').src;
     let id = button.dataset.type;
     let tags = button.dataset.tags;
-    console.log(tags)
+    console.log(tags.split(","))
 
     let item = {
         name: name,

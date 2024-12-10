@@ -106,10 +106,10 @@ function generateOptionsHtml(value){
                 </div>
 
                 <label for="dateStart">Choose starting date: (inclusive)</label>
-                <input type="date" name="dateStart" id="dateStart" value="start"></input>
+                <input type="date" name="dateStart" id="dateStart"></input>
 
                 <label for="dateEnd">Choose ending date: (inclusive)</label>
-                <input type="date" name="dateEnd" id="dateEnd" value="end"></input>
+                <input type="date" name="dateEnd" id="dateEnd"></input>
             </div>
             <input type="submit" id="submit-discount"></input>
         </form>`
@@ -292,7 +292,6 @@ function generateCheckbox(value, label, selectedTags) {
     return `<input type="checkbox" class="tag-checkbox" value="${value}" ${isChecked}><label for="${value}">${label}</label>`;
 }
 
-
 function removeItem(itemName, itemType){                    // -------------------------- handles remove btn click to remove item from menu display. stil shows in manager display with label that it is not being displayed.
     let menuItems = JSON.parse(localStorage.getItem(itemType)) || [];
     let itemIndex = menuItems.findIndex(item => item.name === itemName);  
@@ -463,7 +462,7 @@ function getDate(){
     return formattedDate;
 }
 
-function getDiscountData(event) {
+function getDiscountData(event){
     event.preventDefault();
 
     let form = document.querySelector('form.discount-input');
