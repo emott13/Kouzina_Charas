@@ -340,7 +340,8 @@
     min-height: 200px;
 }
 
-#submit{
+#submit,
+#submit-discount{
     display: flex;
     justify-content: center;
     margin: 2rem auto 0;
