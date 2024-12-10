@@ -156,8 +156,11 @@ function handlePaymentOptionSelection() {
         const tipPercentInputs = document.querySelectorAll('.tipPercent');
         tipPercentInputs.forEach(input => {
             input.addEventListener('change', () => {
-                if (input.checked) {
+                console.log(input)
+                if (input.checked){
+                    console.log(input.value)
                     tipAmount = Math.floor(input.value * 100) || 0;                               // Use the selected tip percent
+                    console.log(tipAmount)
                 }
             });
         });
@@ -189,15 +192,17 @@ function setupCardFormSubmission() {
         let expiryDate = document.getElementById("expiry-date").value.trim();
         let cvc = document.getElementById("cvc").value.trim();
         let cardHolder = document.getElementById("card-holder").value.trim();
-        let tip = tipAmount;
+        let tip = tipAmount || 0;
+        console.log(tip ? true : false)
 
-        if (cardNumber && expiryDate && cvc && cardHolder && tip) {
+        if (cardNumber && expiryDate && cvc && cardHolder) {
             let activeForm = state.isDelivery ? forms.delivery : forms.pickup;
             populateSummary(activeForm);
             console.log(activeForm, cardNumber);
             saveOrderData(activeForm, cardNumber, tip);
             toggleVisibility([sections.summary], [forms.card, sections.paymentOptions]);
         } else {
+            console.log(tip)
             alert("Please fill out all fields correctly.");
         }
     });
