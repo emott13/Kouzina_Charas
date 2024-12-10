@@ -14,6 +14,9 @@ function receipt() {
     const d = new Date();
     let subtotal = Number(cart.reduce((sum, item) => sum + (item.quantity || 1) * parseFloat(item.price || 0), 0).toFixed(2));
     let tip = Number((customTip * 0.01).toFixed(2))
+    let discountAmount = 0;
+    if(discount.length != 0){ discountAmount = discount.amount}
+    // if(discount) ? discount.amount : 0;
     receiptItems.innerHTML = `
         <div class="receipt-title"><p>
             ---------------------------------------------<br>
@@ -42,9 +45,9 @@ function receipt() {
         <div class="receipt-total">
             <div class="subtotal"><p>Subtotal:</p><p>${convertPrice(subtotal)} €</p></div>
             <div class="subtotal"><p>Tip:</p><p>${convertPrice(tip)}€</p></div>
-            <div class="subtotal"><p>Discount:</p><p>-${convertPrice(discount.amount)}€</p></div>
+            <div class="subtotal"><p>Discount:</p><p>-${convertPrice(discountAmount)}€</p></div>
             <div class="receipt-total-after-sub">
-                <h3>Total:</h3><h3>${convertPrice(subtotal + tip - discount.amount)} €</h3>
+                <h3>Total:</h3><h3>${convertPrice((subtotal + tip) - discountAmount)} €</h3>
             </div>
 
             <div class="dash">------------------------------------------------------</div>
@@ -57,7 +60,7 @@ function receipt() {
             <p>THANK YOU FOR DINING WITH US!<br>PLEASE COME AGAIN</p>
         </div>
     `;
-
+                console.log(subtotal, tip, discount.amount)
     receiptContainerDisplay.innerHTML = '';
     receiptContainerDisplay.appendChild(receiptItems);
 
