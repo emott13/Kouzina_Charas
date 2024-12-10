@@ -238,11 +238,12 @@ function validateExpiration(){
     let ex = document.getElementById('expiry-date')
     let check = ex.value.replace(/\s+/, '');
     console.log(check)
-    if(!check || check.length < 4){
+    console.log(check.slice(0, 2))
+    if(!check || check.length < 4 || isNaN(check)){
         console.log('invalid expiry')
         document.getElementById('expiry-date').value = '';
     }
-    else if(check < 1224){
+    else if(check.slice(0, 2) > 12 || check < 1224 || check > 1300){
         console.log('invalid expiry')
         document.getElementById('expiry-date').value = '';
     }
