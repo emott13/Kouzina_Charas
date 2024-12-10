@@ -47,7 +47,7 @@ function receipt() {
             <div class="subtotal"><p>Tip:</p><p>${convertPrice(tip)}€</p></div>
             <div class="subtotal"><p>Discount:</p><p>-${convertPrice(discountAmount)}€</p></div>
             <div class="receipt-total-after-sub">
-                <h3>Total:</h3><h3>${convertPrice((subtotal + tip) - discountAmount)} €</h3>
+                <h3>Total:</h3><h3>${convertPrice((subtotal - discountAmount) + tip)} €</h3>
             </div>
 
             <div class="dash">------------------------------------------------------</div>
