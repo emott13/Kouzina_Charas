@@ -222,7 +222,7 @@ function saveOrderData(form) {
         }
     });
 
-    const serializedOrderData = JSON.stringify(Object.fromEntries(orderData));
+    const serializedOrderData = JSON.stringify(Object.fromEntries(orderData));   //this will convert object/array to a JSON string // JSON string "name" : "darlin" "age" : 23
     localStorage.setItem("orderData", serializedOrderData);
 
     console.log("Order data saved to local storage:", orderData);

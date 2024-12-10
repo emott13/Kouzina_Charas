@@ -471,13 +471,13 @@ function convertPrice(price){ // -----------------------------------------------
 // ----------------------- //
 
 
-function addingFilterItems(){
-    const filterButton = document.querySelector('.filter-button');
+function addingFilterItems(){                                               // this will add items to the filter
+    const filterButton = document.querySelector('.filter-button');          // this is the filter button
     if (filterButton) {
         // console.log("Setting up filter button...");
         filterButton.addEventListener('click', () => {
             // console.log("Filter button clicked.");
-            applyFilters();
+            applyFilters();                                                 // this function will apply said filter
         });
     } else {
         console.error("Filter button not found!");
@@ -486,7 +486,7 @@ function addingFilterItems(){
 
 function initializeMenu() {
     // console.log("Initializing menu...");
-    const allItems = getAllMenuItems(); // Fetch all menu items from localStorage
+    const allItems = getAllMenuItems();     // Fetch all menu items from localStorage
     displayMenu(allItems); // Display them in the UI
 }
 
@@ -494,7 +494,7 @@ function getAllMenuItems() {
     // console.log("Fetching all menu items dynamically...");
     const categories = ['app', 'lunch', 'dinner', 'dessert', 'drink'];
     return categories.flatMap(category => {
-        const items = JSON.parse(localStorage.getItem(category)) || [];
+        const items = JSON.parse(localStorage.getItem(category)) || [];  // data set
         // console.log(`Items from ${category}:`, items);
         return items
             .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
