@@ -293,7 +293,14 @@ function handleAddItem(event){ // ----------------------------------------------
     let button = event.target.closest('.addItem');
     let menuItem = button.closest('.menu-item');
     let name = menuItem.querySelector('.name').innerText;
-    let price = parseFloat(menuItem.querySelector('.price').innerText.replace('€', '').trim());
+
+    let priceElement = menuItem.querySelector('.price');
+    if (!priceElement) {
+        console.error("Price element not found for item:", menuItem);
+        return; // Exit the function early
+    }
+    let price = parseFloat(priceElement.innerText.replace('€', '').trim());
+
     let image = menuItem.querySelector('img').src;
     let id = button.dataset.type;
     let tags = button.dataset.tags;
@@ -307,6 +314,9 @@ function handleAddItem(event){ // ----------------------------------------------
         identifiers: id,
         tags: tags
     };
+
+
+    console.log("Adding item:", item);
     
     window.scrollTo({
         top: 0,
@@ -521,6 +531,7 @@ function getAllMenuItems() {
                 };
         });
     });
+    
 }
 
 function displayMenu(items) {
@@ -563,28 +574,26 @@ function displayMenu(items) {
 function applyFilters() {
     // console.log("Applying filters...");
     const selectedFilters = getSelectedFilters();
-    // console.log("Selected Filters:", selectedFilters);
+    console.log("Selected Filters:", selectedFilters);
+    
+    const allItems = getAllMenuItems();
+    console.log("All items:", allItems);
 
-    const filteredItems = getAllMenuItems()
+    const filteredItems = allItems
         .filter(item => !item.identifiers.endsWith('NaN')) // Exclude removed items
         .filter(item => {
-            // console.log("Checking item:", item.name, "with tags:", item.tags);
             return Object.keys(selectedFilters).every(key =>
                 selectedFilters[key].some(filterValue => {
-                    // console.log("Comparing filter value:", filterValue);
-
                     if (!Array.isArray(item.tags)) {
-                        // console.warn(`Skipping item "${item.name}" because tags are not an array.`);
+                        console.warn(`Skipping item "${item.name}" because tags are not an array.`);
                         return false;
                     }
-
-                    // Check for valid tags and perform the comparison
                     return item.tags.some(tag => typeof tag === 'string' && tag.toLowerCase() === filterValue.toLowerCase());
-            })
-        );
-    });
+                })
+            );
+        });
 
-    // console.log("Filtered Items:", filteredItems);
+    console.log("Filtered Items:", filteredItems);
     displayMenu(filteredItems);
 }
 
@@ -614,7 +623,7 @@ function getSelectedFilters() {
         selectedFilters[group].push(filter.value);
     });
 
-    // console.log("Selected filters object:", selectedFilters);
+    console.log("Selected filters :", selectedFilters);
     return selectedFilters;
 }
 
