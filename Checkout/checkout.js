@@ -40,7 +40,7 @@ function initializePage() {                                                 // s
     cart.forEach(item => {                                                  // displays each item in cart
         let items = document.createElement('div');
         items.classList.add('item');
-        let tag = item.tags.split(",");
+        let tag = item.tags ? item.tags.split(",") : [];
         items.innerHTML = 
         `
                 <span>${item.name}</span>
