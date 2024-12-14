@@ -299,12 +299,11 @@ function handleAddItem(event){ // ----------------------------------------------
         console.error("Price element not found for item:", menuItem);
         return; // Exit the function early
     }
+    
     let price = parseFloat(priceElement.innerText.replace('€', '').trim());
-
     let image = menuItem.querySelector('img').src;
     let id = button.dataset.type;
     let tags = button.dataset.tags;
-    console.log(tags)
 
     let item = {
         name: name,
